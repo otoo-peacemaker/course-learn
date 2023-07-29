@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/splashScreenFragment">
+
+    <fragment
+        android:id="@+id/splashScreenFragment"
+        android:name="com.peacemaker.android.courselearn.ui.authentication.SplashScreenFragment"
+        android:label="fragment_splash_screen"
+        tools:layout="@layout/fragment_splash_screen" >
+        <action
+            android:id="@+id/action_splashScreenFragment_to_auth_graph"
+            app:destination="@id/auth_graph" />
+        <action
+            android:id="@+id/action_splashScreenFragment_to_home_graph"
+            app:destination="@id/home_graph" />
+    </fragment>
+
+    <navigation android:id="@+id/auth_graph"
+        app:startDestination="@id/boardingScreenFragment">
+        <fragment
+            android:id="@+id/boardingScreenFragment"
+            android:name="com.peacemaker.android.courselearn.ui.authentication.BoardingScreenFragment"
+            android:label="fragment_boarding_screen"
+            tools:layout="@layout/fragment_boarding_screen" >
+            <action
+                android:id="@+id/action_boardingScreenFragment_to_loginFragment"
+                app:destination="@id/loginFragment" />
+            <action
+                android:id="@+id/action_boardingScreenFragment_to_signUpFragment"
+                app:destination="@id/signUpFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/loginFragment"
+            android:name="com.peacemaker.android.courselearn.ui.authentication.LoginFragment"
+            android:label="fragment_login"
+            tools:layout="@layout/fragment_login" >
+            <action
+                android:id="@+id/action_loginFragment_to_resetPasswordFragment"
+                app:destination="@id/resetPasswordFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/signUpFragment"
+            android:name="com.peacemaker.android.courselearn.ui.authentication.SignUpFragment"
+            android:label="fragment_sign_up"
+            tools:layout="@layout/fragment_sign_up" >
+            <action
+                android:id="@+id/action_signUpFragment_to_verifyAccountFragment"
+                app:destination="@id/verifyAccountFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/resetPasswordFragment"
+            android:name="com.peacemaker.android.courselearn.ui.authentication.ResetPasswordFragment"
+            android:label="fragment_reset_password"
+            tools:layout="@layout/fragment_reset_password" />
+        <fragment
+            android:id="@+id/verifyAccountFragment"
+            android:name="com.peacemaker.android.courselearn.ui.authentication.VerifyAccountFragment"
+            android:label="fragment_verify_account"
+            tools:layout="@layout/fragment_verify_account" />
+        <action
+            android:id="@+id/action_global_home_graph"
+            app:destination="@id/home_graph" />
+    </navigation>
+    <navigation android:id="@+id/home_graph"
+        app:startDestination="@id/navigation_home">
+        <fragment
+            android:id="@+id/navigation_home"
+            android:name="com.peacemaker.android.courselearn.ui.home.HomeFragment"
+            android:label="@string/title_home"
+            tools:layout="@layout/fragment_home" />
+
+        <fragment
+            android:id="@+id/navigation_dashboard"
+            android:name="com.peacemaker.android.courselearn.ui.dashboard.DashboardFragment"
+            android:label="@string/title_dashboard"
+            tools:layout="@layout/fragment_dashboard" />
+
+        <fragment
+            android:id="@+id/navigation_notifications"
+            android:name="com.peacemaker.android.courselearn.ui.notifications.NotificationsFragment"
+            android:label="@string/title_notifications"
+            tools:layout="@layout/fragment_notifications" />
+    </navigation>
+
+</navigation>
