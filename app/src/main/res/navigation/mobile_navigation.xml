@@ -23,7 +23,7 @@
         <fragment
             android:id="@+id/boardingScreenFragment"
             android:name="com.peacemaker.android.courselearn.ui.authentication.BoardingScreenFragment"
-            android:label="fragment_boarding_screen"
+            android:label=""
             tools:layout="@layout/fragment_boarding_screen" >
             <action
                 android:id="@+id/action_boardingScreenFragment_to_loginFragment"
@@ -40,6 +40,9 @@
             <action
                 android:id="@+id/action_loginFragment_to_resetPasswordFragment"
                 app:destination="@id/resetPasswordFragment" />
+            <action
+                android:id="@+id/action_loginFragment_to_signUpFragment"
+                app:destination="@id/signUpFragment" />
         </fragment>
         <fragment
             android:id="@+id/signUpFragment"
@@ -47,8 +50,11 @@
             android:label="fragment_sign_up"
             tools:layout="@layout/fragment_sign_up" >
             <action
-                android:id="@+id/action_signUpFragment_to_verifyAccountFragment"
-                app:destination="@id/verifyAccountFragment" />
+                android:id="@+id/action_signUpFragment_to_loginFragment"
+                app:destination="@id/loginFragment" />
+            <action
+                android:id="@+id/action_signUpFragment_to_continueWithPhoneFragment"
+                app:destination="@id/continueWithPhoneFragment" />
         </fragment>
         <fragment
             android:id="@+id/resetPasswordFragment"
@@ -59,10 +65,32 @@
             android:id="@+id/verifyAccountFragment"
             android:name="com.peacemaker.android.courselearn.ui.authentication.VerifyAccountFragment"
             android:label="fragment_verify_account"
-            tools:layout="@layout/fragment_verify_account" />
+            tools:layout="@layout/fragment_verify_account" >
+            <action
+                android:id="@+id/action_verifyAccountFragment_to_successFragment"
+                app:destination="@id/successFragment" />
+        </fragment>
         <action
             android:id="@+id/action_global_home_graph"
             app:destination="@id/home_graph" />
+        <fragment
+            android:id="@+id/successFragment"
+            android:name="com.peacemaker.android.courselearn.ui.authentication.SuccessFragment"
+            android:label="fragment_success"
+            tools:layout="@layout/fragment_success" >
+            <action
+                android:id="@+id/action_successFragment_to_loginFragment"
+                app:destination="@id/loginFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/continueWithPhoneFragment"
+            android:name="com.peacemaker.android.courselearn.ui.authentication.ContinueWithPhoneFragment"
+            android:label="fragment_continue_with_phone"
+            tools:layout="@layout/fragment_continue_with_phone" >
+            <action
+                android:id="@+id/action_continueWithPhoneFragment_to_verifyAccountFragment"
+                app:destination="@id/verifyAccountFragment" />
+        </fragment>
     </navigation>
     <navigation android:id="@+id/home_graph"
         app:startDestination="@id/navigation_home">
@@ -88,5 +116,7 @@
             app:destination="@id/other_graph" />
     </navigation>
     <navigation android:id="@+id/other_graph"/>
+
+
 
 </navigation>

@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.authentication.VerifyAccountFragment">
-
+    tools:context=".ui.authentication.ContinueWithPhoneFragment">
 
     <LinearLayout
         android:id="@+id/titleL"
@@ -26,7 +25,7 @@
             android:layout_marginTop="@dimen/_30sdp"
             android:fontFamily="@font/poppins_medium"
             android:gravity="center"
-            android:text="@string/verify_phone"
+            android:text="@string/continue_with_phone"
             android:textColor="@color/subHeadTxtColor"
             android:textSize="@dimen/_18ssp" />
 
@@ -54,39 +53,39 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
                 android:padding="@dimen/_10sdp"
-                android:text="@string/code_is_sent_to"
+                android:text="@string/enter_your_phone_number"
                 android:textSize="@dimen/_12sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.mukesh.OtpView
-                android:id="@+id/otp_view"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/emailL"
+                style="@style/TextInputStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:inputType="number"
-                android:textColor="@android:color/white"
-                app:itemCount="6"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txt_1"
-                app:lineColor="@color/primary"
-                app:viewType="rectangle" />
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                app:layout_constraintTop_toBottomOf="@id/txt_1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/emailId"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <include
-                android:id="@+id/verifyAccount"
+                android:id="@+id/continueBtn"
                 layout="@layout/app_button"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/_110sdp"
                 android:layout_height="@dimen/_60sdp"
-                android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/otp_view"
+                app:layout_constraintTop_toBottomOf="@id/txt_1"
                 app:layout_constraintVertical_bias="0.0" />
 
             <include
@@ -97,5 +96,6 @@
                 android:visibility="gone" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

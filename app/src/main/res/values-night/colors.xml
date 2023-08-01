@@ -3,8 +3,15 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="primary">#3D5CFF</color>
-    <color name="titleBackground">#F0F0F2</color>
-    <color name="bodyBackground">#B8B8D2</color>
+    <color name="titleBackground">#1F1F39</color>
+    <color name="bodyBackground">#2F2F42</color>
     <color name="blackPrimary">#1F1F39</color>
     <color name="primaryBackground">#1F1F39</color>
+    <color name="subHeadTxtColor">#EAEAFF</color>
+    <color name="subHead2TxtColor">#F4F3FD</color>
+    <color name="txt_btn_bg_color">#858597</color>
+    <color name="txt_btn_txt_color">#FFFFFF</color>
+    <color name="txt_fields_color">#3E3E55</color>
+    <color name="success_bg_color">#1F1F39</color>
+    <color name="success_card_bg_color">#2F2F42</color>
 </resources>

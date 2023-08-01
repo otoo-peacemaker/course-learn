@@ -1,41 +1,39 @@
 package com.peacemaker.android.courselearn.ui.authentication
 
+import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import com.peacemaker.android.courselearn.R
-import com.peacemaker.android.courselearn.databinding.FragmentVerifyAccountBinding
+import com.peacemaker.android.courselearn.databinding.FragmentContinueWithPhoneBinding
+import com.peacemaker.android.courselearn.databinding.FragmentLoginBinding
 import com.peacemaker.android.courselearn.ui.util.BaseFragment
 
-class VerifyAccountFragment : BaseFragment() {
-    private var _binding: FragmentVerifyAccountBinding? = null
+class ContinueWithPhoneFragment : BaseFragment() {
+    private var _binding: FragmentContinueWithPhoneBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: AuthViewModel
-
     companion object {
-        fun newInstance() = VerifyAccountFragment()
+        fun newInstance() = ContinueWithPhoneFragment()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentVerifyAccountBinding.inflate(layoutInflater)
+    ): View? {
+        _binding = FragmentContinueWithPhoneBinding.inflate(layoutInflater)
         return binding.root
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setAppButton(binding.verifyAccount, "Verify and Create Account") {
+        setAppButton(binding.continueBtn, "Continue") {
             // navigateTo(R.id.action_global_home_graph
-            navigateTo(R.id.action_successFragment_to_loginFragment)
+            navigateTo(R.id.action_continueWithPhoneFragment_to_verifyAccountFragment)
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }

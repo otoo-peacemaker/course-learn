@@ -1,17 +1,16 @@
 package com.peacemaker.android.courselearn
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.FirebaseApp
 import com.peacemaker.android.courselearn.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -20,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private val appBarConfiguration = setOf(
         R.id.splashScreenFragment,
+        R.id.boardingScreenFragment,
         R.id.navigation_home,
         R.id.navigation_dashboard,
         R.id.navigation_notifications
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        FirebaseApp.initializeApp(this)
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         navController = navHostFragment.navController
@@ -51,22 +51,34 @@ class MainActivity : AppCompatActivity() {
     private fun setupActionBarWithNavController(
         navController: NavController,
         drawerLayoutId: Int? = null,
-        appBarConfig: Set<Int>,
+        appBarConfig: Set<Int>
     ) {
         val drawerLayout: DrawerLayout? = drawerLayoutId?.let { findViewById(it) }
         val appBarConfiguration = AppBarConfiguration(appBarConfig, drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
-    private fun showVisibilityForBottomNav(visibility: Boolean){
-        if (visibility){
+    private fun showVisibilityForBottomNav(visibility: Boolean) {
+        if (visibility) {
             binding.navView.visibility = View.VISIBLE
-        }else{
+        } else {
             binding.navView.visibility = View.GONE
         }
     }
-    private fun addOnDestinationChangedListener(navController: NavController){
+
+    private fun addOnDestinationChangedListener(navController: NavController) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            val hideActionBar = listOf(
+                R.id.boardingScreenFragment,
+                R.id.loginFragment,
+                R.id.signUpFragment,
+            )
+            if (destination.id in hideActionBar) {
+                hideActionBar()
+            } else {
+                showActionBar()
+            }
+
             val showBottomNavOnIDs = listOf(
                 R.id.navigation_home,
                 R.id.navigation_dashboard,
@@ -74,16 +86,18 @@ class MainActivity : AppCompatActivity() {
             )
             if (destination.id in showBottomNavOnIDs) {
                 showVisibilityForBottomNav(true)
-                if (destination.id == R.id.navigation_home){
-                    Log.d("Main","Home Fragment")
-                   // binding.customToolbar.visibility = View.VISIBLE
-                }else {
-                    //binding.customToolbar.visibility = View.GONE
-                }
             } else {
                 showVisibilityForBottomNav(false)
-              //  binding.customToolbar.visibility = View.GONE
+                //  binding.customToolbar.visibility = View.GONE
             }
         }
+    }
+
+    private fun showActionBar() {
+        supportActionBar?.show()
+    }
+
+    private fun hideActionBar() {
+        supportActionBar?.hide()
     }
 }

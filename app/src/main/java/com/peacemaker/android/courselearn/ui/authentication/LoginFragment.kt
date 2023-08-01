@@ -1,8 +1,6 @@
 package com.peacemaker.android.courselearn.ui.authentication
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +16,7 @@ class LoginFragment : BaseFragment() {
         fun newInstance() = LoginFragment()
     }
 
-    private lateinit var viewModel: AuthViewModel
+//    private lateinit var viewModel: AuthViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +28,27 @@ class LoginFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[AuthViewModel::class.java]
+        setTextViewPartialColor(
+            binding.signUpBtn,
+            getString(R.string.don_t_have_an_account_sign_up),
+            "Sign up",
+            resources.getColor(R.color.primary, null)
+        )
+        setAppButton(binding.loginBtn, "Log in") {
+            // navigateTo(R.id.action_global_home_graph)
+            login()
+        }
+
+        binding.signUpBtn.setOnClickListener {
+            navigateTo(R.id.action_loginFragment_to_signUpFragment)
+        }
+        binding.forgotPassword.setOnClickListener {
+            navigateTo(R.id.action_loginFragment_to_resetPasswordFragment)
+        }
+    }
+
+    private fun login() {
+        showLoadingScreen(binding.loader, true)
     }
 
     override fun onDestroyView() {

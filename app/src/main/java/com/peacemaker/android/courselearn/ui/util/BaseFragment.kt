@@ -2,6 +2,7 @@ package com.peacemaker.android.courselearn.ui.util
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.Spannable
@@ -13,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -21,7 +23,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.peacemaker.android.courselearn.MainActivity
 import com.peacemaker.android.courselearn.R
+import com.peacemaker.android.courselearn.databinding.AppButtonBinding
+import com.peacemaker.android.courselearn.databinding.OutlineTextButtonBinding
+import com.peacemaker.android.courselearn.databinding.ProgressBarLayoutBinding
 import org.json.JSONArray
 import java.security.MessageDigest
 import java.security.SecureRandom
@@ -56,11 +62,6 @@ open class BaseFragment : Fragment() {
             )
         }
         textView.text = spannableString
-    }
-
-
-    fun showLoadingScreen(visibility: Boolean) {
-        // (activity as MainActivity).setProgressBar(visibility)
     }
 
     /**
@@ -277,7 +278,7 @@ open class BaseFragment : Fragment() {
     fun printLogs(strTag: String,  strValues: String){
         var printStr = strValues
 
-        if(printStr.isNullOrEmpty()) printStr = "Empty values"
+        if(printStr.isEmpty()) printStr = "Empty values"
 
         Log.w(strTag,printStr)
     }
@@ -355,5 +356,52 @@ open class BaseFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner, backPressedCallback
         )
+    }
+
+    fun setAppButton(
+        btnLayoutBinding: AppButtonBinding? = AppButtonBinding.inflate(layoutInflater),
+        string: String,
+        callback: (() -> Any)? = null) {
+        btnLayoutBinding?.containedButton?.apply {
+            text = string
+          //  backgroundTintList = ColorStateList.valueOf(resources.getColor(android.R.color.transparent, null))
+            setOnClickListener {
+                try {
+                    callback?.invoke()
+                } catch (e: Exception) {
+                    printLogs("FloatingButtonLayoutBinding", e.toString())
+                }
+
+            }
+        }
+    }
+
+    fun setTextButton(
+        btnLayoutBinding: OutlineTextButtonBinding? = OutlineTextButtonBinding.inflate(layoutInflater),
+        string: String,
+        callback: (() -> Any)? = null) {
+        btnLayoutBinding?.outlinedButton?.apply {
+            text = string
+            //backgroundTintList = ColorStateList.valueOf(resources.getColor(android.R.color.transparent, null))
+            setOnClickListener {
+                try {
+                    callback?.invoke()
+                } catch (e: Exception) {
+                    printLogs("FloatingButtonLayoutBinding", e.toString())
+                }
+
+            }
+        }
+    }
+
+    fun navigateTo(@IdRes navigationIdRes: Int){
+        findNavController().navigate(navigationIdRes)
+    }
+    fun showLoadingScreen(loader: ProgressBarLayoutBinding ? = ProgressBarLayoutBinding.inflate(layoutInflater), visibility:Boolean){
+        if (visibility) loader?.root?.visibility = View.VISIBLE else loader?.root?.visibility = View.INVISIBLE
+    }
+
+    fun underImplementation(){
+        showToast(requireContext(),"Under implementation")
     }
 }

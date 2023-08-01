@@ -3,4 +3,20 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="enter_your_details_below_free_sign_up"><![CDATA[Enter your details below & free sign up]]></string>
+    <string name="your_email">Your email</string>
+    <string name="password">Password</string>
+    <string name="enter_your_details_to_login">Enter your details to login</string>
+    <string name="terms"><![CDATA[By creating an account you have to agree \n with our them & condication.]]></string>
+    <string name="already_have_an_account_login">Already have an account？ Login</string>
+    <string name="don_t_have_an_account_sign_up">Don’t have an account? Sign up</string>
+    <string name="forget_password">Forget password?</string>
+    <string name="create_your_own_n_study_plan">Create your own \n study plan</string>
+    <string name="continue_with_phone">Continue with Phone</string>
+    <string name="enter_your_phone_number">Enter Your Phone Number</string>
+    <string name="verify_phone">Verify Phone</string>
+    <string name="code_is_sent_to">Enter Code is sent to</string>
+    <string name="congratulations_you_have_n_completed_your_registration">Congratulations, you have \n completed your registration!</string>
 </resources>

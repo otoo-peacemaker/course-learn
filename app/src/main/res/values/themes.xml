@@ -6,11 +6,12 @@
         <item name="colorPrimaryVariant">@color/blackPrimary</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/white</item>
-        <item name="colorSecondaryVariant">@color/primaryBackground</item>
+        <item name="colorSecondary">@color/primary</item>
+        <item name="colorSecondaryVariant">@color/txt_btn_bg_color</item>
         <item name="colorOnSecondary">@color/blackPrimary</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/titleBackground</item>
+
         <!-- Customize your theme here. -->
     </style>
 </resources>
