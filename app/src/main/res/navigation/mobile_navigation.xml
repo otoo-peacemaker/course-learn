@@ -35,7 +35,7 @@
         <fragment
             android:id="@+id/loginFragment"
             android:name="com.peacemaker.android.courselearn.ui.authentication.LoginFragment"
-            android:label="fragment_login"
+            android:label=""
             tools:layout="@layout/fragment_login" >
             <action
                 android:id="@+id/action_loginFragment_to_resetPasswordFragment"
@@ -47,7 +47,7 @@
         <fragment
             android:id="@+id/signUpFragment"
             android:name="com.peacemaker.android.courselearn.ui.authentication.SignUpFragment"
-            android:label="fragment_sign_up"
+            android:label=""
             tools:layout="@layout/fragment_sign_up" >
             <action
                 android:id="@+id/action_signUpFragment_to_loginFragment"
