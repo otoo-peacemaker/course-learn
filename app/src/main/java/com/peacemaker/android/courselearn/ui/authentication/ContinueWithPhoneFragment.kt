@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.peacemaker.android.courselearn.R
 import com.peacemaker.android.courselearn.databinding.FragmentContinueWithPhoneBinding
-import com.peacemaker.android.courselearn.databinding.FragmentLoginBinding
 import com.peacemaker.android.courselearn.ui.util.BaseFragment
 
 class ContinueWithPhoneFragment : BaseFragment() {

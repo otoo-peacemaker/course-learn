@@ -19,7 +19,7 @@ class ResetPasswordFragment : BaseFragment() {
         fun newInstance() = ResetPasswordFragment()
     }
 
-    private lateinit var viewModel: AuthViewModel
+//    private lateinit var viewModel: AuthViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +30,6 @@ class ResetPasswordFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[AuthViewModel::class.java]
     }
     override fun onDestroyView() {
         super.onDestroyView()

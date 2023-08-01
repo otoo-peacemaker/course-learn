@@ -1,17 +1,23 @@
 package com.peacemaker.android.courselearn
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.FirebaseApp
 import com.peacemaker.android.courselearn.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,8 +28,9 @@ class MainActivity : AppCompatActivity() {
         R.id.boardingScreenFragment,
         R.id.navigation_home,
         R.id.navigation_dashboard,
-        R.id.navigation_notifications
-    )//disable nav back arrows
+        R.id.navigation_notifications,
+        R.id.successFragment
+    )//hide nav back arrows
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +38,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         FirebaseApp.initializeApp(this)
+        val bar: ActionBar? = supportActionBar
+        bar?.setBackgroundDrawable(ColorDrawable(getColor(R.color.titleBackground)))
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         navController = navHostFragment.navController
@@ -74,9 +83,11 @@ class MainActivity : AppCompatActivity() {
                 R.id.signUpFragment,
             )
             if (destination.id in hideActionBar) {
-                hideActionBar()
+//                hideActionBar()
+                Log.d("hideActionBar","hide")
             } else {
-                showActionBar()
+               // showActionBar() TODO
+
             }
 
             val showBottomNavOnIDs = listOf(
@@ -99,5 +110,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun hideActionBar() {
         supportActionBar?.hide()
+    }
+
+    //Enable navigate up
+    override fun onSupportNavigateUp(): Boolean {
+        val appBarConfiguration = AppBarConfiguration(appBarConfiguration)
+        return findNavController(R.id.nav_host_fragment_activity_main).navigateUp(appBarConfiguration)
     }
 }

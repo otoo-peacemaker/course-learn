@@ -9,7 +9,7 @@
         android:id="@+id/outlinedButton"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_45sdp"
+        android:layout_height="@dimen/_50sdp"
         android:text="@string/login"
         app:strokeWidth="@dimen/_1sdp"
         app:cornerRadius="@dimen/_10sdp"

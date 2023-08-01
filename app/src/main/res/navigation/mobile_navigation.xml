@@ -59,12 +59,12 @@
         <fragment
             android:id="@+id/resetPasswordFragment"
             android:name="com.peacemaker.android.courselearn.ui.authentication.ResetPasswordFragment"
-            android:label="fragment_reset_password"
+            android:label="Reset password"
             tools:layout="@layout/fragment_reset_password" />
         <fragment
             android:id="@+id/verifyAccountFragment"
             android:name="com.peacemaker.android.courselearn.ui.authentication.VerifyAccountFragment"
-            android:label="fragment_verify_account"
+            android:label=""
             tools:layout="@layout/fragment_verify_account" >
             <action
                 android:id="@+id/action_verifyAccountFragment_to_successFragment"
@@ -76,7 +76,7 @@
         <fragment
             android:id="@+id/successFragment"
             android:name="com.peacemaker.android.courselearn.ui.authentication.SuccessFragment"
-            android:label="fragment_success"
+            android:label=""
             tools:layout="@layout/fragment_success" >
             <action
                 android:id="@+id/action_successFragment_to_loginFragment"
@@ -85,7 +85,7 @@
         <fragment
             android:id="@+id/continueWithPhoneFragment"
             android:name="com.peacemaker.android.courselearn.ui.authentication.ContinueWithPhoneFragment"
-            android:label="fragment_continue_with_phone"
+            android:label=""
             tools:layout="@layout/fragment_continue_with_phone" >
             <action
                 android:id="@+id/action_continueWithPhoneFragment_to_verifyAccountFragment"

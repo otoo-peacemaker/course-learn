@@ -14,5 +14,9 @@
 
     </style>
 
+    <style name="MyActionBar" parent="@style/Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="android:background">@color/primaryBackground</item>
+    </style>
+
 
 </resources>
