@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/splashScreenFragment"
         android:name="com.peacemaker.android.courselearn.ui.authentication.SplashScreenFragment"
-        android:label="fragment_splash_screen"
+        android:label=""
         tools:layout="@layout/fragment_splash_screen" >
         <action
             android:id="@+id/action_splashScreenFragment_to_auth_graph"
@@ -83,6 +83,10 @@
             android:name="com.peacemaker.android.courselearn.ui.notifications.NotificationsFragment"
             android:label="@string/title_notifications"
             tools:layout="@layout/fragment_notifications" />
+        <action
+            android:id="@+id/action_global_other_graph"
+            app:destination="@id/other_graph" />
     </navigation>
+    <navigation android:id="@+id/other_graph"/>
 
 </navigation>

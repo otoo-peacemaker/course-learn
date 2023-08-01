@@ -7,9 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.peacemaker.android.courselearn.R
+import com.peacemaker.android.courselearn.databinding.FragmentCourseBinding
+import com.peacemaker.android.courselearn.databinding.FragmentSearchBinding
+import com.peacemaker.android.courselearn.ui.util.BaseFragment
 
-class SearchFragment : Fragment() {
-
+class SearchFragment : BaseFragment() {
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
     companion object {
         fun newInstance() = SearchFragment()
     }
@@ -19,12 +23,17 @@ class SearchFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_search, container, false)
+    ): View {
+        _binding = FragmentSearchBinding.inflate(layoutInflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

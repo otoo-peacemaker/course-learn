@@ -1,30 +1,37 @@
 package com.peacemaker.android.courselearn.ui.authentication
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.peacemaker.android.courselearn.R
+import androidx.lifecycle.ViewModelProvider
+import com.peacemaker.android.courselearn.databinding.FragmentVerifyAccountBinding
+import com.peacemaker.android.courselearn.ui.util.BaseFragment
 
-class VerifyAccountFragment : Fragment() {
+class VerifyAccountFragment : BaseFragment() {
+    private var _binding: FragmentVerifyAccountBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var viewModel: AuthViewModel
 
     companion object {
         fun newInstance() = VerifyAccountFragment()
     }
 
-    private lateinit var viewModel: VerifyAccountViewModel
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_verify_account, container, false)
+    ): View {
+        _binding = FragmentVerifyAccountBinding.inflate(layoutInflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this)[AuthViewModel::class.java]
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

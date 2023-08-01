@@ -7,8 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.peacemaker.android.courselearn.R
+import com.peacemaker.android.courselearn.databinding.FragmentCourseBinding
+import com.peacemaker.android.courselearn.databinding.FragmentLoginBinding
+import com.peacemaker.android.courselearn.ui.util.BaseFragment
 
-class CourseFragment : Fragment() {
+class CourseFragment : BaseFragment() {
+    private var _binding: FragmentCourseBinding? = null
+    private val binding get() = _binding!!
 
     companion object {
         fun newInstance() = CourseFragment()
@@ -18,15 +23,19 @@ class CourseFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_course, container, false)
+        savedInstanceState: Bundle?): View {
+
+        _binding = FragmentCourseBinding.inflate(layoutInflater)
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(CourseViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this)[CourseViewModel::class.java]
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
