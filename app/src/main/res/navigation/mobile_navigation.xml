@@ -12,12 +12,19 @@
         tools:layout="@layout/fragment_splash_screen" >
         <action
             android:id="@+id/action_splashScreenFragment_to_auth_graph"
-            app:destination="@id/auth_graph" />
+            app:destination="@id/auth_graph"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_splashScreenFragment_to_home_graph"
-            app:destination="@id/home_graph" />
+            app:destination="@id/home_graph"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
-
     <navigation android:id="@+id/auth_graph"
         app:startDestination="@id/boardingScreenFragment">
         <fragment
@@ -27,10 +34,19 @@
             tools:layout="@layout/fragment_boarding_screen" >
             <action
                 android:id="@+id/action_boardingScreenFragment_to_loginFragment"
-                app:destination="@id/loginFragment" />
+                app:destination="@id/loginFragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
             <action
                 android:id="@+id/action_boardingScreenFragment_to_signUpFragment"
-                app:destination="@id/signUpFragment" />
+                app:destination="@id/signUpFragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+
         </fragment>
         <fragment
             android:id="@+id/loginFragment"
@@ -39,11 +55,18 @@
             tools:layout="@layout/fragment_login" >
             <action
                 android:id="@+id/action_loginFragment_to_signUpFragment"
-                app:destination="@id/signUpFragment" />
+                app:destination="@id/signUpFragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
             <action
                 android:id="@+id/action_loginFragment_to_resetPasswordFragment"
-                app:destination="@id/resetPasswordFragment" >
-            </action>
+                app:destination="@id/resetPasswordFragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
         </fragment>
         <fragment
             android:id="@+id/signUpFragment"
@@ -52,13 +75,25 @@
             tools:layout="@layout/fragment_sign_up" >
             <action
                 android:id="@+id/action_signUpFragment_to_loginFragment"
-                app:destination="@id/loginFragment" />
+                app:destination="@id/loginFragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
             <action
                 android:id="@+id/action_signUpFragment_to_continueWithPhoneFragment"
-                app:destination="@id/continueWithPhoneFragment" />
+                app:destination="@id/continueWithPhoneFragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
             <action
                 android:id="@+id/action_signUpFragment_to_verifyEmailFragment"
-                app:destination="@id/verifyEmailFragment" />
+                app:destination="@id/verifyEmailFragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
         </fragment>
         <fragment
             android:id="@+id/resetPasswordFragment"
@@ -67,8 +102,11 @@
             tools:layout="@layout/fragment_reset_password" >
             <action
                 android:id="@+id/action_resetPasswordFragment_to_successFragment"
-                app:destination="@id/successFragment" >
-            </action>
+                app:destination="@id/successFragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
             <argument
                 android:name="email"
                 app:argType="string" />
@@ -81,11 +119,19 @@
             tools:layout="@layout/fragment_verify_phone_number" >
             <action
                 android:id="@+id/action_verifyAccountFragment_to_successFragment"
-                app:destination="@id/successFragment" />
+                app:destination="@id/successFragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
         </fragment>
         <action
             android:id="@+id/action_global_home_graph"
-            app:destination="@id/home_graph" />
+            app:destination="@id/home_graph"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <fragment
             android:id="@+id/successFragment"
             android:name="com.peacemaker.android.courselearn.ui.authentication.SuccessFragment"
@@ -93,7 +139,11 @@
             tools:layout="@layout/fragment_success" >
             <action
                 android:id="@+id/action_successFragment_to_loginFragment"
-                app:destination="@id/loginFragment" />
+                app:destination="@id/loginFragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
             <argument
                 android:name="message"
                 app:argType="string" />
@@ -108,9 +158,12 @@
             tools:layout="@layout/fragment_continue_with_phone" >
             <action
                 android:id="@+id/action_continueWithPhoneFragment_to_verifyAccountFragment"
-                app:destination="@id/verifyAccountFragment" />
+                app:destination="@id/verifyAccountFragment"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
         </fragment>
-
         <fragment
             android:id="@+id/verifyEmailFragment"
             android:name="com.peacemaker.android.courselearn.ui.authentication.VerifyEmailFragment"
@@ -124,13 +177,11 @@
             android:name="com.peacemaker.android.courselearn.ui.home.HomeFragment"
             android:label="@string/title_home"
             tools:layout="@layout/fragment_home" />
-
         <fragment
             android:id="@+id/navigation_dashboard"
             android:name="com.peacemaker.android.courselearn.ui.dashboard.DashboardFragment"
             android:label="@string/title_dashboard"
             tools:layout="@layout/fragment_dashboard" />
-
         <fragment
             android:id="@+id/navigation_notifications"
             android:name="com.peacemaker.android.courselearn.ui.notifications.NotificationsFragment"
@@ -138,7 +189,11 @@
             tools:layout="@layout/fragment_notifications" />
         <action
             android:id="@+id/action_global_other_graph"
-            app:destination="@id/other_graph" />
+            app:destination="@id/other_graph"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </navigation>
     <navigation android:id="@+id/other_graph"/>
 
