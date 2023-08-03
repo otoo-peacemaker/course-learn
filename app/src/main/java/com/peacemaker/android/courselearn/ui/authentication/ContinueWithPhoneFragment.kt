@@ -20,18 +20,25 @@ class ContinueWithPhoneFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentContinueWithPhoneBinding.inflate(layoutInflater)
         return binding.root
     }
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setAppButton(binding.continueBtn, "Continue") {
-            // navigateTo(R.id.action_global_home_graph
+            verifyPhoneNumber()
+        }
+    }
+
+    private fun verifyPhoneNumber(){
+        val phoneNumber = binding.phoneNumId.text.toString()
+        printLogs("phoneNumber",phoneNumber)
+        if (isValidPhoneNumber(phoneNumber)) {
             navigateTo(R.id.action_continueWithPhoneFragment_to_verifyAccountFragment)
+        }else{
+            showSnackBar(requireView(),"Invalid phone number")
         }
     }
 

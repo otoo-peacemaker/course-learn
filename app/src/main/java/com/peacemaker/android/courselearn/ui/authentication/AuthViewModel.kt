@@ -1,6 +1,7 @@
 package com.peacemaker.android.courselearn.ui.authentication
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,27 +11,40 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.RuntimeExecutionException
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.FirebaseException
+import com.google.firebase.auth.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.peacemaker.android.courselearn.MainActivity
 import com.peacemaker.android.courselearn.model.AppUser
 import com.peacemaker.android.courselearn.ui.util.Constants.RC_SIGN_IN
 import com.peacemaker.android.courselearn.ui.util.Resource
+import com.peacemaker.android.courselearn.ui.util.VerificationStatus
 
 class AuthViewModel : ViewModel() {
 
     private var auth = FirebaseAuth.getInstance()
 
-    private val _createUserLiveData = MutableLiveData<Resource<FirebaseUser>?>()
-    val createUserLiveData: MutableLiveData<Resource<FirebaseUser>?> = _createUserLiveData
+    private val _createUserLiveData = MutableLiveData<Resource<FirebaseUser>>()
+    val createUserLiveData: LiveData<Resource<FirebaseUser>> = _createUserLiveData
 
     private val _signInLiveData = MutableLiveData<Resource<FirebaseUser>>()
     val signInLiveData: LiveData<Resource<FirebaseUser>> = _signInLiveData
 
-    fun createUser(username:String, email: String, phone: String, password: String) {
+    private val _verificationStatus = MutableLiveData<VerificationStatus>()
+    val verificationStatus: LiveData<VerificationStatus>
+        get() = _verificationStatus
+
+    private val _resetPasswordLiveData = MutableLiveData<Resource<String>>()
+    val resetPasswordLiveData: LiveData<Resource<String>> = _resetPasswordLiveData
+
+
+    fun createUser(
+        username: String,
+        email: String,
+        phone: String,
+        password: String,
+    ) {
         _createUserLiveData.value = Resource.loading(null)
         try {
             auth.createUserWithEmailAndPassword(email, password)
@@ -69,15 +83,23 @@ class AuthViewModel : ViewModel() {
     fun signIn(email: String, password: String) {
         _signInLiveData.value = Resource.loading(null)
         try {
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        // User signed in successfully
-                        _signInLiveData.value = auth.currentUser.let { Resource.success(it) }
-                    }
-                }.addOnFailureListener {
-                    _signInLiveData.value = it.message?.let { it1 -> Resource.error(null, it1) }
+            auth.fetchSignInMethodsForEmail(email).addOnCompleteListener {fetch->
+                if (fetch.isSuccessful){
+                        auth.signInWithEmailAndPassword(email, password)
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    // User signed in successfully
+                                    _signInLiveData.value = auth.currentUser.let { Resource.success(it) }
+                                }
+                            }.addOnFailureListener {
+                                _signInLiveData.value = it.message?.let { it1 -> Resource.error(null, it1) }
+                            }
                 }
+
+            }.addOnFailureListener {
+                _signInLiveData.value = it.message?.let { it1 -> Resource.error(null, it1) }
+            }
+
         }
         catch (e: FirebaseAuthInvalidUserException){
             _signInLiveData.postValue(e.message?.let { Resource.error(null, it) })
@@ -113,10 +135,60 @@ class AuthViewModel : ViewModel() {
         }
     }
 
+    fun verifyPhoneNumber(phoneNumber: String) {
+        val options = PhoneAuthOptions.newBuilder(auth)
+            .setPhoneNumber(phoneNumber)
+            .setTimeout(60L, java.util.concurrent.TimeUnit.SECONDS)
+            .setActivity(MainActivity()) // Replace with your activity reference if you need the context
+            .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                    signInWithPhoneAuthCredential(credential)
+                }
+
+                override fun onVerificationFailed(e: FirebaseException) {
+                     _verificationStatus.value = VerificationStatus.Error(e)
+                }
+
+                override fun onCodeSent(
+                    verificationId: String,
+                    token: PhoneAuthProvider.ForceResendingToken) {
+                    _verificationStatus.value = VerificationStatus.CodeSent(verificationId, token)
+                }
+            })
+            .build()
+
+        PhoneAuthProvider.verifyPhoneNumber(options)
+    }
+
+    fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    _verificationStatus.value = VerificationStatus.Success(task.result?.user)
+                } else {
+                    _verificationStatus.value = task.exception?.let { VerificationStatus.Error(it) }
+                }
+            }
+    }
+
+    // Function to reset the user's password
+    fun resetPassword(email: String) {
+        _resetPasswordLiveData.value= Resource.loading(null)
+        auth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    _resetPasswordLiveData.value = Resource.success("Password reset link successfully sent to $email")
+                } else {
+                    _resetPasswordLiveData.value =
+                        task.exception?.localizedMessage?.let { Resource.error(null, it) }
+                }
+            }
+    }
+
     fun signOut(route :()->Unit) {
         if (auth.currentUser !=null ){
             auth.signOut()
-            _createUserLiveData.postValue(null)
+           // _createUserLiveData.postValue(null)
             route.invoke()
         }
     }

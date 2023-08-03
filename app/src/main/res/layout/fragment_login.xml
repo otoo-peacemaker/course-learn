@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -108,7 +109,7 @@
                 android:fontFamily="@font/poppins_regular"
                 android:padding="@dimen/_10sdp"
                 android:text="@string/don_t_have_an_account_sign_up"
-                android:textSize="@dimen/_12sdp"
+                android:textSize="@dimen/_10ssp"
                 app:layout_constraintEnd_toEndOf="@+id/loginBtn"
                 app:layout_constraintStart_toStartOf="@+id/loginBtn"
                 app:layout_constraintTop_toBottomOf="@+id/loginBtn" />
@@ -120,6 +121,7 @@
                 android:layout_margin="@dimen/_5sdp"
                 android:padding="@dimen/_10sdp"
                 android:text="@string/forget_password"
+                android:textSize="@dimen/_10ssp"
                 app:layout_constraintBottom_toTopOf="@+id/loginBtn"
                 app:layout_constraintEnd_toEndOf="@+id/passwordL"
                 app:layout_constraintTop_toBottomOf="@+id/passwordL" />

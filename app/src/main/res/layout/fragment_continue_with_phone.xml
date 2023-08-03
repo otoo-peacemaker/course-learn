@@ -61,7 +61,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/emailL"
+                android:id="@+id/phoneNumL"
                 style="@style/TextInputStyle"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_43sdp"
@@ -71,10 +71,10 @@
                 app:layout_constraintTop_toBottomOf="@id/txt_1">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/emailId"
+                    android:id="@+id/phoneNumId"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="number" />
+                    android:inputType="phone" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <include

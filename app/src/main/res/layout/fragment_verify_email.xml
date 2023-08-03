@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.authentication.ResetPasswordFragment">
+    tools:context=".ui.authentication.VerifyEmailFragment">
 
     <LinearLayout
         android:id="@+id/titleL"
@@ -24,7 +24,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:fontFamily="@font/poppins_medium"
             android:gravity="center"
-            android:text="Password reset"
+            android:text="Verify email"
             android:textColor="@color/subHeadTxtColor"
             android:textSize="@dimen/_18ssp" />
 
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
                 android:padding="@dimen/_10sdp"
-                android:text="Enter your email to receive password reset link"
+                android:text="Enter your email for verification"
                 android:textSize="@dimen/_12sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -96,4 +96,5 @@
                 android:visibility="gone" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

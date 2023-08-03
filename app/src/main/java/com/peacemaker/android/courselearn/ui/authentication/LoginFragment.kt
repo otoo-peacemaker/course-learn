@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.peacemaker.android.courselearn.R
 import com.peacemaker.android.courselearn.databinding.FragmentLoginBinding
 import com.peacemaker.android.courselearn.ui.util.BaseFragment
@@ -16,7 +19,7 @@ class LoginFragment : BaseFragment() {
         fun newInstance() = LoginFragment()
     }
 
-//    private lateinit var viewModel: AuthViewModel
+    private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,20 +38,32 @@ class LoginFragment : BaseFragment() {
             resources.getColor(R.color.primary, null)
         )
         setAppButton(binding.loginBtn, "Log in") {
-            // navigateTo(R.id.action_global_home_graph)
             login()
+            observeLiveDataResource(viewModel.signInLiveData, {
+                navigateTo(R.id.action_global_home_graph)
+            }, binding.loader)
         }
 
         binding.signUpBtn.setOnClickListener {
             navigateTo(R.id.action_loginFragment_to_signUpFragment)
         }
         binding.forgotPassword.setOnClickListener {
-            navigateTo(R.id.action_loginFragment_to_resetPasswordFragment)
+            val email = binding.emailId.text.toString()
+            printLogs("Email",email)
+            val action = LoginFragmentDirections.actionLoginFragmentToResetPasswordFragment(email = email)
+            it.findNavController().navigate(action)
+          //  findNavController().navigate(action)
+            //navigateTo(R.id.action_loginFragment_to_resetPasswordFragment)
         }
     }
 
     private fun login() {
-        showLoadingScreen(binding.loader, true)
+        with(binding) {
+            val email = emailId.text.toString()
+            val password = passwordId.text.toString()
+            if (validateString(email) and validateString(password)) viewModel.signIn(email, password)
+            else showSnackBar(requireView(), "Field(s) can not be empty or must be greater than 3 characters")
+        }
     }
 
     override fun onDestroyView() {

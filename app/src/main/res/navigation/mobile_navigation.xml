@@ -38,11 +38,12 @@
             android:label=""
             tools:layout="@layout/fragment_login" >
             <action
-                android:id="@+id/action_loginFragment_to_resetPasswordFragment"
-                app:destination="@id/resetPasswordFragment" />
-            <action
                 android:id="@+id/action_loginFragment_to_signUpFragment"
                 app:destination="@id/signUpFragment" />
+            <action
+                android:id="@+id/action_loginFragment_to_resetPasswordFragment"
+                app:destination="@id/resetPasswordFragment" >
+            </action>
         </fragment>
         <fragment
             android:id="@+id/signUpFragment"
@@ -55,17 +56,29 @@
             <action
                 android:id="@+id/action_signUpFragment_to_continueWithPhoneFragment"
                 app:destination="@id/continueWithPhoneFragment" />
+            <action
+                android:id="@+id/action_signUpFragment_to_verifyEmailFragment"
+                app:destination="@id/verifyEmailFragment" />
         </fragment>
         <fragment
             android:id="@+id/resetPasswordFragment"
             android:name="com.peacemaker.android.courselearn.ui.authentication.ResetPasswordFragment"
             android:label="Reset password"
-            tools:layout="@layout/fragment_reset_password" />
+            tools:layout="@layout/fragment_reset_password" >
+            <action
+                android:id="@+id/action_resetPasswordFragment_to_successFragment"
+                app:destination="@id/successFragment" >
+            </action>
+            <argument
+                android:name="email"
+                app:argType="string" />
+
+        </fragment>
         <fragment
             android:id="@+id/verifyAccountFragment"
-            android:name="com.peacemaker.android.courselearn.ui.authentication.VerifyAccountFragment"
+            android:name="com.peacemaker.android.courselearn.ui.authentication.VerifyPhoneNumberFragment"
             android:label=""
-            tools:layout="@layout/fragment_verify_account" >
+            tools:layout="@layout/fragment_verify_phone_number" >
             <action
                 android:id="@+id/action_verifyAccountFragment_to_successFragment"
                 app:destination="@id/successFragment" />
@@ -81,6 +94,12 @@
             <action
                 android:id="@+id/action_successFragment_to_loginFragment"
                 app:destination="@id/loginFragment" />
+            <argument
+                android:name="message"
+                app:argType="string" />
+            <argument
+                android:name="email"
+                app:argType="string" />
         </fragment>
         <fragment
             android:id="@+id/continueWithPhoneFragment"
@@ -91,6 +110,12 @@
                 android:id="@+id/action_continueWithPhoneFragment_to_verifyAccountFragment"
                 app:destination="@id/verifyAccountFragment" />
         </fragment>
+
+        <fragment
+            android:id="@+id/verifyEmailFragment"
+            android:name="com.peacemaker.android.courselearn.ui.authentication.VerifyEmailFragment"
+            android:label="fragment_verify_email"
+            tools:layout="@layout/fragment_verify_email" />
     </navigation>
     <navigation android:id="@+id/home_graph"
         app:startDestination="@id/navigation_home">
@@ -116,7 +141,5 @@
             app:destination="@id/other_graph" />
     </navigation>
     <navigation android:id="@+id/other_graph"/>
-
-
 
 </navigation>

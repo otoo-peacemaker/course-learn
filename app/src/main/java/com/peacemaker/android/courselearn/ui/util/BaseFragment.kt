@@ -2,8 +2,9 @@ package com.peacemaker.android.courselearn.ui.util
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.res.ColorStateList
+import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -18,12 +19,12 @@ import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
-import com.peacemaker.android.courselearn.MainActivity
 import com.peacemaker.android.courselearn.R
 import com.peacemaker.android.courselearn.databinding.AppButtonBinding
 import com.peacemaker.android.courselearn.databinding.OutlineTextButtonBinding
@@ -33,6 +34,7 @@ import java.security.MessageDigest
 import java.security.SecureRandom
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Pattern
 
 open class BaseFragment : Fragment() {
 
@@ -82,10 +84,9 @@ open class BaseFragment : Fragment() {
             return false
         }
         // Check if password meets criteria
-        //val passwordRegex = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")
-        val regex =
-            Regex("^(?=.*\\d)(?=.*[!@#\$%^&*(),.?\":{}|<>])[a-zA-Z0-9!@#\$%^&*(),.?\":{}|<>]{8}$")
-        if (!password.matches(regex)) {
+        val pattern = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@\$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}\$")
+
+        if (!isValidPasswordFormat(password)) {
             message.invoke("Please enter a strong password ")
             return false
         }
@@ -99,6 +100,20 @@ open class BaseFragment : Fragment() {
             this.length > 3
         }
     }
+
+    private fun isValidPasswordFormat(password: String): Boolean {
+        val passwordREGEX = Pattern.compile("^" +
+                "(?=.*[0-9])" +         //at least 1 digit
+                "(?=.*[a-z])" +         //at least 1 lower case letter
+                "(?=.*[A-Z])" +         //at least 1 upper case letter
+                "(?=.*[a-zA-Z])" +      //any letter
+                "(?=.*[@#$%^&+=])" +    //at least 1 special character
+                "(?=\\S+$)" +           //no white spaces
+                ".{8,}" +               //at least 8 characters
+                "$")
+        return passwordREGEX.matcher(password).matches()
+    }
+
 
     /**
      * This function takes in a view, a message, and an action to be performed when the "Retry" button is clicked.
@@ -394,8 +409,10 @@ open class BaseFragment : Fragment() {
         }
     }
 
-    fun navigateTo(@IdRes navigationIdRes: Int){
-        findNavController().navigate(navigationIdRes)
+    fun navigateTo(@IdRes navigationIdRes: Int?){
+        if (navigationIdRes != null) {
+            findNavController().navigate(navigationIdRes)
+        }
     }
     fun showLoadingScreen(loader: ProgressBarLayoutBinding ? = ProgressBarLayoutBinding.inflate(layoutInflater), visibility:Boolean){
         if (visibility) loader?.root?.visibility = View.VISIBLE else loader?.root?.visibility = View.INVISIBLE
@@ -404,4 +421,84 @@ open class BaseFragment : Fragment() {
     fun underImplementation(){
         showToast(requireContext(),"Under implementation")
     }
+
+    fun <T> observeLiveDataResource(
+        liveData: LiveData<Resource<T>>,
+        onSuccess: (T) -> Unit,
+        loader: ProgressBarLayoutBinding ? = ProgressBarLayoutBinding.inflate(layoutInflater),
+        onError: ((String) -> Unit?)? =null,
+        onLoading: (() -> Unit?)? =null) {
+        liveData.observe(viewLifecycleOwner) { resource ->
+            when (resource.status) {
+                Status.SUCCESS -> {
+                    showLoadingScreen(loader = loader, visibility = false)
+                    resource.data?.let { data ->
+                        onSuccess(data)
+                    }
+                }
+                Status.ERROR -> {
+                    showLoadingScreen(loader = loader,visibility = false)
+                    resource.message?.let { message ->
+                        if (onError != null) {
+                            onError(message)
+                        }
+                        showSnackBar(requireView(),message)
+                    }
+                }
+                Status.LOADING -> {
+                    onLoading?.invoke()
+                    showLoadingScreen(loader = loader,visibility = true)
+                }
+            }
+        }
+    }
+
+    fun isValidPhoneNumber(phoneNumber: String): Boolean {
+        val phoneRegex = "^[+]?[0-9]{8,15}\$"
+        return phoneNumber.matches(Regex(phoneRegex))
+    }
+
+     fun composeEmail(recipient: String) {
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:")
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(recipient))
+        }
+        // Set the package name of the Gmail app to ensure it opens directly if available
+        intent.setPackage("com.google.android.gm")
+
+        if (intent.resolveActivity(requireActivity().packageManager) != null) {
+            startActivity(intent)
+        } else {
+            // Gmail app is not installed, open Play Store to download it
+            val playStoreIntent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("market://details?id=com.google.android.gm")
+                setPackage("com.android.vending") // Set the package name of the Play Store app
+            }
+
+            if (playStoreIntent.resolveActivity(requireActivity().packageManager) != null) {
+                startActivity(playStoreIntent)
+            } else {
+                // If the Play Store app is not available, open the Play Store in the browser
+                val playStoreWebIntent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.gm")
+                }
+                startActivity(playStoreWebIntent)
+            }
+        }
+    }
+
+     fun openGmailApp() {
+        val intent = requireActivity().packageManager.getLaunchIntentForPackage("com.google.android.gm")
+        if (intent != null) {
+            startActivity(intent)
+        } else {
+            // If the Play Store app is not available, open the Play Store in the browser
+            val playStoreWebIntent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.gm")
+            }
+            startActivity(playStoreWebIntent)
+        }
+    }
+
+
 }

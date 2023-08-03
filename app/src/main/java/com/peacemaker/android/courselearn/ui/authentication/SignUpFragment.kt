@@ -4,7 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.peacemaker.android.courselearn.R
 import com.peacemaker.android.courselearn.databinding.FragmentSignUpBinding
 import com.peacemaker.android.courselearn.ui.util.BaseFragment
@@ -17,23 +18,29 @@ class SignUpFragment : BaseFragment() {
         fun newInstance() = SignUpFragment()
     }
 
-   // private lateinit var viewModel: AuthViewModel
+    private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+        savedInstanceState: Bundle?): View {
         _binding = FragmentSignUpBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        viewModel = ViewModelProvider(this)[AuthViewModel::class.java]
-        setTextViewPartialColor(binding.loginBtn,getString(R.string.already_have_an_account_login),"Login",resources.getColor(R.color.primary, null))
-        setAppButton(binding.createAcc,"Create account"){
-            signUp()
 
+        setTextViewPartialColor(
+            binding.loginBtn,
+            getString(R.string.already_have_an_account_login),
+            "Login",
+            resources.getColor(R.color.primary, null)
+        )
+        setAppButton(binding.createAcc, "Create account") {
+            if (binding.terms.isChecked) signUp() else showSnackBar(requireView(),"Please accept our terms and conditions")
+            observeLiveDataResource(viewModel.createUserLiveData, {
+                findNavController().navigate(R.id.action_signUpFragment_to_continueWithPhoneFragment)
+            }, binding.loader)
         }
 
         binding.loginBtn.setOnClickListener {
@@ -41,11 +48,31 @@ class SignUpFragment : BaseFragment() {
         }
     }
 
-
-    //TODO: CREATE ACCOUNT
-    private fun signUp(){
-        showLoadingScreen(binding.loader,true)
-        navigateTo(R.id.action_signUpFragment_to_continueWithPhoneFragment)
+    private fun signUp() {
+        with(binding) {
+            val firstname = firstNameId.text.toString()
+            val lastName = lastNameId.text.toString()
+            val email = emailId.text.toString()
+            val phone = phoneNumId.text.toString()
+            val password = passwordId.text.toString()
+            if (validateEmailAndPassword(email, password) {
+                    showSnackBar(requireView(), it)
+                }) {
+                if (validateString(firstname) and validateString(lastName) and validateString(email) and validateString(
+                        password
+                    )
+                ) {
+                    viewModel.createUser(
+                        username = firstname.plus(" ").plus(lastName),
+                        email = email,
+                        phone = phone,
+                        password = password
+                    )
+                } else {
+                    showSnackBar(requireView(), "Field can not be empty or must be greater than 3 characters")
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {

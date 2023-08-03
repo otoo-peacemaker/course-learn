@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.gms.google-services'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -45,15 +46,19 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.6.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.gms:play-services-basement:18.2.0'
-    implementation 'com.google.android.gms:play-services-auth:20.6.0'
-    implementation 'com.google.firebase:firebase-auth:21.0.3'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    //navigation
+    implementation "androidx.appcompat:appcompat:1.6.1" // Or any other dependencies you need
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.20" // Check the latest version
+    implementation "androidx.navigation:navigation-fragment-ktx:2.6.0" // Check the latest version
+    implementation "androidx.navigation:navigation-ui-ktx:2.6.0" // Check the latest version
+
+
 
     //Firebase
     implementation 'com.google.firebase:firebase-auth-ktx:22.1.0'
@@ -61,6 +66,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx:24.7.0'
     implementation "com.google.firebase:firebase-firestore:24.7.0"
     implementation 'com.google.firebase:firebase-storage-ktx:20.2.1'
+    implementation 'com.google.android.gms:play-services-auth:20.6.0'
+    implementation 'com.google.firebase:firebase-auth:22.1.0'
+    implementation(platform("com.google.firebase:firebase-bom:32.2.0"))
+    implementation 'com.google.android.play:integrity:1.2.0'
+    implementation 'com.google.android.gms:play-services-auth-api-phone:18.0.1'
+
+
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.google.code.gson:gson:2.9.0'

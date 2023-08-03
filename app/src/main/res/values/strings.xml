@@ -9,7 +9,7 @@
     <string name="your_email">Your email</string>
     <string name="password">Password</string>
     <string name="enter_your_details_to_login">Enter your details to login</string>
-    <string name="terms"><![CDATA[By creating an account you have to agree \n with our them & condication.]]></string>
+    <string name="terms"><![CDATA[By creating an account you have to agree with our \nterms & conditions.]]></string>
     <string name="already_have_an_account_login">Already have an account？ Login</string>
     <string name="don_t_have_an_account_sign_up">Don’t have an account? Sign up</string>
     <string name="forget_password">Forget password?</string>
@@ -19,4 +19,7 @@
     <string name="verify_phone">Verify Phone</string>
     <string name="code_is_sent_to">Enter Code is sent to</string>
     <string name="congratulations_you_have_n_completed_your_registration">Congratulations, you have \n completed your registration!</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="phone">Phone</string>
 </resources>

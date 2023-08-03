@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.navArgs
 import com.peacemaker.android.courselearn.R
 import com.peacemaker.android.courselearn.databinding.FragmentSuccessBinding
 import com.peacemaker.android.courselearn.ui.util.BaseFragment
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 
 class SuccessFragment : BaseFragment() {
     private var _binding: FragmentSuccessBinding? = null
@@ -16,19 +19,26 @@ class SuccessFragment : BaseFragment() {
         fun newInstance() = SuccessFragment()
     }
 
+    private val args: SuccessFragmentArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSuccessBinding.inflate(layoutInflater)
+        binding.message.text = args.message
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.actionBar?.hide()
-        setAppButton(binding.doneBtn, "Done") {
-            navigateTo(R.id.action_successFragment_to_loginFragment)
+        setAppButton(binding.doneBtn, "Ok") {
+            openGmailApp()
+            runBlocking {
+                delay(2000)
+                navigateTo(R.id.action_successFragment_to_loginFragment)
+            }
         }
     }
 

@@ -1,5 +1,8 @@
 package com.peacemaker.android.courselearn.ui.util
 
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.PhoneAuthProvider
+
 
 data class Resource<out T>(val status: Status, val data: T?, val message: String?) {
     companion object {
@@ -18,4 +21,11 @@ enum class Status {
     SUCCESS,
     ERROR,
     LOADING
+}
+
+
+sealed class VerificationStatus {
+    data class CodeSent(val verificationId: String, val token: PhoneAuthProvider.ForceResendingToken) : VerificationStatus()
+    data class Success(val user: FirebaseUser?) : VerificationStatus()
+    data class Error(val exception: Exception) : VerificationStatus()
 }

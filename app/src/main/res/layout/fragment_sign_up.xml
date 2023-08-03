@@ -51,15 +51,66 @@
             android:background="@color/bodyBackground">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/emailL"
+                android:id="@+id/firstNameL"
                 style="@style/TextInputStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
+                android:hint="@string/first_name"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/firstNameId"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/lastNameL"
+                style="@style/TextInputStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:hint="@string/last_name"
+                app:layout_constraintTop_toBottomOf="@id/firstNameL">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/lastNameId"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/phoneNumL"
+                style="@style/TextInputStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:hint="@string/phone"
+                app:layout_constraintTop_toBottomOf="@id/lastNameL">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phoneNumId"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="phone" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/emailL"
+                style="@style/TextInputStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
                 android:hint="@string/your_email"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/phoneNumL"
                 tools:layout_editor_absoluteX="28dp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -75,7 +126,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
                 android:hint="@string/password"
                 app:layout_constraintTop_toBottomOf="@id/emailL"
@@ -100,15 +151,16 @@
                 app:layout_constraintTop_toBottomOf="@id/passwordL" />
 
             <CheckBox
-                android:id="@+id/chkBox"
+                android:id="@+id/terms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
-                android:gravity="start"
+                android:textStyle="normal"
+                android:gravity="center"
                 android:text="@string/terms"
                 android:paddingStart="@dimen/_10sdp"
                 android:paddingEnd="@dimen/_10sdp"
-                android:textSize="@dimen/_10sdp"
+                android:textSize="@dimen/_10ssp"
                 app:layout_constraintStart_toStartOf="@+id/createAcc"
                 app:layout_constraintTop_toBottomOf="@+id/createAcc" />
 
@@ -116,15 +168,15 @@
                 android:id="@+id/loginBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:fontFamily="@font/poppins_regular"
                 android:text="@string/already_have_an_account_login"
-                android:textSize="@dimen/_12sdp"
+                android:textSize="@dimen/_10ssp"
                 android:padding="@dimen/_10sdp"
                 app:layout_constraintEnd_toEndOf="@+id/createAcc"
                 app:layout_constraintHorizontal_bias="0.501"
                 app:layout_constraintStart_toStartOf="@+id/createAcc"
-                app:layout_constraintTop_toBottomOf="@+id/chkBox" />
+                app:layout_constraintTop_toBottomOf="@+id/terms" />
 
             <include
                 android:id="@+id/loader"

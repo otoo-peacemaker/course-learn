@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "996010236194",
+    "project_id": "courselearn-c2e72",
+    "storage_bucket": "courselearn-c2e72.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:996010236194:android:377c090fe1c50911552d7b",
+        "android_client_info": {
+          "package_name": "com.peacemaker.android.courselearn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "996010236194-3u5it06c6g9a4dqil50kr3kcvojksfe2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjGAWGuICwlRiYn4949GhFEk4D_ypI7fA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "996010236194-3u5it06c6g9a4dqil50kr3kcvojksfe2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
