@@ -21,6 +21,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
@@ -75,16 +77,13 @@ open class BaseFragment : Fragment() {
     fun validateEmailAndPassword(
         email: String,
         password: String,
-        message: (String) -> Unit
-    ): Boolean {
+        message: (String) -> Unit): Boolean {
         // Check if email is valid
         val emailRegex = Regex("[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
         if (!email.matches(emailRegex)) {
             message.invoke("Email is not valid")
             return false
         }
-        // Check if password meets criteria
-        val pattern = Regex("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@\$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}\$")
 
         if (!isValidPasswordFormat(password)) {
             message.invoke("Please enter a strong password ")
@@ -93,14 +92,12 @@ open class BaseFragment : Fragment() {
         // If both email and password are valid, return true
         return true
     }
-
     fun validateString(string: String): Boolean {
         return with(string) {
             this.isNotEmpty()
             this.length > 3
         }
     }
-
     private fun isValidPasswordFormat(password: String): Boolean {
         val passwordREGEX = Pattern.compile("^" +
                 "(?=.*[0-9])" +         //at least 1 digit
@@ -113,7 +110,6 @@ open class BaseFragment : Fragment() {
                 "$")
         return passwordREGEX.matcher(password).matches()
     }
-
 
     /**
      * This function takes in a view, a message, and an action to be performed when the "Retry" button is clicked.
@@ -132,7 +128,6 @@ open class BaseFragment : Fragment() {
         )
         snackBar.show()
     }
-
     fun showSnackBar(view: View, message: String) {
         val snackBar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
         val snackBarView = snackBar.view
@@ -141,12 +136,10 @@ open class BaseFragment : Fragment() {
         snackBarView.setBackgroundColor(ContextCompat.getColor(view.context, R.color.primary))
         snackBar.show()
     }
-
     fun showActionBarOnFragment(fragment: Fragment, show: Boolean) {
         val actionBar = (fragment.requireActivity() as AppCompatActivity).supportActionBar
         if (show) actionBar?.show() else actionBar?.hide()
     }
-
     fun getDrawable(resId: Int): Drawable? {
         return ContextCompat.getDrawable(requireContext(), resId)
     }
@@ -173,7 +166,6 @@ open class BaseFragment : Fragment() {
         }
     }
 
-
     /**
      * A function to show drop down list
      * @param hintTextResId auto complete hint text
@@ -189,8 +181,7 @@ open class BaseFragment : Fragment() {
         dropDownImgId: ImageView?,
         listItem: List<String>?,
         markRequired: Boolean? = false,
-        selectedDropItem: ((data: String) -> Unit)? = null
-    ) {
+        selectedDropItem: ((data: String) -> Unit)? = null) {
         var part = ""
         if (markRequired == true) part = "*"
         autoCompleteTextView?.hint = setStringPartColor(
@@ -219,13 +210,11 @@ open class BaseFragment : Fragment() {
         }
     }
 
-
     inline fun <reified T : ViewBinding> Fragment.inflateViewBindingDialog(
         crossinline bindingInflater: (LayoutInflater) -> T,
         width: Int? = null,
         height: Int? = null,
-        crossinline block: (AlertDialog.Builder).(T) -> Unit = {}
-    ): AlertDialog {
+        crossinline block: (AlertDialog.Builder).(T) -> Unit = {}): AlertDialog {
         val binding = bindingInflater(LayoutInflater.from(requireContext()))
         val dialog = AlertDialog.Builder(requireContext())
             .setView(binding.root)
@@ -239,7 +228,6 @@ open class BaseFragment : Fragment() {
         }
         return dialog
     }
-
     fun handleOnBackPressed(onBackPressed: () -> Unit) {
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
@@ -249,7 +237,6 @@ open class BaseFragment : Fragment() {
                 }
             })
     }
-
     fun setStringPartColor(org: String, part: String, partColor: Int): Spannable{
         val startPos = org.indexOf(part, 0, false)
         val endPos = startPos+part.length
@@ -259,7 +246,6 @@ open class BaseFragment : Fragment() {
 
         return spanString
     }
-
     inline fun <reified T> readJsonData(context: Context, fileName: String): List<T> {
         val jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
         val jsonArray = JSONArray(jsonString)
@@ -272,7 +258,6 @@ open class BaseFragment : Fragment() {
         }
         return list
     }
-
     fun generateSalt(): String {
         val secureRandom = SecureRandom()
         val salt = ByteArray(16)
@@ -282,7 +267,6 @@ open class BaseFragment : Fragment() {
     fun showToast(context: Context, strMsg: String){
         Toast.makeText(context, strMsg, Toast.LENGTH_SHORT).show()
     }
-
     fun hashPassword(password: String, salt: String, pepper: String): String {
         val message = salt + password + pepper
         val messageBytes = message.toByteArray(Charsets.UTF_8)
@@ -297,7 +281,6 @@ open class BaseFragment : Fragment() {
 
         Log.w(strTag,printStr)
     }
-
     fun verifyPasswordWithSalt(password: String, hashedPassword: String): Boolean {
         val parts = hashedPassword.split(":")
         if (parts.size != 2) {
@@ -336,7 +319,6 @@ open class BaseFragment : Fragment() {
             .setNegativeButton("No", null)
             .show()
     }
-
     fun Fragment.showConfirmationDialog() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setMessage("Are you sure you want to exit the app?")
@@ -355,7 +337,6 @@ open class BaseFragment : Fragment() {
             android.R.layout.simple_spinner_dropdown_item, list
         )
     }
-
     fun backPressedCallback(destId: Int) {
         backPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -372,7 +353,6 @@ open class BaseFragment : Fragment() {
             viewLifecycleOwner, backPressedCallback
         )
     }
-
     fun setAppButton(
         btnLayoutBinding: AppButtonBinding? = AppButtonBinding.inflate(layoutInflater),
         string: String,
@@ -390,7 +370,6 @@ open class BaseFragment : Fragment() {
             }
         }
     }
-
     fun setTextButton(
         btnLayoutBinding: OutlineTextButtonBinding? = OutlineTextButtonBinding.inflate(layoutInflater),
         string: String,
@@ -408,11 +387,26 @@ open class BaseFragment : Fragment() {
             }
         }
     }
-
     fun navigateTo(@IdRes navigationIdRes: Int?){
-        if (navigationIdRes != null) {
-            findNavController().navigate(navigationIdRes)
+        try {
+            if (navigationIdRes != null) {
+                findNavController().navigate(navigationIdRes)
+            }
+        }catch (e:Exception){
+            showRetrySnackBar(requireView(),e.message.toString()){}
         }
+
+    }
+
+    fun navigateTo(navDirections: NavDirections?){
+        try {
+            if (navDirections != null) {
+                findNavController().navigate(navDirections)
+            }
+        }catch (e:Exception){
+            showRetrySnackBar(requireView(),e.message.toString()){}
+        }
+
     }
     fun showLoadingScreen(loader: ProgressBarLayoutBinding ? = ProgressBarLayoutBinding.inflate(layoutInflater), visibility:Boolean){
         if (visibility) loader?.root?.visibility = View.VISIBLE else loader?.root?.visibility = View.INVISIBLE
@@ -452,12 +446,10 @@ open class BaseFragment : Fragment() {
             }
         }
     }
-
     fun isValidPhoneNumber(phoneNumber: String): Boolean {
         val phoneRegex = "^[+]?[0-9]{8,15}\$"
         return phoneNumber.matches(Regex(phoneRegex))
     }
-
      fun composeEmail(recipient: String) {
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:")
@@ -486,7 +478,6 @@ open class BaseFragment : Fragment() {
             }
         }
     }
-
      fun openGmailApp() {
         val intent = requireActivity().packageManager.getLaunchIntentForPackage("com.google.android.gm")
         if (intent != null) {

@@ -124,6 +124,9 @@
                 app:exitAnim="@anim/slide_out_left"
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right" />
+            <argument
+                android:name="number"
+                app:argType="string" />
         </fragment>
         <action
             android:id="@+id/action_global_home_graph"
@@ -178,15 +181,21 @@
             android:label="@string/title_home"
             tools:layout="@layout/fragment_home" />
         <fragment
-            android:id="@+id/navigation_dashboard"
-            android:name="com.peacemaker.android.courselearn.ui.dashboard.DashboardFragment"
-            android:label="@string/title_dashboard"
-            tools:layout="@layout/fragment_dashboard" />
+            android:id="@+id/navigation_course"
+            android:name="com.peacemaker.android.courselearn.ui.courses.CourseFragment"
+            android:label="@string/course"
+            tools:layout="@layout/fragment_course" />
         <fragment
-            android:id="@+id/navigation_notifications"
-            android:name="com.peacemaker.android.courselearn.ui.notifications.NotificationsFragment"
-            android:label="@string/title_notifications"
+            android:id="@+id/navigation_message"
+            android:name="com.peacemaker.android.courselearn.ui.message.MessageFragment"
+            android:label="@string/message"
             tools:layout="@layout/fragment_notifications" />
+        <fragment
+            android:id="@+id/navigation_account"
+            android:name="com.peacemaker.android.courselearn.ui.account.AccountFragment"
+            android:label="@string/message"
+            tools:layout="@layout/fragment_account" />
+
         <action
             android:id="@+id/action_global_other_graph"
             app:destination="@id/other_graph"

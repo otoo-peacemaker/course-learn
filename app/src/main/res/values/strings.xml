@@ -22,4 +22,15 @@
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
     <string name="phone">Phone</string>
+    <string name="enter_your_email_to_receive_password_reset_link">Enter your email to receive password reset link</string>
+    <string name="password_reset">Password reset</string>
+    <string name="search">Search</string>
+    <string name="course">Course</string>
+    <string name="message">Message</string>
+    <string name="account">Account</string>
+    <string name="logout">Logout</string>
+    <string name="favorite">Favorite</string>
+    <string name="edt_acc">Edit Account</string>
+    <string name="settings">Settings and Privacy</string>
+    <string name="help">Help</string>
 </resources>

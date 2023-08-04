@@ -44,16 +44,12 @@ class LoginFragment : BaseFragment() {
             }, binding.loader)
         }
 
-        binding.signUpBtn.setOnClickListener {
-            navigateTo(R.id.action_loginFragment_to_signUpFragment)
-        }
+        binding.signUpBtn.setOnClickListener { navigateTo(R.id.action_loginFragment_to_signUpFragment) }
         binding.forgotPassword.setOnClickListener {
             val email = binding.emailId.text.toString()
             printLogs("Email",email)
             val action = LoginFragmentDirections.actionLoginFragmentToResetPasswordFragment(email = email)
             it.findNavController().navigate(action)
-          //  findNavController().navigate(action)
-            //navigateTo(R.id.action_loginFragment_to_resetPasswordFragment)
         }
     }
 

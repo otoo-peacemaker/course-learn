@@ -27,8 +27,8 @@ class MainActivity : AppCompatActivity() {
         R.id.splashScreenFragment,
         R.id.boardingScreenFragment,
         R.id.navigation_home,
-        R.id.navigation_dashboard,
-        R.id.navigation_notifications,
+        R.id.navigation_course,
+        R.id.navigation_message,
         R.id.successFragment
     )//hide nav back arrows
 
@@ -38,10 +38,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         FirebaseApp.initializeApp(this)
+        setSupportActionBar(binding.toolbar)
         val bar: ActionBar? = supportActionBar
-        bar?.setBackgroundDrawable(ColorDrawable(getColor(R.color.titleBackground)))
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+        bar?.setDisplayHomeAsUpEnabled(true)
+        //bar?.setBackgroundDrawable(ColorDrawable(getColor(R.color.titleBackground)))
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         navController = navHostFragment.navController
         setupBottomNavMenu(navController)
         setupActionBarWithNavController(
@@ -69,9 +70,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun showVisibilityForBottomNav(visibility: Boolean) {
         if (visibility) {
-            binding.navView.visibility = View.VISIBLE
+            binding.bottomAppBar.visibility = View.VISIBLE
+            binding.fab.visibility = View.VISIBLE
         } else {
-            binding.navView.visibility = View.GONE
+            binding.bottomAppBar.visibility = View.INVISIBLE
+            binding.fab.visibility = View.INVISIBLE
         }
     }
 
@@ -91,10 +94,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             val showBottomNavOnIDs = listOf(
-                R.id.navigation_home,
-                R.id.navigation_dashboard,
-                R.id.navigation_notifications
-            )
+                R.id.navigation_home, R.id.navigation_course,
+                R.id.navigation_message, R.id.navigation_account)
             if (destination.id in showBottomNavOnIDs) {
                 showVisibilityForBottomNav(true)
             } else {

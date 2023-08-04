@@ -39,7 +39,7 @@ class SignUpFragment : BaseFragment() {
         setAppButton(binding.createAcc, "Create account") {
             if (binding.terms.isChecked) signUp() else showSnackBar(requireView(),"Please accept our terms and conditions")
             observeLiveDataResource(viewModel.createUserLiveData, {
-                findNavController().navigate(R.id.action_signUpFragment_to_continueWithPhoneFragment)
+                navigateTo(R.id.action_signUpFragment_to_continueWithPhoneFragment)
             }, binding.loader)
         }
 
@@ -55,13 +55,8 @@ class SignUpFragment : BaseFragment() {
             val email = emailId.text.toString()
             val phone = phoneNumId.text.toString()
             val password = passwordId.text.toString()
-            if (validateEmailAndPassword(email, password) {
-                    showSnackBar(requireView(), it)
-                }) {
-                if (validateString(firstname) and validateString(lastName) and validateString(email) and validateString(
-                        password
-                    )
-                ) {
+            if (validateEmailAndPassword(email, password) { showSnackBar(requireView(), it) }) {
+                if (validateString(firstname) and validateString(lastName) and validateString(email) and validateString(password)) {
                     viewModel.createUser(
                         username = firstname.plus(" ").plus(lastName),
                         email = email,
