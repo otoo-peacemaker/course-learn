@@ -14,5 +14,12 @@
     <color name="txt_fields_color">#FFFFFF</color>
     <color name="success_bg_color">#858597</color>
     <color name="success_card_bg_color">#FFFFFF</color>
+    <color name="icon_color">#1F1F39</color>
+    <color name="default_card_bg_color">#CEECFE</color>
+    <color name="search_bg_color">#F4F3FD</color>
+    <color name="selectedTabTextColor">#FFFFFFFF</color>
+    <color name="unselectedTabTextColor">#3D5CFF</color>
+    <color name="normalTextColor">#1F1F39</color>
 
 </resources>
+

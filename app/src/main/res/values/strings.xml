@@ -33,4 +33,12 @@
     <string name="edt_acc">Edit Account</string>
     <string name="settings">Settings and Privacy</string>
     <string name="help">Help</string>
+    <string name="notification">Notification</string>
+    <string name="start_learning">Let\'s start learning</string>
+    <string name="find_course">Find course</string>
+    <string name="all">All</string>
+    <string name="popular">Popular</string>
+    <string name="details">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,</string>
+    <string name="about_this_course">About this course</string>
+    <string name="product_design">Product Design</string>
 </resources>

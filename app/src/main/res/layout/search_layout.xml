@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardBg"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginTop="@dimen/_20sdp"
+    android:background="@color/search_bg_color"
+    android:layout_marginEnd="@dimen/_10sdp"
+    app:cardCornerRadius="@dimen/_10sdp">
+
+<EditText
+    android:id="@+id/searchView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:autofillHints="@null"
+    android:background="@color/search_bg_color"
+    android:drawableStart="@drawable/ico_search"
+    android:drawablePadding="10dp"
+    android:hint="@string/find_course"
+    android:inputType="text"
+    android:padding="@dimen/_10sdp" />
+    <TextView
+        android:id="@+id/close"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:background="@drawable/ico_search_close"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_40sdp"
+        android:layout_gravity="end"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/filter"
+        android:layout_width="wrap_content"
+        android:background="@drawable/filter"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_gravity="end"
+        android:layout_height="wrap_content"/>
+</androidx.cardview.widget.CardView>

@@ -1,10 +1,10 @@
 package com.peacemaker.android.courselearn.model
 
 data class AppUser(
-    val id: String,
-    val name: String,
-    val email: String,
-    val phoneNumber: String,
-    val password: String,
-    val profileImage: String
+    val id: String?=null,
+    val name: String?=null,
+    val email: String?=null,
+    val phoneNumber: String?=null,
+    val password: String?=null,
+    val profileImage: String?=null
 )
