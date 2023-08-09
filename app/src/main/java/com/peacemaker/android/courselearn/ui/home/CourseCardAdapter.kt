@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.peacemaker.android.courselearn.R
 
 class CourseCardAdapter(private val cards: List<CourseCard>) : RecyclerView.Adapter<CourseCardAdapter.CreditCardViewHolder>() {
-
     inner class CreditCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val cardBg: ConstraintLayout = itemView.findViewById(R.id.cardBg)
         val courseImg: ImageView = itemView.findViewById(R.id.courseImg)
