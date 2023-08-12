@@ -39,6 +39,7 @@
     <string name="all">All</string>
     <string name="popular">Popular</string>
     <string name="details">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,</string>
+    <string name="verification_message">A verification email has been sent to your email address. Please check your inbox and click on the link to verify your account.</string>
     <string name="about_this_course">About this course</string>
     <string name="product_design">Product Design</string>
 </resources>

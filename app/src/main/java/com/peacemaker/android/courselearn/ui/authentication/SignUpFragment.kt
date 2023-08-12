@@ -39,7 +39,9 @@ class SignUpFragment : BaseFragment() {
         setAppButton(binding.createAcc, "Create account") {
             if (binding.terms.isChecked) signUp() else showSnackBar(requireView(),"Please accept our terms and conditions")
             observeLiveDataResource(viewModel.createUserLiveData, {
-                navigateTo(R.id.action_signUpFragment_to_continueWithPhoneFragment)
+                val email = binding.emailId.text.toString()
+                val action = SignUpFragmentDirections.actionSignUpFragmentToVerifyEmailFragment(email)
+                navigateTo(action)
             }, binding.loader)
         }
 
@@ -61,7 +63,7 @@ class SignUpFragment : BaseFragment() {
                         username = firstname.plus(" ").plus(lastName),
                         email = email,
                         phone = phone,
-                        password = password
+                        password = password,requireContext()
                     )
                 } else {
                     showSnackBar(requireView(), "Field can not be empty or must be greater than 3 characters")

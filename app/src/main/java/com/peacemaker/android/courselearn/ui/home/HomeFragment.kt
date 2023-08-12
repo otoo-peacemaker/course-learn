@@ -22,17 +22,11 @@ import kotlinx.coroutines.*
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
     private val viewModel: AccountViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?): View {
         val homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -74,12 +68,8 @@ class HomeFragment : Fragment() {
         observeData()
         return root
     }
+    fun setOnClickListeners(){ binding.apply {} }
 
-    fun setOnClickListeners(){
-        binding.apply {
-
-        }
-    }
     private fun observeData(){
         val mainBinding = (activity as MainActivity).binding
         // Observe the LiveData objects
@@ -111,6 +101,7 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_navigation_home_to_navigation_account)
         }
     }
+
     fun changeBottomProfileIcon(uri: Uri){
         val mainBinding = (activity as MainActivity).binding
         // Use Glide or your preferred image loading library to load the image
@@ -140,6 +131,7 @@ class HomeFragment : Fragment() {
                 }
             })
     }
+
     private suspend fun loadImageFromUrl(url: Uri) = withContext(Dispatchers.IO) {
         return@withContext try {
             Glide.with(requireContext())

@@ -170,8 +170,15 @@
         <fragment
             android:id="@+id/verifyEmailFragment"
             android:name="com.peacemaker.android.courselearn.ui.authentication.VerifyEmailFragment"
-            android:label="fragment_verify_email"
-            tools:layout="@layout/fragment_verify_email" />
+            android:label=""
+            tools:layout="@layout/fragment_verify_email" >
+            <action
+                android:id="@+id/action_verifyEmailFragment_to_successFragment"
+                app:destination="@id/successFragment" />
+            <argument
+                android:name="email"
+                app:argType="string" />
+        </fragment>
     </navigation>
     <navigation android:id="@+id/home_graph"
         app:startDestination="@id/navigation_home">

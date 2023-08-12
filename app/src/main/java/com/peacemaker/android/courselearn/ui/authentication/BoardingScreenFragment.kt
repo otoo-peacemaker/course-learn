@@ -77,7 +77,7 @@ class BoardingScreenFragment : BaseFragment() {
     }
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
-            findNavController().navigate(R.id.action_global_home_graph)
+            if (user.isEmailVerified) findNavController().navigate(R.id.action_global_home_graph)
         }
     }
 

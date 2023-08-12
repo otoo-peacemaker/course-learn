@@ -44,6 +44,7 @@ class AuthViewModel : ViewModel() {
         email: String,
         phone: String,
         password: String,
+        context: Context
     ) {
         _createUserLiveData.value = Resource.loading(null)
         try {
@@ -60,6 +61,7 @@ class AuthViewModel : ViewModel() {
                         db.collection("users").document(userId).set(spareUser)
                             .addOnSuccessListener {
                                 _createUserLiveData.value = Resource.success(firebaseUser)
+                                sendEmailVerification(firebaseUser,context)
                             }
                             .addOnFailureListener { e ->
                                 _createUserLiveData.value =
@@ -80,20 +82,26 @@ class AuthViewModel : ViewModel() {
         }
 
     }
-    fun signIn(email: String, password: String) {
+    fun signIn(email: String, password: String, context: Context) {
         _signInLiveData.value = Resource.loading(null)
         try {
             auth.fetchSignInMethodsForEmail(email).addOnCompleteListener {fetch->
-                if (fetch.isSuccessful){
-                        auth.signInWithEmailAndPassword(email, password)
-                            .addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    // User signed in successfully
-                                    _signInLiveData.value = auth.currentUser.let { Resource.success(it) }
-                                }
-                            }.addOnFailureListener {
-                                _signInLiveData.value = it.message?.let { it1 -> Resource.error(null, it1) }
-                            }
+                if (fetch.isSuccessful){//fetch email from firebase
+                   if (auth.currentUser?.isEmailVerified == true) {//check if email is verified
+                       auth.signInWithEmailAndPassword(email, password)
+                           .addOnCompleteListener { task ->
+                               if (task.isSuccessful) {
+                                   // User signed in successfully
+                                   _signInLiveData.value = auth.currentUser.let { Resource.success(it) }
+                               }
+                           }.addOnFailureListener {
+                               _signInLiveData.value = it.message?.let { it1 -> Resource.error(null, it1) }
+                           }
+                   }else{
+                       _signInLiveData.value =  Resource.error(null, "user $email is not verified")
+                       sendEmailVerification(auth.currentUser,context)
+                   }
+
                 }
 
             }.addOnFailureListener {
@@ -184,6 +192,21 @@ class AuthViewModel : ViewModel() {
                 }
             }
     }
+
+     fun sendEmailVerification(user: FirebaseUser?, context: Context) {
+        _resetPasswordLiveData.value= Resource.loading(null)
+        user?.sendEmailVerification()
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    _resetPasswordLiveData.value = Resource.success(" ${context.getString(com.peacemaker.android.courselearn.R.string.verification_message)} ")
+                } else {
+                    _resetPasswordLiveData.value =
+                        task.exception?.localizedMessage?.let { Resource.error(null, it) }
+                }
+            }
+    }
+
+
 
     fun signOut(route :()->Unit) {
         if (auth.currentUser !=null ){

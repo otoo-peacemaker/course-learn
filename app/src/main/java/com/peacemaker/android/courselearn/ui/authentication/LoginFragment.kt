@@ -57,7 +57,7 @@ class LoginFragment : BaseFragment() {
         with(binding) {
             val email = emailId.text.toString()
             val password = passwordId.text.toString()
-            if (validateString(email) and validateString(password)) viewModel.signIn(email, password)
+            if (validateString(email) and validateString(password)) viewModel.signIn(email, password,requireContext())
             else showSnackBar(requireView(), "Field(s) can not be empty or must be greater than 3 characters")
         }
     }
