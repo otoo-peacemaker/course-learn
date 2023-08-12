@@ -66,7 +66,7 @@ class SignUpFragment : BaseFragment() {
                         password = password,requireContext()
                     )
                 } else {
-                    showSnackBar(requireView(), "Field can not be empty or must be greater than 3 characters")
+                    showSnackBar(requireView(), "Field can not be empty or string too short")
                 }
             }
         }
