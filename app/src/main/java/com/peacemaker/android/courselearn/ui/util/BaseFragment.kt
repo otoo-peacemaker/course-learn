@@ -17,6 +17,7 @@ import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
@@ -25,13 +26,18 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.peacemaker.android.courselearn.R
 import com.peacemaker.android.courselearn.databinding.AppButtonBinding
 import com.peacemaker.android.courselearn.databinding.OutlineTextButtonBinding
 import com.peacemaker.android.courselearn.databinding.ProgressBarLayoutBinding
 import org.json.JSONArray
+import java.io.InputStreamReader
 import java.security.MessageDigest
 import java.security.SecureRandom
 import java.text.SimpleDateFormat
@@ -117,9 +123,9 @@ open class BaseFragment : Fragment() {
      * @param message to be displayed in the SnackBar.
      * @param action A lambda expression that defines the action to be performed when the "Retry" button is clicked.
      * */
-    fun showRetrySnackBar(view: View, message: String, action: () -> Unit) {
+    fun showRetrySnackBar(view: View, message: String, actionText:String?="Retry",action: () -> Unit) {
         val snackBar = Snackbar.make(view, message, Snackbar.LENGTH_INDEFINITE)
-        snackBar.setAction("Retry") { action.invoke() }
+        snackBar.setAction(actionText) { action.invoke() }
         snackBar.setActionTextColor(
             ContextCompat.getColor(
                 view.context,
@@ -258,6 +264,27 @@ open class BaseFragment : Fragment() {
         }
         return list
     }
+
+
+    inline fun <reified T> parseJsonFileToListOfDataClass(context: Context, fileName: String): List<T>? {
+        val gson = Gson()
+        val assetManager = context.assets
+
+        val inputStream = assetManager.open(fileName)
+        val reader = InputStreamReader(inputStream)
+
+        return try {
+            val type = object : TypeToken<List<T>>() {}.type
+            gson.fromJson(reader, type)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        } finally {
+            reader.close()
+            inputStream.close()
+        }
+    }
+
     fun generateSalt(): String {
         val secureRandom = SecureRandom()
         val salt = ByteArray(16)
@@ -337,6 +364,7 @@ open class BaseFragment : Fragment() {
             android.R.layout.simple_spinner_dropdown_item, list
         )
     }
+
     fun backPressedCallback(destId: Int) {
         backPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -353,6 +381,7 @@ open class BaseFragment : Fragment() {
             viewLifecycleOwner, backPressedCallback
         )
     }
+
     fun setAppButton(
         btnLayoutBinding: AppButtonBinding? = AppButtonBinding.inflate(layoutInflater),
         string: String,
@@ -370,6 +399,7 @@ open class BaseFragment : Fragment() {
             }
         }
     }
+
     fun setTextButton(
         btnLayoutBinding: OutlineTextButtonBinding? = OutlineTextButtonBinding.inflate(layoutInflater),
         string: String,
@@ -387,6 +417,7 @@ open class BaseFragment : Fragment() {
             }
         }
     }
+
     fun navigateTo(@IdRes navigationIdRes: Int?){
         try {
             if (navigationIdRes != null) {
@@ -408,6 +439,16 @@ open class BaseFragment : Fragment() {
         }
 
     }
+    fun navigateTo(@IdRes navigationIdRes: Int?, bundle: Bundle){
+        try {
+            if (navigationIdRes != null) {
+                findNavController().navigate(navigationIdRes, args = bundle)
+            }
+        }catch (e:Exception){
+            showRetrySnackBar(requireView(),e.message.toString()){}
+        }
+    }
+
     fun showLoadingScreen(loader: ProgressBarLayoutBinding ? = ProgressBarLayoutBinding.inflate(layoutInflater), visibility:Boolean){
         if (visibility) loader?.root?.visibility = View.VISIBLE else loader?.root?.visibility = View.INVISIBLE
     }
@@ -421,6 +462,7 @@ open class BaseFragment : Fragment() {
         onSuccess: (T) -> Unit,
         loader: ProgressBarLayoutBinding ? = ProgressBarLayoutBinding.inflate(layoutInflater),
         onError: ((String) -> Unit?)? =null,
+        extras: ((String) -> Unit?)? =null,
         onLoading: (() -> Unit?)? =null) {
         liveData.observe(viewLifecycleOwner) { resource ->
             when (resource.status) {
@@ -435,6 +477,8 @@ open class BaseFragment : Fragment() {
                     resource.message?.let { message ->
                         if (onError != null) {
                             onError(message)
+                            if (message.contains("user with is not verified",ignoreCase = true)) extras?.invoke(message)
+                            else showSnackBar(requireView(),message)
                         }
                         showSnackBar(requireView(),message)
                     }
@@ -491,5 +535,50 @@ open class BaseFragment : Fragment() {
         }
     }
 
+    /**
+     * placeholderResId: A resource ID of a placeholder image to be displayed while the actual image is loading.
+     * errorResId: A resource ID of an error image to be displayed if the image loading fails.
+     * diskCacheStrategy: A strategy for caching the image on disk.
+     * transition: A transition animation to be applied when displaying the image.
+     * */
+    fun loadImage(
+        context: Context,
+        imageUrl: String,
+        imageView: ImageView,
+        placeholderResId: Int? = null,
+        errorResId: Int? = null,
+        diskCacheStrategy: DiskCacheStrategy = DiskCacheStrategy.ALL,
+        transition: DrawableTransitionOptions = DrawableTransitionOptions.withCrossFade()) {
+        val glideRequest = Glide.with(context)
+            .load(imageUrl)
+            .diskCacheStrategy(diskCacheStrategy)
+            .transition(transition)
+        placeholderResId?.let { glideRequest.placeholder(it) }
+        errorResId?.let { glideRequest.error(it) }
+
+        glideRequest.into(imageView)
+    }
+
+    fun setConstraintLayoutBackground(
+        context: Context,
+        layout: ConstraintLayout,
+        imageUrl: String,
+        placeholderResId: Int? = null,
+        errorResId: Int? = null,
+        diskCacheStrategy: DiskCacheStrategy = DiskCacheStrategy.ALL,
+        transition: DrawableTransitionOptions = DrawableTransitionOptions.withCrossFade()
+    ) {
+        val imageView = ImageView(context)
+
+        val glideRequest = Glide.with(context)
+            .load(imageUrl)
+            .diskCacheStrategy(diskCacheStrategy)
+            .transition(transition)
+
+        placeholderResId?.let { glideRequest.placeholder(it) }
+        errorResId?.let { glideRequest.error(it) }
+        glideRequest.into(imageView)
+        layout.background = imageView.drawable
+    }
 
 }

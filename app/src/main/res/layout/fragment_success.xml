@@ -54,6 +54,7 @@
                 android:text="@string/congratulations_you_have_n_completed_your_registration"
                 android:textColor="@color/subHead2TxtColor"
                 android:textSize="@dimen/_11ssp"
+                android:padding="@dimen/_5sdp"
                 app:layout_constraintEnd_toEndOf="@+id/imageView"
                 app:layout_constraintStart_toStartOf="@+id/imageView"
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />

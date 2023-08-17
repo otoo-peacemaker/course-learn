@@ -3,88 +3,94 @@ package com.peacemaker.android.courselearn.ui.adapters
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import java.util.*
 
 
-class RecyclerAdapterList<T : Any, VB : ViewBinding>(
-    private val bindingInflater: (LayoutInflater, ViewGroup, Boolean) -> VB,
-    private val onBind: (VB, T, Int) -> Unit,
-    private val areItemsTheSame: (T, T) -> Boolean,
-    private val filterPredicate: (T, String) -> Boolean // New parameter for filtering
-) : ListAdapter<T, RecyclerAdapterList.ViewHolder<T, VB>>(DiffCallback<T>(areItemsTheSame)) {
+class RecyclerBaseAdapter<T : Any> : ListAdapter<T, RecyclerBaseAdapter.BaseViewHolder<T>>(ItemDiffCallback<T>()) {
 
-    private var originalList: List<T> = emptyList()
+    private var comparator: Comparator<T>? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<T, VB> {
-        val binding = bindingInflater(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding, onBind)
+    var expressionViewHolderBinding: ((T, ViewBinding) -> Unit)? = null
+    var expressionOnCreateViewHolder: ((LayoutInflater, ViewGroup) -> ViewBinding)? = null
+
+    init {
+        setHasStableIds(true)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder<T, VB>, position: Int) {
-        holder.bind(getItem(position), position)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<T> {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = expressionOnCreateViewHolder?.invoke(inflater, parent)
+            ?: throw IllegalStateException("expressionOnCreateViewHolder must be provided.")
+        return BaseViewHolder(binding, expressionViewHolderBinding ?: { _, _ -> })
     }
 
+    override fun onBindViewHolder(holder: BaseViewHolder<T>, position: Int) {
+        val item = getItem(position)
+        holder.bind(item)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setData(data: List<T>?) {
+        submitList(data?.toMutableList())
+        applySort()
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
     fun filter(query: String) {
-        val filteredList = originalList.filter { item ->
-            filterPredicate(item, query)
-            true
+        val lowercaseQuery = query.lowercase(Locale.getDefault())
+        val filteredData = currentList.filter { item ->
+            item.toString().lowercase(Locale.getDefault()).contains(lowercaseQuery)
         }
-        submitList(filteredList)
+        submitList(filteredData.toMutableList())
+        applySort()
+        notifyDataSetChanged()
     }
 
-    fun setData(dataList: List<T>) {
-        originalList = dataList
-        submitList(dataList)
+    @SuppressLint("NotifyDataSetChanged")
+    fun setComparator(comparator: Comparator<T>?) {
+        this.comparator = comparator
+        applySort()
+        notifyDataSetChanged()
     }
 
-    class ViewHolder<T, VB : ViewBinding>(
-        private val binding: VB,
-        private val onBind: (VB, T, Int) -> Unit) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: T, position: Int) {
-            onBind(binding, item, position)
+    private fun applySort() {
+        comparator?.let { cmp ->
+            val sortedList = currentList.sortedWith(cmp)
+            submitList(sortedList.toMutableList())
         }
     }
 
-    private class DiffCallback<T : Any>(
-        private val areItemsTheSame: (T, T) -> Boolean) : DiffUtil.ItemCallback<T>() {
-        override fun areItemsTheSame(oldItem: T, newItem: T): Boolean = areItemsTheSame(oldItem, newItem)
-        @SuppressLint("DiffUtilEquals")
-        override fun areContentsTheSame(oldItem: T, newItem: T): Boolean = oldItem == newItem
+    class BaseViewHolder<T> internal constructor(
+        private val binding: ViewBinding,
+        private val expression: (T, ViewBinding) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: T) {
+            expression(item, binding)
+        }
     }
 }
 
-/**
- *
- * val adapter = RecyclerListAdapter(
-{ inflater, parent, attachToParent ->
-// Replace with your actual ViewBinding class
-ItemLayoutBinding.inflate(inflater, parent, attachToParent)
-},
-{ binding, item, position ->
-// Bind data to the ViewBinding components within the layout
-// Example: binding.textView.text = item.title
-},
-{ oldItem, newItem ->
-// Compare items to determine if they are the same
-// Example: oldItem.id == newItem.id
-},
-{ item, query ->
-// Customize this filtering logic based on your data and requirements
-// Example: item.title.contains(query, ignoreCase = true)
+class ItemDiffCallback<T : Any> : DiffUtil.ItemCallback<T>() {
+    override fun areItemsTheSame(oldItem: T, newItem: T): Boolean {
+        return oldItem == newItem
+    }
+
+    @SuppressLint("DiffUtilEquals")
+    override fun areContentsTheSame(oldItem: T, newItem: T): Boolean {
+        return oldItem == newItem
+    }
 }
-)
-
-recyclerView.adapter = adapter
-val dataList: List<YourDataType> = // Your list of data
-adapter.submitList(dataList)
 
 
-val searchQuery: String = // User's search query
-adapter.filter(searchQuery)
-
- *
- *
- * */

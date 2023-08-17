@@ -30,16 +30,13 @@ class SignUpFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setTextViewPartialColor(
-            binding.loginBtn,
-            getString(R.string.already_have_an_account_login),
-            "Login",
-            resources.getColor(R.color.primary, null)
-        )
+        setTextViewPartialColor(binding.loginBtn, getString(R.string.already_have_an_account_login),
+            "Login", resources.getColor(R.color.primary, null))
         setAppButton(binding.createAcc, "Create account") {
             if (binding.terms.isChecked) signUp() else showSnackBar(requireView(),"Please accept our terms and conditions")
             observeLiveDataResource(viewModel.createUserLiveData, {
                 val email = binding.emailId.text.toString()
+                printLogs("$SignUpFragment::::::::::", email)
                 val action = SignUpFragmentDirections.actionSignUpFragmentToVerifyEmailFragment(email)
                 navigateTo(action)
             }, binding.loader)

@@ -39,13 +39,9 @@ class AuthViewModel : ViewModel() {
     val resetPasswordLiveData: LiveData<Resource<String>> = _resetPasswordLiveData
 
 
-    fun createUser(
-        username: String,
-        email: String,
-        phone: String,
-        password: String,
-        context: Context
-    ) {
+    fun createUser(username: String, email: String,
+        phone: String, password: String,
+        context: Context) {
         _createUserLiveData.value = Resource.loading(null)
         try {
             auth.createUserWithEmailAndPassword(email, password)
@@ -61,7 +57,7 @@ class AuthViewModel : ViewModel() {
                         db.collection("users").document(userId).set(spareUser)
                             .addOnSuccessListener {
                                 _createUserLiveData.value = Resource.success(firebaseUser)
-                                sendEmailVerification(firebaseUser,context)
+                               // sendEmailVerification(firebaseUser,context)
                             }
                             .addOnFailureListener { e ->
                                 _createUserLiveData.value =
@@ -82,32 +78,29 @@ class AuthViewModel : ViewModel() {
         }
 
     }
-    fun signIn(email: String, password: String, context: Context) {
+    fun signIn(email: String, password: String) {
         _signInLiveData.value = Resource.loading(null)
         try {
             auth.fetchSignInMethodsForEmail(email).addOnCompleteListener {fetch->
                 if (fetch.isSuccessful){//fetch email from firebase
-                   if (auth.currentUser?.isEmailVerified == true) {//check if email is verified
                        auth.signInWithEmailAndPassword(email, password)
                            .addOnCompleteListener { task ->
                                if (task.isSuccessful) {
                                    // User signed in successfully
-                                   _signInLiveData.value = auth.currentUser.let { Resource.success(it) }
+                                   if (auth.currentUser?.isEmailVerified == true) {
+                                       // Email is verified, proceed to app
+                                       _signInLiveData.value = auth.currentUser.let { Resource.success(it) }
+                                   } else {
+                                       _signInLiveData.value =  Resource.error(null, "user with $email is not verified")
+                                   }
                                }
                            }.addOnFailureListener {
                                _signInLiveData.value = it.message?.let { it1 -> Resource.error(null, it1) }
                            }
-                   }else{
-                       _signInLiveData.value =  Resource.error(null, "user $email is not verified")
-                       sendEmailVerification(auth.currentUser,context)
-                   }
-
                 }
-
             }.addOnFailureListener {
                 _signInLiveData.value = it.message?.let { it1 -> Resource.error(null, it1) }
             }
-
         }
         catch (e: FirebaseAuthInvalidUserException){
             _signInLiveData.postValue(e.message?.let { Resource.error(null, it) })
@@ -116,7 +109,6 @@ class AuthViewModel : ViewModel() {
         }catch (e:IllegalArgumentException){
             _signInLiveData.postValue(e.localizedMessage?.let { Resource.error(null, it) })
         }
-
     }
 
     fun signInWithGoogle(activity: Activity) {
@@ -142,7 +134,6 @@ class AuthViewModel : ViewModel() {
             onFailure.invoke()
         }
     }
-
     fun verifyPhoneNumber(phoneNumber: String) {
         val options = PhoneAuthOptions.newBuilder(auth)
             .setPhoneNumber(phoneNumber)
@@ -167,7 +158,6 @@ class AuthViewModel : ViewModel() {
 
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
-
     fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
         auth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
@@ -178,7 +168,6 @@ class AuthViewModel : ViewModel() {
                 }
             }
     }
-
     // Function to reset the user's password
     fun resetPassword(email: String) {
         _resetPasswordLiveData.value= Resource.loading(null)
@@ -192,7 +181,6 @@ class AuthViewModel : ViewModel() {
                 }
             }
     }
-
      fun sendEmailVerification(user: FirebaseUser?, context: Context) {
         _resetPasswordLiveData.value= Resource.loading(null)
         user?.sendEmailVerification()
@@ -205,8 +193,6 @@ class AuthViewModel : ViewModel() {
                 }
             }
     }
-
-
 
     fun signOut(route :()->Unit) {
         if (auth.currentUser !=null ){

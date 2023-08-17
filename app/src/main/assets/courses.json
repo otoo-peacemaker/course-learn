@@ -1,0 +1,312 @@
+[
+  {
+    "courseName": "Mobile App Development",
+    "authorName": "Alex Williams",
+    "courseBgImg": "https://example.com/mobile_app_dev.jpg",
+    "price": "$79.99",
+    "duration": {
+      "hours": 15,
+      "minutes": 0
+    },
+    "courseAbout": "Learn to create mobile apps for Android and iOS.",
+    "lessons": [
+      {
+        "id": 1,
+        "title": "Introduction to Mobile Development",
+        "duration": {
+          "hours": 1,
+          "minutes": 30
+        },
+        "content": "https://example.com/mobile_app_dev_lesson_1.mp4"
+      },
+      {
+        "id": 2,
+        "title": "Building User Interfaces",
+        "duration": {
+          "hours": 2,
+          "minutes": 0
+        },
+        "content": "https://example.com/mobile_app_dev_lesson_2.mp4"
+      }
+    ]
+  },
+  {
+    "courseName": "Introduction to Android Development",
+    "authorName": "John Doe",
+    "courseBgImg": "https://example.com/course_image.jpg",
+    "price": "$99.99",
+    "duration": {
+      "hours": 10,
+      "minutes": 30
+    },
+    "courseAbout": "Learn the basics of Android app development.",
+    "lessons": [
+      {
+        "id": 1,
+        "title": "Getting Started with Android Studio",
+        "duration": {
+          "hours": 1,
+          "minutes": 0
+        },
+        "content": "https://example.com/lesson1_video.mp4"
+      },
+      {
+        "id": 2,
+        "title": "UI Design and Layouts",
+        "duration": {
+          "hours": 2,
+          "minutes": 15
+        },
+        "content": "https://example.com/lesson2_video.mp4"
+      },
+      {
+        "id": 3,
+        "title": "Working with Activities and Intents",
+        "duration": {
+          "hours": 1,
+          "minutes": 30
+        },
+        "content": "https://example.com/lesson3_video.mp4"
+      },
+      {
+        "id": 4,
+        "title": "Data Persistence with SQLite",
+        "duration": {
+          "hours": 2,
+          "minutes": 45
+        },
+        "content": "https://example.com/lesson4_video.mp4"
+      }
+    ]
+  },
+
+  {
+    "courseName": "Data Science Essentials",
+    "authorName": "Sophia Miller",
+    "courseBgImg": "https://example.com/data_science.jpg",
+    "price": "$89.99",
+    "duration": {
+      "hours": 18,
+      "minutes": 30
+    },
+    "courseAbout": "An introduction to data analysis and visualization.",
+    "lessons": [
+      {
+        "id": 1,
+        "title": "Introduction to Data Science",
+        "duration": {
+          "hours": 1,
+          "minutes": 0
+        },
+        "content": "https://example.com/data_science_lesson_1.mp4"
+      },
+      {
+        "id": 2,
+        "title": "Exploratory Data Analysis",
+        "duration": {
+          "hours": 2,
+          "minutes": 45
+        },
+        "content": "https://example.com/data_science_lesson_2.mp4"
+      },
+      {
+        "id": 3,
+        "title": "Data Preprocessing Techniques",
+        "duration": {
+          "hours": 2,
+          "minutes": 15
+        },
+        "content": "https://example.com/data_science_lesson_3.mp4"
+      },
+      {
+        "id": 4,
+        "title": "Statistical Analysis",
+        "duration": {
+          "hours": 2,
+          "minutes": 30
+        },
+        "content": "https://example.com/data_science_lesson_4.mp4"
+      },
+      {
+        "id": 5,
+        "title": "Machine Learning Fundamentals",
+        "duration": {
+          "hours": 3,
+          "minutes": 15
+        },
+        "content": "https://example.com/data_science_lesson_5.mp4"
+      },
+      {
+        "id": 6,
+        "title": "Data Visualization with Matplotlib",
+        "duration": {
+          "hours": 2,
+          "minutes": 0
+        },
+        "content": "https://example.com/data_science_lesson_6.mp4"
+      },
+      {
+        "id": 7,
+        "title": "Feature Engineering",
+        "duration": {
+          "hours": 2,
+          "minutes": 45
+        },
+        "content": "https://example.com/data_science_lesson_7.mp4"
+      },
+      {
+        "id": 8,
+        "title": "Advanced Machine Learning Techniques",
+        "duration": {
+          "hours": 3,
+          "minutes": 30
+        },
+        "content": "https://example.com/data_science_lesson_8.mp4"
+      },
+      {
+        "id": 9,
+        "title": "Time Series Analysis",
+        "duration": {
+          "hours": 2,
+          "minutes": 15
+        },
+        "content": "https://example.com/data_science_lesson_9.mp4"
+      },
+      {
+        "id": 10,
+        "title": "Big Data Analytics",
+        "duration": {
+          "hours": 3,
+          "minutes": 0
+        },
+        "content": "https://example.com/data_science_lesson_10.mp4"
+      }
+    ]
+  },
+  {
+    "courseName": "Photography Basics",
+    "authorName": "Emma Carter",
+    "courseBgImg": "https://example.com/photography_basics.jpg",
+    "price": "$39.99",
+    "duration": {
+      "hours": 8,
+      "minutes": 0
+    },
+    "courseAbout": "Learn the fundamentals of photography.",
+    "lessons": [
+      {
+        "id": 1,
+        "title": "Introduction to Photography",
+        "duration": {
+          "hours": 1,
+          "minutes": 15
+        },
+        "content": "https://example.com/photography_basics_lesson_1.mp4"
+      },
+      {
+        "id": 2,
+        "title": "Understanding Exposure",
+        "duration": {
+          "hours": 1,
+          "minutes": 45
+        },
+        "content": "https://example.com/photography_basics_lesson_2.mp4"
+      }
+    ]
+  },
+  {
+    "courseName": "Yoga for Beginners",
+    "authorName": "Michael Johnson",
+    "courseBgImg": "https://example.com/yoga_for_beginners.jpg",
+    "price": "$29.99",
+    "duration": {
+      "hours": 6,
+      "minutes": 30
+    },
+    "courseAbout": "Discover the benefits of yoga and start practicing.",
+    "lessons": [
+      {
+        "id": 1,
+        "title": "Introduction to Yoga",
+        "duration": {
+          "hours": 1,
+          "minutes": 0
+        },
+        "content": "https://example.com/yoga_for_beginners_lesson_1.mp4"
+      },
+      {
+        "id": 2,
+        "title": "Basic Yoga Poses",
+        "duration": {
+          "hours": 1,
+          "minutes": 30
+        },
+        "content": "https://example.com/yoga_for_beginners_lesson_2.mp4"
+      }
+    ]
+  },
+
+  {
+    "courseName": "Introduction to Programming",
+    "authorName": "John Smith",
+    "courseBgImg": "https://example.com/intro_to_prog.jpg",
+    "price": "$49.99",
+    "duration": {
+      "hours": 10,
+      "minutes": 30
+    },
+    "courseAbout": "Learn the basics of programming.",
+    "lessons": [
+      {
+        "id": 1,
+        "title": "Getting Started with Programming",
+        "duration": {
+          "hours": 1,
+          "minutes": 30
+        },
+        "content": "https://example.com/intro_to_prog_lesson_1.mp4"
+      },
+      {
+        "id": 2,
+        "title": "Variables and Data Types",
+        "duration": {
+          "hours": 2,
+          "minutes": 15
+        },
+        "content": "https://example.com/intro_to_prog_lesson_2.mp4"
+      }
+    ]
+  },
+  {
+    "courseName": "Web Development Fundamentals",
+    "authorName": "Emily Johnson",
+    "courseBgImg": "https://example.com/web_dev_fundamentals.jpg",
+    "price": "$59.99",
+    "duration": {
+      "hours": 12,
+      "minutes": 0
+    },
+    "courseAbout": "Learn the basics of web development.",
+    "lessons": [
+      {
+        "id": 1,
+        "title": "HTML Basics",
+        "duration": {
+          "hours": 1,
+          "minutes": 45
+        },
+        "content": "https://example.com/web_dev_lesson_1.mp4"
+      },
+      {
+        "id": 2,
+        "title": "CSS Styling",
+        "duration": {
+          "hours": 2,
+          "minutes": 30
+        },
+        "content": "https://example.com/web_dev_lesson_2.mp4"
+      }
+    ]
+  }
+
+]

@@ -6,9 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.peacemaker.android.courselearn.R
+import com.peacemaker.android.courselearn.data.FirebaseHelper
 import com.peacemaker.android.courselearn.databinding.FragmentLoginBinding
+import com.peacemaker.android.courselearn.model.CoursesItem
 import com.peacemaker.android.courselearn.ui.util.BaseFragment
 
 class LoginFragment : BaseFragment() {
@@ -20,11 +21,9 @@ class LoginFragment : BaseFragment() {
     }
 
     private val viewModel: AuthViewModel by viewModels()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+        savedInstanceState: Bundle?): View {
         _binding = FragmentLoginBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -41,7 +40,15 @@ class LoginFragment : BaseFragment() {
             login()
             observeLiveDataResource(viewModel.signInLiveData, {
                 navigateTo(R.id.action_global_home_graph)
-            }, binding.loader)
+            },
+                binding.loader, onError = {}, extras = {
+                    showRetrySnackBar(requireView(),it,"Verify"){
+                        val email = binding.emailId.text.toString()
+                        printLogs("Email",email)
+                        val action = LoginFragmentDirections.actionLoginFragmentToVerifyEmailFragment(email = email)
+                        navigateTo(action)
+                    }
+                })
         }
 
         binding.signUpBtn.setOnClickListener { navigateTo(R.id.action_loginFragment_to_signUpFragment) }
@@ -57,8 +64,22 @@ class LoginFragment : BaseFragment() {
         with(binding) {
             val email = emailId.text.toString()
             val password = passwordId.text.toString()
-            if (validateString(email) and validateString(password)) viewModel.signIn(email, password,requireContext())
+            if (validateString(email) and validateString(password)) viewModel.signIn(email, password)
             else showSnackBar(requireView(), "Field(s) can not be empty or must be greater than 3 characters")
+        }
+    }
+    fun insertDummyData(){
+        val course: List<CoursesItem>? = parseJsonFileToListOfDataClass(requireContext(), "courses.json")
+        if (course != null) {
+            // Use 'course' object
+            printLogs("$LoginFragment","$course")
+            FirebaseHelper.DocumentCollection()
+                .addDocumentsToCollection("courses",course){success,message->
+                    if (success) showSnackBar(requireView(),message) else showSnackBar(requireView(),message)
+                }
+        } else {
+            // Handle parsing failure
+            printLogs("$LoginFragment","parsing failure")
         }
     }
 

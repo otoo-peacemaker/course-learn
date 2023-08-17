@@ -25,7 +25,7 @@ class SuccessFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View {
         _binding = FragmentSuccessBinding.inflate(layoutInflater)
-        binding.message.text = args.message
+        binding.message.setText(args.message).toString()
         return binding.root
     }
 

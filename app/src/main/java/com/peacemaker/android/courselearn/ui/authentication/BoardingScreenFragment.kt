@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseUser
 import com.peacemaker.android.courselearn.R
-import com.peacemaker.android.courselearn.data.FirebaseApplicationData
+import com.peacemaker.android.courselearn.data.FirebaseHelper
 import com.peacemaker.android.courselearn.databinding.FragmentBoardingScreenBinding
 import com.peacemaker.android.courselearn.ui.util.BaseFragment
 
@@ -68,7 +68,7 @@ class BoardingScreenFragment : BaseFragment() {
     override fun onStart() {
         super.onStart()
         FirebaseApp.initializeApp(requireContext())
-        updateUI(FirebaseApplicationData.UserDataCollection.getCurrentUser())
+        updateUI(FirebaseHelper.UserDataCollection().getCurrentUser())
     }
 
     override fun onResume() {
@@ -77,6 +77,7 @@ class BoardingScreenFragment : BaseFragment() {
     }
     private fun updateUI(user: FirebaseUser?) {
         if (user != null) {
+//            findNavController().navigate(R.id.action_global_home_graph)
             if (user.isEmailVerified) findNavController().navigate(R.id.action_global_home_graph)
         }
     }

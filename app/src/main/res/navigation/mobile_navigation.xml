@@ -67,6 +67,9 @@
                 app:exitAnim="@anim/slide_out_left"
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right" />
+            <action
+                android:id="@+id/action_loginFragment_to_verifyEmailFragment"
+                app:destination="@id/verifyEmailFragment" />
         </fragment>
         <fragment
             android:id="@+id/signUpFragment"
@@ -220,12 +223,15 @@
         <action
             android:id="@+id/action_global_myCoursesFragment"
             app:destination="@id/myCoursesFragment" />
+        <action
+            android:id="@+id/action_global_courseDetailsFragment"
+            app:destination="@id/courseDetailsFragment" />
     </navigation>
     <navigation android:id="@+id/other_graph"/>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.peacemaker.android.courselearn.ui.search.SearchFragment"
-        android:label=""
+        android:label="Search"
         tools:layout="@layout/fragment_search" >
         <action
             android:id="@+id/action_searchFragment_to_courseDetailsFragment"
@@ -234,7 +240,7 @@
     <fragment
         android:id="@+id/courseDetailsFragment"
         android:name="com.peacemaker.android.courselearn.ui.courses.CourseDetailsFragment"
-        android:label="fragment_course_details"
+        android:label="Details"
         tools:layout="@layout/fragment_course_details" >
         <action
             android:id="@+id/action_courseDetailsFragment_to_myCoursesFragment"
@@ -243,7 +249,7 @@
     <fragment
         android:id="@+id/myCoursesFragment"
         android:name="com.peacemaker.android.courselearn.ui.courses.MyCoursesFragment"
-        android:label="fragment_my_courses"
+        android:label="Courses"
         tools:layout="@layout/fragment_my_courses" />
 
 </navigation>

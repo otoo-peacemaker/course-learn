@@ -4,16 +4,17 @@ plugins {
     id 'kotlin-kapt'
     id 'com.google.gms.google-services'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-parcelize'
 }
 
 android {
     namespace 'com.peacemaker.android.courselearn'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.peacemaker.android.courselearn"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -55,8 +56,8 @@ dependencies {
     //navigation
     implementation "androidx.appcompat:appcompat:1.6.1" // Or any other dependencies you need
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.20" // Check the latest version
-    implementation "androidx.navigation:navigation-fragment-ktx:2.6.0" // Check the latest version
-    implementation "androidx.navigation:navigation-ui-ktx:2.6.0" // Check the latest version
+    implementation "androidx.navigation:navigation-fragment-ktx:2.7.0" // Check the latest version
+    implementation "androidx.navigation:navigation-ui-ktx:2.7.0" // Check the latest version
 
 
 

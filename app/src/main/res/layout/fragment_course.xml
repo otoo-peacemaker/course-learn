@@ -81,6 +81,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         app:layout_constraintTop_toBottomOf="@+id/viewPager2"
         tools:listitem="@layout/course_list_items"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:id="@+id/recyclerView"
         android:layout_height="wrap_content"/>
 

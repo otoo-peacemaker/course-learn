@@ -22,7 +22,7 @@ class CourseCategoryFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCourseCategoryBinding.inflate(layoutInflater)
         return binding.root
     }

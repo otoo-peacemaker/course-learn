@@ -6,5 +6,6 @@ data class AppUser(
     val email: String?=null,
     val phoneNumber: String?=null,
     val password: String?=null,
-    val profileImage: String?=null
+    val profileImage: String?=null,
+    val courses : Courses?=null
 )

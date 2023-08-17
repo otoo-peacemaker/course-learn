@@ -5,12 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.firebase.auth.FirebaseAuth
-import com.peacemaker.android.courselearn.R
+import com.peacemaker.android.courselearn.data.FirebaseHelper
 import com.peacemaker.android.courselearn.databinding.FragmentVerifyEmailBinding
-import com.peacemaker.android.courselearn.ui.authentication.ResetPasswordFragmentDirections.Companion.actionResetPasswordFragmentToSuccessFragment
 import com.peacemaker.android.courselearn.ui.util.BaseFragment
 
 class VerifyEmailFragment : BaseFragment() {
@@ -28,24 +25,25 @@ class VerifyEmailFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentVerifyEmailBinding.inflate(layoutInflater)
+        binding.emailId.setText(args.email).toString()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setAppButton(binding.continueBtn, "Continue") {
-            binding.emailId.setText(args.email)
             val email = binding.emailId.text.toString()
-            verifyEmail(email)
+            printLogs("$VerifyEmailFragment::::::::::", email)
+            verifyEmail()
         }
     }
 
-    private fun verifyEmail(email:String) {
-        val user = FirebaseAuth.getInstance().currentUser
-        viewModel.sendEmailVerification(user,requireContext())
-        ResetPasswordFragmentDirections
+    private fun verifyEmail() {
+       // val user = FirebaseAuth.getInstance().currentUser
+        viewModel.sendEmailVerification(FirebaseHelper.UserDataCollection().getCurrentUser(),requireContext())
+        val email = binding.emailId.text.toString()
+        printLogs("$VerifyEmailFragment::::::::::", email)
         observeLiveDataResource(viewModel.resetPasswordLiveData, {
-            navigateTo(R.id.action_verifyEmailFragment_to_successFragment)
             val action = VerifyEmailFragmentDirections.actionVerifyEmailFragmentToSuccessFragment(it,email)
             navigateTo(action)
         }, binding.loader)
