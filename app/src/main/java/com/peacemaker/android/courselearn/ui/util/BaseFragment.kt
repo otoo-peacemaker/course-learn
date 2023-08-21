@@ -15,27 +15,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.peacemaker.android.courselearn.MainActivity
 import com.peacemaker.android.courselearn.R
 import com.peacemaker.android.courselearn.databinding.AppButtonBinding
 import com.peacemaker.android.courselearn.databinding.OutlineTextButtonBinding
 import com.peacemaker.android.courselearn.databinding.ProgressBarLayoutBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import java.io.InputStreamReader
 import java.security.MessageDigest
@@ -48,12 +54,6 @@ open class BaseFragment : Fragment() {
 
     private lateinit var navController: NavController
     private lateinit var backPressedCallback: OnBackPressedCallback
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // FirebaseApp.initializeApp(requireContext())
-        log("BaseFragment", "::::::::::::::::::::::::::::FirebaseApp.initializeApp")
-    }
 
     fun setTextViewPartialColor(
         textView: TextView,
@@ -148,6 +148,14 @@ open class BaseFragment : Fragment() {
     }
     fun getDrawable(resId: Int): Drawable? {
         return ContextCompat.getDrawable(requireContext(), resId)
+    }
+
+    fun changeResDrawable(@DrawableRes resId: Int): Drawable? {
+       return ResourcesCompat.getDrawable(resources, resId, null)
+    }
+
+    fun changeResColor(@ColorRes resId: Int): Int {
+        return resources.getColor(resId, null)
     }
 
     fun setupAutoCompleteTextView(
@@ -388,14 +396,12 @@ open class BaseFragment : Fragment() {
         callback: (() -> Any)? = null) {
         btnLayoutBinding?.containedButton?.apply {
             text = string
-          //  backgroundTintList = ColorStateList.valueOf(resources.getColor(android.R.color.transparent, null))
             setOnClickListener {
                 try {
                     callback?.invoke()
                 } catch (e: Exception) {
                     printLogs("FloatingButtonLayoutBinding", e.toString())
                 }
-
             }
         }
     }
@@ -541,9 +547,9 @@ open class BaseFragment : Fragment() {
      * diskCacheStrategy: A strategy for caching the image on disk.
      * transition: A transition animation to be applied when displaying the image.
      * */
-    fun loadImage(
+    fun loadImageToImageView(
         context: Context,
-        imageUrl: String,
+        imageUrl: String?,
         imageView: ImageView,
         placeholderResId: Int? = null,
         errorResId: Int? = null,
@@ -579,6 +585,50 @@ open class BaseFragment : Fragment() {
         errorResId?.let { glideRequest.error(it) }
         glideRequest.into(imageView)
         layout.background = imageView.drawable
+    }
+
+    fun changeBottomProfileIcon(uri: Uri){
+        val mainBinding = (activity as MainActivity).binding
+        // Use Glide or your preferred image loading library to load the image
+        Glide.with(this)
+            .load(uri)
+            .apply(RequestOptions.circleCropTransform()) // Apply circular crop for a profile image
+            .into(object : com.bumptech.glide.request.target.CustomTarget<Drawable>() {
+                override fun onLoadStarted(placeholder: Drawable?) {
+                    // You can show a placeholder image while loading
+                    mainBinding.navView.menu.findItem(R.id.navigation_account).icon = ResourcesCompat.getDrawable(resources,R.drawable.avatar_person,null)
+                }
+
+                override fun onLoadFailed(errorDrawable: Drawable?) {
+                    // Handle the case when image loading fails
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable,
+                    transition: com.bumptech.glide.request.transition.Transition<in Drawable>?
+                ) {
+                    // Update the icon of the profile item with the fetched image
+                    mainBinding.navView.menu.findItem(R.id.navigation_account).icon = resource
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    // The image has been cleared
+                }
+            })
+    }
+
+    suspend fun loadImageFromUrl(url: Uri) = withContext(Dispatchers.IO) {
+        return@withContext try {
+            Glide.with(requireContext())
+                .load(url)
+                .circleCrop()
+                .placeholder(R.drawable.loading_animation)  // Placeholder if image loading fails
+                .error(R.drawable.ico_person)        // Error placeholder if loading fails
+                .submit()
+                .get()
+        } catch (e: Exception) {
+            null
+        }
     }
 
 }

@@ -60,7 +60,7 @@ class SearchFragment : BaseFragment() {
                         coursePrice.text = eachItem.price
                         authorName.text = eachItem.authorName
                         courseDuration.text = eachItem.duration?.hours.toString().plus(":").plus(eachItem.duration?.minutes).plus("hrs")
-
+                        loadImageToImageView(requireContext(),eachItem.courseBgImg,courseImg,R.drawable.loading_animation,R.drawable.avatar_person)
                         val bundle = Bundle().apply {
                             putParcelable("course",eachItem)
                         }

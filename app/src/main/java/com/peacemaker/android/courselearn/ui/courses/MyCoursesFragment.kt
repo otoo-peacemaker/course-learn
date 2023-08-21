@@ -1,19 +1,16 @@
 package com.peacemaker.android.courselearn.ui.courses
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.carousel.CarouselLayoutManager
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.peacemaker.android.courselearn.R
-import com.peacemaker.android.courselearn.databinding.CourseListItemsBinding
-import com.peacemaker.android.courselearn.databinding.FragmentCourseBinding
 import com.peacemaker.android.courselearn.databinding.FragmentMyCoursesBinding
+import com.peacemaker.android.courselearn.databinding.MyCourseListItemBinding
 import com.peacemaker.android.courselearn.model.CoursesItem
+import com.peacemaker.android.courselearn.ui.account.AccountViewModel
 import com.peacemaker.android.courselearn.ui.adapters.RecyclerBaseAdapter
 import com.peacemaker.android.courselearn.ui.util.BaseFragment
 
@@ -26,8 +23,7 @@ class MyCoursesFragment : BaseFragment() {
         fun newInstance() = MyCoursesFragment()
     }
 
-    private lateinit var viewModel: CourseViewModel
-    private  var coursesItem: MutableList<CoursesItem>?=null
+    private val viewModel: AccountViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,40 +35,32 @@ class MyCoursesFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[CourseViewModel::class.java]
-        arguments?.apply {
-            coursesItem = getParcelable("course")!!
-        }
-
         setUpRecyclerView()
-
     }
 
-    private fun setUpRecyclerView(){
-        mAdapter.submitList(coursesItem)
-        mAdapter.expressionOnCreateViewHolder = { inflater, viewGroup ->
-            CourseListItemsBinding.inflate(inflater, viewGroup, false)
-        }
+    private fun setUpRecyclerView() {
+        observeLiveDataResource(viewModel.userRelatedData, { items ->
+            printLogs("MyCoursesFragment", "$items")
+            mAdapter.submitList(items)
+        })
 
+        mAdapter.expressionOnCreateViewHolder = { inflater, viewGroup ->
+            MyCourseListItemBinding.inflate(inflater, viewGroup, false)
+        }
         mAdapter.expressionViewHolderBinding = { eachItem, viewBinding ->
-            val view = viewBinding as CourseListItemsBinding
+            val view = viewBinding as MyCourseListItemBinding
             view.apply {
                 courseName.text = eachItem.courseName
-                coursePrice.text = eachItem.price
-                authorName.text = eachItem.authorName
-                courseDuration.text = eachItem.duration?.hours.toString().plus(":").plus(eachItem.duration?.minutes).plus("hrs")
-
                 val bundle = Bundle().apply {
-                    putParcelable("course",eachItem)
+                    putParcelable("course", eachItem)
                 }
                 view.root.setOnClickListener {
-                    navigateTo(R.id.action_searchFragment_to_courseDetailsFragment, bundle = bundle)
+                    navigateTo(R.id.action_myCoursesFragment_to_classroomFragment, bundle = bundle)
                 }
             }
         }
         val recyclerView = binding.recyclerView
-        recyclerView.layoutManager = CarouselLayoutManager()
-//        GridLayoutManager(requireContext(),2)
+        recyclerView.layoutManager = StaggeredGridLayoutManager(2, 1)
         recyclerView.adapter = mAdapter
 
     }

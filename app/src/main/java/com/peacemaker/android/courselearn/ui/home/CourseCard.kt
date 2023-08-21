@@ -5,5 +5,5 @@ import android.graphics.drawable.Drawable
 data class CourseCard(
     val bgColor: Int,
     val img: Drawable?,
-    val courseName: String
+    val courseName: String?
 )

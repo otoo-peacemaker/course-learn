@@ -20,6 +20,7 @@ import com.peacemaker.android.courselearn.databinding.CourseListItemsBinding
 import com.peacemaker.android.courselearn.databinding.FragmentCourseBinding
 import com.peacemaker.android.courselearn.model.CoursesItem
 import com.peacemaker.android.courselearn.ui.adapters.PagerAdapter
+import com.peacemaker.android.courselearn.ui.adapters.PagerItemsListFragment
 import com.peacemaker.android.courselearn.ui.adapters.RecyclerBaseAdapter
 import com.peacemaker.android.courselearn.ui.home.CourseCard
 import com.peacemaker.android.courselearn.ui.home.CourseCardAdapter
@@ -54,7 +55,7 @@ class CourseFragment : BaseFragment() {
         setRecyclerViewItems()
     }
 
-    fun setCarousel(){
+    private fun setCarousel(){
         binding.apply {
             val cards = listOf(
                 CourseCard(
@@ -88,6 +89,7 @@ class CourseFragment : BaseFragment() {
             viewPager.offscreenPageLimit = 3
             dotsIndicator.attachTo(viewPager)
         }
+
     }
     @SuppressLint("InflateParams")
     private fun setPagerItems(){
@@ -96,7 +98,7 @@ class CourseFragment : BaseFragment() {
         val tabTitles = listOf("All", "Popular", "New") // Replace with your tab titles
         val adapter = PagerAdapter(fragmentActivity = requireActivity())
         for (title in tabTitles) {
-            adapter.addFragment(CourseCategoryFragment(), title) // Replace YourFragment with your actual fragment class
+            adapter.addFragment(PagerItemsListFragment(), title) // Replace YourFragment with your actual fragment class
         }
 
         viewPager.adapter = adapter

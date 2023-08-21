@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.peacemaker.android.courselearn.R
+import com.peacemaker.android.courselearn.model.CoursesItem
 
 class CourseCardAdapter(private val cards: List<CourseCard>) : RecyclerView.Adapter<CourseCardAdapter.CreditCardViewHolder>() {
     inner class CreditCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

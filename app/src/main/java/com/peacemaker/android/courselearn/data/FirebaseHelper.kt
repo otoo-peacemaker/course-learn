@@ -94,8 +94,7 @@ object FirebaseHelper {
             userData: T,
             collectionName: String,
             subCollectionName: String,
-            callback: (Boolean, String) -> Unit
-        ) {
+            callback: (Boolean, String) -> Unit) {
             val currentUser = auth.currentUser
             currentUser?.let {
                 val userSubCollectionRef = firestore.collection(collectionName)
@@ -124,8 +123,7 @@ object FirebaseHelper {
         fun <T : Any> addDocumentsToCollection(
             collectionName: String,
             documents: List<T>,
-            callback: (Boolean, String) -> Unit
-        ) {
+            callback: (Boolean, String) -> Unit) {
             val collection = db.collection(collectionName)
             for (document in documents) {
                 collection.add(document)
@@ -170,8 +168,7 @@ object FirebaseHelper {
             documentId: String,
             fieldName: String,
             fieldValue: T,
-            onComplete: (Boolean, String) -> Unit
-        ) {
+            onComplete: (Boolean, String) -> Unit) {
             val documentRef = collectionRef.document(documentId)
             documentRef.update(fieldName, fieldValue)
                 .addOnSuccessListener {
@@ -183,8 +180,6 @@ object FirebaseHelper {
                     onComplete(false, e.localizedMessage!!)
                 }
         }
-
-
     }
 }
 

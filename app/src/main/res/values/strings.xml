@@ -42,4 +42,5 @@
     <string name="verification_message">A verification email has been sent to your email address. Please check your inbox and click on the link to verify your account.</string>
     <string name="about_this_course">About this course</string>
     <string name="product_design">Product Design</string>
+    <string name="lesson_plan">Lesson Plan</string>
 </resources>

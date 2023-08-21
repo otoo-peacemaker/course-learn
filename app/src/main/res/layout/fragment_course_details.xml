@@ -40,6 +40,13 @@
                 android:layout_marginBottom="@dimen/_5sdp"
                 app:layout_constraintStart_toStartOf="@+id/bestSeller"
                 app:layout_constraintTop_toBottomOf="@+id/bestSeller" />
+
+            <androidx.media3.ui.PlayerControlView
+                android:id="@+id/player_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:resize_mode="fit"
+                app:use_controller="true" />
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -118,10 +125,12 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    tools:itemCount="2"
+                    tools:itemCount="6"
                     app:layout_constraintTop_toBottomOf="@+id/desc"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="?actionBarSize"
                     tools:listitem="@layout/course_content_list_item" />
 
                 <include
@@ -133,6 +142,12 @@
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     app:layout_constraintBottom_toBottomOf="parent"/>
+                <include
+                    android:id="@+id/loader"
+                    layout="@layout/progress_bar_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
     </FrameLayout>

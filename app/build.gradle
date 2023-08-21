@@ -55,7 +55,7 @@ dependencies {
 
     //navigation
     implementation "androidx.appcompat:appcompat:1.6.1" // Or any other dependencies you need
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.20" // Check the latest version
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.8.22" // Check the latest version
     implementation "androidx.navigation:navigation-fragment-ktx:2.7.0" // Check the latest version
     implementation "androidx.navigation:navigation-ui-ktx:2.7.0" // Check the latest version
 
@@ -84,7 +84,8 @@ dependencies {
     // Glide image loading library
     implementation 'com.github.bumptech.glide:glide:4.15.0'
     kapt 'com.github.bumptech.glide:compiler:4.15.0'
-//Responsiveness dimens
+
+    //Responsiveness dimens
     implementation 'com.intuit.ssp:ssp-android:1.0.6'
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
 
@@ -93,5 +94,15 @@ dependencies {
     kapt "androidx.room:room-compiler:2.5.2"
 
     implementation 'com.github.mukeshsolanki:android-otpview-pinview:2.1.0'
+
+    //Exoplayer
+    implementation "androidx.media3:media3-exoplayer:1.1.1"
+    implementation "androidx.media3:media3-exoplayer-dash:1.1.1"
+    implementation "androidx.media3:media3-ui:1.1.1"
+
+    implementation 'com.google.android.exoplayer:exoplayer:2.19.1'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.19.1'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.19.1'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.19.1'
 
 }

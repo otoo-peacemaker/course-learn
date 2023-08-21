@@ -1,62 +1,119 @@
 package com.peacemaker.android.courselearn.ui.home
 
-import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.peacemaker.android.courselearn.MainActivity
 import com.peacemaker.android.courselearn.R
+import com.peacemaker.android.courselearn.databinding.CourseCardLayoutBinding
 import com.peacemaker.android.courselearn.databinding.FragmentHomeBinding
+import com.peacemaker.android.courselearn.databinding.LessonPlanItemsBinding
+import com.peacemaker.android.courselearn.model.CoursesItem
 import com.peacemaker.android.courselearn.ui.account.AccountViewModel
-import kotlinx.coroutines.*
+import com.peacemaker.android.courselearn.ui.adapters.RecyclerBaseAdapter
+import com.peacemaker.android.courselearn.ui.util.BaseFragment
+import kotlinx.coroutines.runBlocking
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val viewModel: AccountViewModel by viewModels()
+    private val mAdapter by lazy { RecyclerBaseAdapter<CoursesItem>() }
+    private var coursesItem = mutableListOf<CoursesItem>()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View {
-        val homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
-
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeLiveDataResource(viewModel.userRelatedData, { items ->
+            printLogs("MyCoursesFragment", "$items")
+            coursesItem= items as MutableList<CoursesItem>
+            mAdapter.submitList(items)
+        })
+
+          setupUIItems()
+       // setupCarousel()
+        setupProfileData()
+        setupLessonPlan()
+    }
+
+    fun setOnClickListeners() {
+        binding.apply {}
+    }
+
+    private fun setupCarousel() {
+        mAdapter.expressionOnCreateViewHolder = { inflater, viewGroup ->
+            CourseCardLayoutBinding.inflate(inflater, viewGroup, false)
+        }
+        mAdapter.expressionViewHolderBinding = { eachItem, viewBinding ->
+            val view = viewBinding as CourseCardLayoutBinding
+            view.apply {
+                courseName.text = eachItem.courseName
+                val bundle = Bundle().apply {
+                    putParcelable("course", eachItem)
+                }
+                view.root.setOnClickListener {
+                    navigateTo(R.id.action_global_classroomFragment, bundle)
+                }
+            }
+        }
         binding.apply {
+            viewPager.adapter = mAdapter
+            viewPager.offscreenPageLimit = 3
+            dotsIndicator.attachTo(viewPager)
+        }
+
+    }
+
+    private fun setupUIItems() {
+        binding.apply {
+            val cardItem =  arrayListOf<CourseCard>()
+            coursesItem.forEach { coursesItem ->
+                cardItem.add(CourseCard(
+                    bgColor = changeResColor(R.color.default_card_bg_color),
+                    img = changeResDrawable(R.drawable.avatar_person),
+                    courseName = coursesItem.courseName
+                ))
+            }
+
+            printLogs("Items","$cardItem")
             val cards = listOf(
                 CourseCard(
-                    bgColor = resources.getColor(R.color.default_card_bg_color,null),
-                    img = ResourcesCompat.getDrawable(resources,R.drawable.avatar_person,null),
+                    bgColor = changeResColor(R.color.default_card_bg_color),
+                    img = changeResDrawable(R.drawable.avatar_person),
                     courseName = getString(R.string.course)
                 ),
                 CourseCard(
-                    bgColor = resources.getColor(R.color.icon_color,null),
-                    img = ResourcesCompat.getDrawable(resources,R.drawable.avatar_person,null),
+                    bgColor = changeResColor(R.color.icon_color),
+                    img = changeResDrawable(R.drawable.avatar_person),
                     courseName = getString(R.string.course)
                 ),
                 CourseCard(
-                    bgColor = resources.getColor(R.color.icon_color,null),
-                    img = ResourcesCompat.getDrawable(resources,R.drawable.avatar_person,null),
+                    bgColor = changeResColor(R.color.icon_color),
+                    img = changeResDrawable(R.drawable.avatar_person),
                     courseName = getString(R.string.course)
                 ),
                 CourseCard(
-                    bgColor = resources.getColor(R.color.icon_color,null),
-                    img = ResourcesCompat.getDrawable(resources,R.drawable.avatar_person,null),
+                    bgColor = changeResColor(R.color.icon_color),
+                    img = changeResDrawable(R.drawable.avatar_person),
                     courseName = getString(R.string.course)
                 ),
                 CourseCard(
-                    bgColor = resources.getColor(R.color.icon_color,null),
-                    img = ResourcesCompat.getDrawable(resources,R.drawable.avatar_person,null),
+                    bgColor = changeResColor(R.color.icon_color),
+                    img = changeResDrawable(R.drawable.avatar_person),
                     courseName = getString(R.string.course)
                 ),
             )
@@ -65,12 +122,9 @@ class HomeFragment : Fragment() {
             viewPager.offscreenPageLimit = 3
             dotsIndicator.attachTo(viewPager)
         }
-        observeData()
-        return root
     }
-    fun setOnClickListeners(){ binding.apply {} }
 
-    private fun observeData(){
+    private fun setupProfileData() {
         val mainBinding = (activity as MainActivity).binding
         // Observe the LiveData objects
         viewModel.profilePictureUri.observe(viewLifecycleOwner) { uri ->
@@ -79,20 +133,22 @@ class HomeFragment : Fragment() {
                 .load(uri)
                 .apply(
                     RequestOptions()
-                        .placeholder(R.drawable.avatar_person)//TODO: change the placeholder img to loader
-                        .error(R.drawable.avatar_person))
+                        .placeholder(R.drawable.loading_animation)
+                        .error(R.drawable.avatar_person)
+                )
                 .into(mainBinding.image)
 
             //// Update the profile picture of bottom icon
 
             runBlocking {
                 val profileImageDrawable = loadImageFromUrl(uri)
-                mainBinding.navView.menu.findItem(R.id.navigation_account).icon = profileImageDrawable
+                mainBinding.navView.menu.findItem(R.id.navigation_account).icon =
+                    profileImageDrawable
             }
 
         }
         viewModel.name.observe(viewLifecycleOwner) { name ->
-            mainBinding.title.text=name
+            mainBinding.title.text = name
             mainBinding.subtitle.text = getString(R.string.start_learning)
 
         }
@@ -102,52 +158,41 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun changeBottomProfileIcon(uri: Uri){
-        val mainBinding = (activity as MainActivity).binding
-        // Use Glide or your preferred image loading library to load the image
-        Glide.with(this)
-            .load(uri)
-            .apply(RequestOptions.circleCropTransform()) // Apply circular crop for a profile image
-            .into(object : com.bumptech.glide.request.target.CustomTarget<Drawable>() {
-                override fun onLoadStarted(placeholder: Drawable?) {
-                    // You can show a placeholder image while loading
-                    mainBinding.navView.menu.findItem(R.id.navigation_account).icon = ResourcesCompat.getDrawable(resources,R.drawable.avatar_person,null)
-                }
-
-                override fun onLoadFailed(errorDrawable: Drawable?) {
-                    // Handle the case when image loading fails
-                }
-
-                override fun onResourceReady(
-                    resource: Drawable,
-                    transition: com.bumptech.glide.request.transition.Transition<in Drawable>?
-                ) {
-                    // Update the icon of the profile item with the fetched image
-                    mainBinding.navView.menu.findItem(R.id.navigation_account).icon = resource
-                }
-
-                override fun onLoadCleared(placeholder: Drawable?) {
-                    // The image has been cleared
-                }
-            })
-    }
-
-    private suspend fun loadImageFromUrl(url: Uri) = withContext(Dispatchers.IO) {
-        return@withContext try {
-            Glide.with(requireContext())
-                .load(url)
-                .circleCrop()
-                .placeholder(R.drawable.ico_person)  // Placeholder if image loading fails
-                .error(R.drawable.ico_person)        // Error placeholder if loading fails
-                .submit()
-                .get()
-        } catch (e: Exception) {
-            null
+    private fun setupLessonPlan() {
+        mAdapter.expressionOnCreateViewHolder = { inflater, viewGroup ->
+            LessonPlanItemsBinding.inflate(inflater, viewGroup, false)
         }
+        mAdapter.expressionViewHolderBinding = { eachItem, viewBinding ->
+            val view = viewBinding as LessonPlanItemsBinding
+            view.apply {
+                courseName.text = eachItem.courseName
+                loadImageToImageView(
+                    requireContext(),
+                    eachItem.courseBgImg,
+                    courseImg,
+                    R.drawable.loading_animation,
+                    R.drawable.course_bg_img
+                )
+                val bundle = Bundle().apply {
+                    putParcelable("course", eachItem)
+                }
+                view.root.setOnClickListener {
+                    navigateTo(R.id.action_global_classroomFragment, bundle)
+                }
+            }
+        }
+
+        val recyclerView = binding.recyclerView
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = mAdapter
+
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 }
+

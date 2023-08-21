@@ -14,20 +14,19 @@
         android:clipChildren="false"
         android:clipToPadding="false"
         android:orientation="horizontal"
-        android:overScrollMode="never"
+        android:overScrollMode="ifContentScrolls"
         android:paddingStart="32dp"
         android:paddingEnd="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
         android:id="@+id/dots_indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:dotsColor="@color/primary"
         app:dotsCornerRadius="8dp"
-        app:dotsSize="10dp"
+        app:dotsSize="@dimen/_5sdp"
         app:dotsSpacing="4dp"
         app:dotsWidthFactor="2.5"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,4 +34,30 @@
         app:layout_constraintTop_toBottomOf="@id/viewPager"
         app:progressMode="true"
         app:selectedDotColor="#2C3988" />
+
+    <TextView
+        android:id="@+id/lesson"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lesson_plan"
+        android:fontFamily="@font/poppins_medium"
+        android:textSize="@dimen/_16ssp"
+        android:layout_marginStart="@dimen/_10sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dots_indicator" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lesson"
+        tools:itemCount="3"
+        android:layout_marginBottom="?actionBarSize"
+        tools:listitem="@layout/lesson_plan_items" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

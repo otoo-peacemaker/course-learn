@@ -1,18 +1,14 @@
 package com.peacemaker.android.courselearn.ui.courses
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.firestore.FirebaseFirestore
 import com.peacemaker.android.courselearn.R
 import com.peacemaker.android.courselearn.data.FirebaseHelper
 import com.peacemaker.android.courselearn.databinding.CourseContentListItemBinding
-import com.peacemaker.android.courselearn.databinding.CourseListItemsBinding
-import com.peacemaker.android.courselearn.databinding.FragmentCourseBinding
 import com.peacemaker.android.courselearn.databinding.FragmentCourseDetailsBinding
 import com.peacemaker.android.courselearn.model.CoursesItem
 import com.peacemaker.android.courselearn.model.Lesson
@@ -23,40 +19,42 @@ class CourseDetailsFragment : BaseFragment() {
     private var _binding: FragmentCourseDetailsBinding? = null
     private val binding get() = _binding!!
 
-    private  var coursesItem: CoursesItem?=null
+    private var coursesItem: CoursesItem? = null
     private val mAdapter by lazy { RecyclerBaseAdapter<Lesson>() }
+
     companion object {
         fun newInstance() = CourseDetailsFragment()
     }
 
-    private lateinit var viewModel: CourseViewModel
+    // private val viewModel: CourseViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCourseDetailsBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    @Suppress("DEPRECATION")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         arguments?.apply {
             coursesItem = getParcelable("course")!!
         }
 
         setUIItems()
         addToCourseButton()
-        return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[CourseViewModel::class.java]
-    }
-
-    private fun setUIItems(){
+    private fun setUIItems() {
         binding.apply {
             courseName.text = coursesItem?.courseName
             courseName2.text = coursesItem?.courseName
             coursePrice.text = coursesItem?.price
             desc.text = coursesItem?.courseAbout
-            minute.text = coursesItem?.duration?.hours?.toString()?.plus(":").plus(coursesItem?.duration?.minutes).plus(" hrs")
+            minute.text = coursesItem?.duration?.hours?.toString()?.plus(":")
+                .plus(coursesItem?.duration?.minutes).plus(" hrs")
             lesson.text = coursesItem?.lessons?.size.toString().plus(" Lessons")
             setConstraintLayoutBackground(
                 requireContext(),
@@ -69,7 +67,7 @@ class CourseDetailsFragment : BaseFragment() {
         setUpRecyclerview()
     }
 
-    fun setUpRecyclerview(){
+    private fun setUpRecyclerview() {
         val result = coursesItem?.lessons!!
         mAdapter.submitList(result)
         mAdapter.expressionOnCreateViewHolder = { inflater, viewGroup ->
@@ -79,7 +77,25 @@ class CourseDetailsFragment : BaseFragment() {
             val view = viewBinding as CourseContentListItemBinding
             view.courseNo.text = eachItem.id?.toString()
             view.title.text = eachItem.title
-            view.min.text = eachItem.duration?.hours.toString().plus(":").plus(eachItem.duration?.minutes)
+            view.min.text =
+                eachItem.duration?.hours.toString().plus(":").plus(eachItem.duration?.minutes)
+
+            view.playBtn.setOnClickListener {
+                when (it.background) {
+                    ResourcesCompat.getDrawable(resources, R.drawable.ico_play, null) -> {
+                        it.background = ResourcesCompat.getDrawable(
+                            resources,
+                            R.drawable.ico_course_pause,
+                            null
+                        )
+                    }
+                    ResourcesCompat.getDrawable(resources, R.drawable.ico_course_pause, null) -> {
+                        it.background =
+                            ResourcesCompat.getDrawable(resources, R.drawable.ico_play, null)
+                    }
+                }
+            }
+
         }
 
         val recyclerView = binding.recyclerView
@@ -87,16 +103,30 @@ class CourseDetailsFragment : BaseFragment() {
         recyclerView.adapter = mAdapter
     }
 
-    private fun addToCourseButton(){
-        val db = FirebaseFirestore.getInstance()
-        val usersRef = db.collection("users")
-        val docId = FirebaseHelper.UserDataCollection().getCurrentUser()?.providerData?.get(0)?.uid
-        setAppButton(binding.buy,"Add course"){//TODO : BUY COURSE, but I am just adding it to user freely for now
-            FirebaseHelper.UserDataCollection().addUserData(coursesItem as Any,"users","my_courses"){success,message->
-                if (success) showSnackBar(requireView(),"Course $message") else showSnackBar(requireView(),message)
-            }
+    private fun addToCourseButton() {
 
-            //navigateTo(R.id.action_courseDetailsFragment_to_myCoursesFragment,bundle)
+        setAppButton(binding.buy, "Add course") {
+            //TODO : BUY COURSE, but I am just adding it to user freely for now
+            /* viewModel.addToCourse(coursesItem)
+             printLogs("$CourseDetailsFragment","$coursesItem")*/
+
+            binding.loader.root.visibility = View.VISIBLE
+            binding.buy.containedButton.isEnabled = false
+            FirebaseHelper.UserDataCollection()
+                .addUserData(coursesItem as Any, "users", "my_courses") { success, message ->
+                    if (success) {
+                        binding.loader.root.visibility = View.GONE
+                        binding.buy.containedButton.isEnabled = true
+                        showSnackBar(requireView(), "Course $message")
+                        navigateTo(R.id.action_courseDetailsFragment_to_myCoursesFragment)
+                    } else {
+                        binding.loader.root.visibility = View.GONE
+                        binding.buy.containedButton.isEnabled = true
+                        showSnackBar(requireView(), message)
+
+                    }
+                }
+
         }
     }
 

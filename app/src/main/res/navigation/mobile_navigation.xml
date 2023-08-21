@@ -203,7 +203,7 @@
             android:id="@+id/navigation_message"
             android:name="com.peacemaker.android.courselearn.ui.message.MessageFragment"
             android:label="@string/message"
-            tools:layout="@layout/fragment_notifications" />
+            tools:layout="@layout/fragment_messages" />
         <fragment
             android:id="@+id/navigation_account"
             android:name="com.peacemaker.android.courselearn.ui.account.AccountFragment"
@@ -226,6 +226,9 @@
         <action
             android:id="@+id/action_global_courseDetailsFragment"
             app:destination="@id/courseDetailsFragment" />
+        <action
+            android:id="@+id/action_global_classroomFragment"
+            app:destination="@id/classroomFragment" />
     </navigation>
     <navigation android:id="@+id/other_graph"/>
     <fragment
@@ -250,6 +253,19 @@
         android:id="@+id/myCoursesFragment"
         android:name="com.peacemaker.android.courselearn.ui.courses.MyCoursesFragment"
         android:label="Courses"
-        tools:layout="@layout/fragment_my_courses" />
+        tools:layout="@layout/fragment_my_courses" >
+        <action
+            android:id="@+id/action_myCoursesFragment_to_classroomFragment"
+            app:destination="@id/classroomFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/classroomFragment"
+        android:name="com.peacemaker.android.courselearn.ui.courses.ClassroomFragment"
+        android:label="Classroom"
+        tools:layout="@layout/fragment_classroom" >
+        <action
+            android:id="@+id/action_classroomFragment_to_myCoursesFragment"
+            app:destination="@id/myCoursesFragment" />
+    </fragment>
 
 </navigation>

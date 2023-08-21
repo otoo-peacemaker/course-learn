@@ -1,20 +1,20 @@
-package com.peacemaker.android.courselearn.ui.courses
+package com.peacemaker.android.courselearn.ui.adapters
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.peacemaker.android.courselearn.R
-import com.peacemaker.android.courselearn.databinding.FragmentCourseBinding
-import com.peacemaker.android.courselearn.databinding.FragmentCourseCategoryBinding
+import androidx.lifecycle.ViewModelProvider
+import com.peacemaker.android.courselearn.databinding.FragmentPagerItemsListBinding
+import com.peacemaker.android.courselearn.ui.courses.CourseViewModel
+import com.peacemaker.android.courselearn.ui.util.BaseFragment
 
-class CourseCategoryFragment : Fragment() {
-    private var _binding: FragmentCourseCategoryBinding? = null
+class PagerItemsListFragment : BaseFragment() {
+    private var _binding: FragmentPagerItemsListBinding? = null
     private val binding get() = _binding!!
+
     companion object {
-        fun newInstance() = CourseCategoryFragment()
+        fun newInstance() = PagerItemsListFragment()
     }
 
     private lateinit var viewModel: CourseViewModel
@@ -23,7 +23,7 @@ class CourseCategoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCourseCategoryBinding.inflate(layoutInflater)
+        _binding = FragmentPagerItemsListBinding.inflate(layoutInflater)
         return binding.root
     }
 
