@@ -9,7 +9,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.peacemaker.android.courselearn.model.AppUser
+import com.peacemaker.android.courselearn.model.CoursesItem
+import com.peacemaker.android.courselearn.ui.util.Resource
 
 class AccountViewModel : ViewModel() {
     private val auth = FirebaseAuth.getInstance()
@@ -23,8 +26,12 @@ class AccountViewModel : ViewModel() {
     val name: MutableLiveData<String?>
         get() = _name
 
+    private val _userRelatedData = MutableLiveData<Resource<List<CoursesItem>?>>()
+    val userRelatedData: LiveData<Resource<List<CoursesItem>?>> = _userRelatedData
+
     init {
         getUserProfile()
+        loadUserRelatedData()
     }
 
     // Function to retrieve the user's profile information
@@ -49,5 +56,24 @@ class AccountViewModel : ViewModel() {
 
     private fun getUserProfileByUserId(userId: String): Task<DocumentSnapshot> {
         return fireStore.collection("users").document(userId).get()
+    }
+
+    private fun loadUserRelatedData() {
+        val userId = auth.currentUser?.uid
+        if (userId != null) {
+            val userCollectionRef = fireStore.collection("users").document(userId).collection("my_courses")
+
+            userCollectionRef.get()
+                .addOnSuccessListener { querySnapshot: QuerySnapshot ->
+                    val results = querySnapshot.toObjects(CoursesItem::class.java)
+                    _userRelatedData.value = Resource.success(results)
+                }
+                .addOnFailureListener { e ->
+                    _userRelatedData.value = e.localizedMessage?.let { Resource.error(null, it) }
+                }
+        } else {
+            // User is not authenticated
+            // Handle accordingly
+        }
     }
 }
