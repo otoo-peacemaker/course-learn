@@ -1,6 +1,7 @@
 package com.peacemaker.android.courselearn.ui.util
 
 import android.app.AlertDialog
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
@@ -20,6 +21,8 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
@@ -40,6 +43,8 @@ import com.peacemaker.android.courselearn.R
 import com.peacemaker.android.courselearn.databinding.AppButtonBinding
 import com.peacemaker.android.courselearn.databinding.OutlineTextButtonBinding
 import com.peacemaker.android.courselearn.databinding.ProgressBarLayoutBinding
+import com.peacemaker.android.courselearn.ui.util.Constants.CHANNEL_ID
+import com.peacemaker.android.courselearn.ui.util.Constants.NOTIFICATION_ID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -630,5 +635,42 @@ open class BaseFragment : Fragment() {
             null
         }
     }
+
+    fun getCurrentTime(): String {
+        val currentTime = System.currentTimeMillis()
+        val dateFormat = SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.getDefault())
+        return dateFormat.format(Date(currentTime))
+    }
+    fun getTimeAgoString(targetTime: Long): String {
+        val currentTime = System.currentTimeMillis()
+        val diff = currentTime - targetTime
+
+        val seconds = diff / 1000
+        val minutes = seconds / 60
+        val hours = minutes / 60
+        val days = hours / 24
+
+        return when {
+            seconds < 60 -> "Just now"
+            minutes < 2 -> "1 minute ago"
+            minutes < 60 -> "$minutes minutes ago"
+            hours < 2 -> "1 hour ago"
+            hours < 24 -> "$hours hours ago"
+            days < 2 -> "Yesterday"
+            days < 7 -> "$days days ago"
+            else -> {
+                val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+                dateFormat.format(Date(targetTime))
+            }
+        }
+    }
+
+
+    fun main() {
+        val targetTime = System.currentTimeMillis()
+        val timeAgoString = getTimeAgoString(targetTime)
+        println(timeAgoString)
+    }
+
 
 }

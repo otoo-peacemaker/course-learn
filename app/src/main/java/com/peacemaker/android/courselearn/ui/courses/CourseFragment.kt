@@ -52,7 +52,7 @@ class CourseFragment : BaseFragment() {
         viewModel = ViewModelProvider(this)[CourseViewModel::class.java]
         setCarousel()
         setPagerItems()
-        setRecyclerViewItems()
+        //setRecyclerViewItems()
     }
 
     private fun setCarousel(){
@@ -97,8 +97,24 @@ class CourseFragment : BaseFragment() {
         val viewPager = binding.viewPager2
         val tabTitles = listOf("All", "Popular", "New") // Replace with your tab titles
         val adapter = PagerAdapter(fragmentActivity = requireActivity())
+        val bundle = Bundle()
         for (title in tabTitles) {
-            adapter.addFragment(PagerItemsListFragment(), title) // Replace YourFragment with your actual fragment class
+            when(title){
+                "All"->{
+                    bundle.apply { bundle.putString("title",title) }
+                    adapter.addFragment(PagerItemsListFragment.newInstance(bundle), title)
+                }
+
+                "Popular"->{
+                    bundle.apply { bundle.putString("title",title) }
+                    adapter.addFragment(PagerItemsListFragment.newInstance(bundle), title)
+                }
+
+                "New"->{
+                    bundle.apply { bundle.putString("title",title) }
+                    adapter.addFragment(PagerItemsListFragment.newInstance(bundle), title)
+                }
+            }
         }
 
         viewPager.adapter = adapter
@@ -150,29 +166,18 @@ class CourseFragment : BaseFragment() {
                 recyclerView.layoutManager = LinearLayoutManager(requireContext())
                 recyclerView.adapter = mAdapter
 
-                // adapter.filter.filter("")
                 val searchEditText = binding.searchBar.searchView
                 searchEditText.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        count: Int,
-                        after: Int
-                    ) {
-//                TODO("Not yet implemented")
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                            // TODO("Not yet implemented")
                     }
-
-                    override fun onTextChanged(
-                        s: CharSequence?,
-                        start: Int,
-                        before: Int,
-                        count: Int
-                    ) {
-                        mAdapter.filter(s.toString())
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                        //mAdapter.filter(s.toString())
+                        mAdapter.filter.filter(s)
                     }
 
                     override fun afterTextChanged(s: Editable?) {
-                        mAdapter.filter(s.toString())
+                       // mAdapter.filter(s.toString())
                     }
                 })
             }

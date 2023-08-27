@@ -5,15 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.peacemaker.android.courselearn.MainActivity
 import com.peacemaker.android.courselearn.R
 import com.peacemaker.android.courselearn.data.FirebaseHelper
 import com.peacemaker.android.courselearn.databinding.CourseContentListItemBinding
 import com.peacemaker.android.courselearn.databinding.FragmentCourseDetailsBinding
 import com.peacemaker.android.courselearn.model.CoursesItem
 import com.peacemaker.android.courselearn.model.Lesson
+import com.peacemaker.android.courselearn.model.Notification
 import com.peacemaker.android.courselearn.ui.adapters.RecyclerBaseAdapter
+import com.peacemaker.android.courselearn.ui.message.MessageViewModel
 import com.peacemaker.android.courselearn.ui.util.BaseFragment
+import com.peacemaker.android.courselearn.ui.util.NetworkConnectivity
+import com.peacemaker.android.courselearn.ui.util.ApplicationNotificationManager
 
 class CourseDetailsFragment : BaseFragment() {
     private var _binding: FragmentCourseDetailsBinding? = null
@@ -21,6 +27,10 @@ class CourseDetailsFragment : BaseFragment() {
 
     private var coursesItem: CoursesItem? = null
     private val mAdapter by lazy { RecyclerBaseAdapter<Lesson>() }
+    private lateinit var networkConnectivityCallback: NetworkConnectivity
+
+    private val viewModel: MessageViewModel by viewModels()
+
 
     companion object {
         fun newInstance() = CourseDetailsFragment()
@@ -39,6 +49,9 @@ class CourseDetailsFragment : BaseFragment() {
     @Suppress("DEPRECATION")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        networkConnectivityCallback = NetworkConnectivity(requireContext())
+        networkConnectivityCallback.startListening()
+
         arguments?.apply {
             coursesItem = getParcelable("course")!!
         }
@@ -104,30 +117,59 @@ class CourseDetailsFragment : BaseFragment() {
     }
 
     private fun addToCourseButton() {
-
         setAppButton(binding.buy, "Add course") {
             //TODO : BUY COURSE, but I am just adding it to user freely for now
             /* viewModel.addToCourse(coursesItem)
              printLogs("$CourseDetailsFragment","$coursesItem")*/
-
             binding.loader.root.visibility = View.VISIBLE
             binding.buy.containedButton.isEnabled = false
-            FirebaseHelper.UserDataCollection()
-                .addUserData(coursesItem as Any, "users", "my_courses") { success, message ->
-                    if (success) {
-                        binding.loader.root.visibility = View.GONE
-                        binding.buy.containedButton.isEnabled = true
-                        showSnackBar(requireView(), "Course $message")
-                        navigateTo(R.id.action_courseDetailsFragment_to_myCoursesFragment)
-                    } else {
-                        binding.loader.root.visibility = View.GONE
-                        binding.buy.containedButton.isEnabled = true
-                        showSnackBar(requireView(), message)
 
-                    }
+            if (networkConnectivityCallback.isConnected()){
+                performRequest()
+            }else{
+                binding.loader.root.visibility = View.GONE
+                showRetrySnackBar(requireView(),"No Internet access","Retry"){
+                    performRequest()
                 }
+            }
 
         }
+    }
+
+
+    private fun performRequest(){
+        val firebaseHelper = FirebaseHelper.UserDataCollection()
+        val notification = Notification(
+            title = "You have successfully added new course" ,
+            time = System.currentTimeMillis(),
+            content = coursesItem
+        )
+
+        firebaseHelper.addUserData(coursesItem as Any, "users", "my_courses") { success, message ->
+            if (success) {
+                binding.loader.root.visibility = View.GONE
+                binding.buy.containedButton.isEnabled = true
+                //TODO: add notification to fb
+                  firebaseHelper.addUserData(notification as Any,"users","notification"){success,message->
+                      // TODO: show notification
+                      ApplicationNotificationManager.sendNotification(requireActivity(),"Course","You have successfully added new course")
+                      //NotificationManager.updateBadgeCount(requireActivity())
+                      (activity as MainActivity).updateBadgeCount(1)
+                  }
+                showSnackBar(requireView(), "Course $message")
+                navigateTo(R.id.action_courseDetailsFragment_to_myCoursesFragment)
+
+            } else {
+                binding.loader.root.visibility = View.GONE
+                binding.buy.containedButton.isEnabled = true
+                showSnackBar(requireView(), message)
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        networkConnectivityCallback.stopListening()
     }
 
 }

@@ -79,6 +79,7 @@ class SearchFragment : BaseFragment() {
                     }
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                         mAdapter.filter(s.toString())
+                        //mAdapter.filter.filter(s)
                     }
 
                     override fun afterTextChanged(s: Editable?) {

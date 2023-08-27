@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package com.peacemaker.android.courselearn.ui.home
 
 import android.os.Bundle
@@ -38,6 +40,7 @@ class HomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.loadUserRelatedData("my_courses",CoursesItem::class.java)
         observeLiveDataResource(viewModel.userRelatedData, { items ->
             printLogs("MyCoursesFragment", "$items")
             coursesItem= items as MutableList<CoursesItem>

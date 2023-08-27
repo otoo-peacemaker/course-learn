@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@android:id/text1"
+    android:layout_width="wrap_content"
+    android:background="@drawable/selected_tab_background"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tabText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:padding="@dimen/_5sdp"
+        android:gravity="center"
+        android:textAppearance="?attr/tabSelectedTextColor"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_16ssp" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="@dimen/_15sdp"
+        app:cardCornerRadius="@dimen/_10sdp"
+        android:visibility="gone"
+        android:layout_toEndOf="@android:id/text1"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_height="@dimen/_15sdp">
+        <TextView
+            android:id="@+id/badgeTextView"
+            android:background="@color/design_default_color_error"
+            android:layout_width="match_parent"
+            android:inputType="number"
+            android:textColor="@color/selectedTabTextColor"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:layout_gravity="center"
+            android:layout_height="match_parent"/>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>
+

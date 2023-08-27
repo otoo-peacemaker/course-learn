@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.gson.reflect.TypeToken
 import com.peacemaker.android.courselearn.model.AppUser
 import com.peacemaker.android.courselearn.model.CoursesItem
 import com.peacemaker.android.courselearn.ui.util.Resource
@@ -26,12 +27,12 @@ class AccountViewModel : ViewModel() {
     val name: MutableLiveData<String?>
         get() = _name
 
-    private val _userRelatedData = MutableLiveData<Resource<List<CoursesItem>?>>()
-    val userRelatedData: LiveData<Resource<List<CoursesItem>?>> = _userRelatedData
+    private val _userRelatedData = MutableLiveData<Resource<List<Any>?>>()
+    val userRelatedData: LiveData<Resource<List<Any>?>> = _userRelatedData
 
     init {
         getUserProfile()
-        loadUserRelatedData()
+       // loadUserRelatedData()
     }
 
     // Function to retrieve the user's profile information
@@ -57,15 +58,14 @@ class AccountViewModel : ViewModel() {
     private fun getUserProfileByUserId(userId: String): Task<DocumentSnapshot> {
         return fireStore.collection("users").document(userId).get()
     }
-
-    private fun loadUserRelatedData() {
+    fun <T : Any>loadUserRelatedData(collection: String, dataClass: Class<T>) {
         val userId = auth.currentUser?.uid
         if (userId != null) {
-            val userCollectionRef = fireStore.collection("users").document(userId).collection("my_courses")
+            val userCollectionRef = fireStore.collection("users").document(userId).collection(collection)
 
             userCollectionRef.get()
                 .addOnSuccessListener { querySnapshot: QuerySnapshot ->
-                    val results = querySnapshot.toObjects(CoursesItem::class.java)
+                    val results = querySnapshot.toObjects(dataClass)
                     _userRelatedData.value = Resource.success(results)
                 }
                 .addOnFailureListener { e ->
@@ -76,4 +76,5 @@ class AccountViewModel : ViewModel() {
             // Handle accordingly
         }
     }
+
 }

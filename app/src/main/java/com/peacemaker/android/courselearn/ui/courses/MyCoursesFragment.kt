@@ -18,6 +18,7 @@ class MyCoursesFragment : BaseFragment() {
     private var _binding: FragmentMyCoursesBinding? = null
     private val binding get() = _binding!!
     private val mAdapter by lazy { RecyclerBaseAdapter<CoursesItem>() }
+    private var coursesItem = mutableListOf<CoursesItem>()
 
     companion object {
         fun newInstance() = MyCoursesFragment()
@@ -38,9 +39,12 @@ class MyCoursesFragment : BaseFragment() {
         setUpRecyclerView()
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun setUpRecyclerView() {
+        viewModel.loadUserRelatedData("my_courses",CoursesItem::class.java)
         observeLiveDataResource(viewModel.userRelatedData, { items ->
             printLogs("MyCoursesFragment", "$items")
+            coursesItem= items as MutableList<CoursesItem>
             mAdapter.submitList(items)
         })
 

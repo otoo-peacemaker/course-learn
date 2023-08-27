@@ -103,7 +103,6 @@ class ClassroomFragment : BaseFragment() {
 
             view.apply {
                 playBtn.setOnClickListener {
-                    showSnackBar(requireView(),"clicker")
                     binding.exoControllerPlaceholder.visibility = View.GONE
                     videoPlayerManager.setVideoUrlIdAndPlay(eachItem.id){
                         if (it) binding.exoControllerLoader.visibility = View.VISIBLE

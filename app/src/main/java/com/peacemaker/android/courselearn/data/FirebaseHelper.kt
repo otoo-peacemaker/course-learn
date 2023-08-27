@@ -1,8 +1,12 @@
 package com.peacemaker.android.courselearn.data
 
 import android.content.ContentValues.TAG
+import android.provider.Settings.Global.getString
 import android.util.Log
+import android.widget.Toast
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
@@ -10,9 +14,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
+import com.peacemaker.android.courselearn.R
 import com.peacemaker.android.courselearn.model.AppUser
 import com.peacemaker.android.courselearn.model.CoursesItem
 import kotlinx.coroutines.tasks.await
+import java.net.UnknownHostException
 
 
 object FirebaseHelper {
@@ -95,27 +102,34 @@ object FirebaseHelper {
             collectionName: String,
             subCollectionName: String,
             callback: (Boolean, String) -> Unit) {
-            val currentUser = auth.currentUser
-            currentUser?.let {
-                val userSubCollectionRef = firestore.collection(collectionName)
-                    .document(currentUser.uid)
-                    .collection(subCollectionName)
-                // Generate a unique document ID for the data entry
-                val dataDocumentRef = userSubCollectionRef.document()
-                // Set the user data in the document
-                dataDocumentRef.set(userData)
-                    .addOnSuccessListener {
-                        // Data added successfully
-                        callback.invoke(true, "added successfully")
-                    }
-                    .addOnFailureListener { exception ->
-                        // Handle failure
-                        callback.invoke(false, exception.localizedMessage!!)
-                    }
+
+            try {
+                val currentUser = auth.currentUser
+                currentUser?.let {
+                    val userSubCollectionRef = firestore.collection(collectionName)
+                        .document(currentUser.uid)
+                        .collection(subCollectionName)
+                    // Generate a unique document ID for the data entry
+                    val dataDocumentRef = userSubCollectionRef.document()
+                    // Set the user data in the document
+                    dataDocumentRef.set(userData)
+                        .addOnSuccessListener {
+                            // Data added successfully
+                            callback.invoke(true, "added successfully")
+                        }
+                        .addOnFailureListener { exception ->
+                            // Handle failure
+                            callback.invoke(false, exception.localizedMessage!!)
+                        }
+                }
+            }catch (e:UnknownHostException){
+                e.localizedMessage?.let { callback.invoke(false, it) }
+            }catch (e:FirebaseException){
+                e.cause?.let { it.localizedMessage?.let { it1 -> callback.invoke(false, it1) } }
             }
+
         }
     }
-
     class DocumentCollection {
         private val db = FirebaseFirestore.getInstance()
         private val firestore = FirebaseFirestore.getInstance()
@@ -180,6 +194,21 @@ object FirebaseHelper {
                     onComplete(false, e.localizedMessage!!)
                 }
         }
+    }
+
+    object CloudMessagingServices{
+        fun getFCMToken(callback: (Boolean, String) -> Unit){
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    callback.invoke(false,"Fetching FCM registration token failed")
+                    return@OnCompleteListener
+                }
+                // Get new FCM registration token
+                val token = task.result
+                callback.invoke(true,token)
+            })
+        }
+
     }
 }
 

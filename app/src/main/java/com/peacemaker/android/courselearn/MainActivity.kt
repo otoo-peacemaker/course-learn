@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -19,12 +20,15 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.FirebaseApp
 import com.peacemaker.android.courselearn.databinding.ActivityMainBinding
+import com.peacemaker.android.courselearn.ui.message.MessageDetailsFragment
 
 
 class MainActivity : AppCompatActivity() {
+    private val viewModel: BaseViewModel by viewModels()
 
      lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
@@ -52,6 +56,8 @@ class MainActivity : AppCompatActivity() {
         )
         addOnDestinationChangedListener(navController)
         setOnclickListeners()
+        //notificationFragment()
+        observeBadgeCount()
     }
 
     private fun setOnclickListeners(){
@@ -111,10 +117,6 @@ class MainActivity : AppCompatActivity() {
             } else {
                 showVisibilityForBottomNav(false)
                   binding.customToolbar.visibility = View.GONE
-              /*  if (destination.id ==R.id.searchFragment){
-                    val statusBarColor = ContextCompat.getColor(this, R.color.titleBackground)
-                    changeStatusBarColor(window, statusBarColor)
-                }*/
             }
         }
     }
@@ -128,9 +130,40 @@ class MainActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = color
     }
-    private fun applyFabButton(){
-        binding.fab.setOnClickListener {
-            Log.d("MainActivity","Fab Applied")
+
+    /**
+     * A function to start a fragment using pending intent
+     * */
+
+    private fun notificationFragment(){
+        // Check if there's an intent with specific data
+        val fragmentToOpen = intent.getStringExtra("fragmentToOpen")
+        if (fragmentToOpen == "MessageDetailsFragment") {
+            val fragment = MessageDetailsFragment()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment_activity_main, fragment)
+                .commit()
+        }
+    }
+
+    fun updateBadgeCount(count: Int) {
+        viewModel.updateUnreadNotificationsCount(count)
+    }
+
+    private fun observeBadgeCount() {
+        viewModel.unreadNotificationsCount.observe(this) { unreadCount ->
+            val bottomNavigationView = binding.navView
+            val menuItemId = R.id.navigation_message // Update with the correct menu item ID
+            val menuItem = bottomNavigationView.menu.findItem(menuItemId)
+
+            // Create or update the badge
+            val badgeDrawable = BadgeDrawable.create(this)
+            if (unreadCount > 0) {
+                badgeDrawable.number = unreadCount
+                menuItem.icon = badgeDrawable
+            } else {
+                menuItem.icon = null // Remove the badge
+            }
         }
     }
 }

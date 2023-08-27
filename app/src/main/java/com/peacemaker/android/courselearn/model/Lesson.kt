@@ -1,8 +1,11 @@
 package com.peacemaker.android.courselearn.model
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Lesson(
     @SerializedName("content")
     val content: String?=null,
@@ -12,4 +15,4 @@ data class Lesson(
     val id: Int?=null,
     @SerializedName("title")
     val title: String?=null
-)
+):Parcelable

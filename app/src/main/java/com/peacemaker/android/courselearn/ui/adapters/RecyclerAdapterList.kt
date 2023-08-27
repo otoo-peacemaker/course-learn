@@ -12,8 +12,10 @@ import androidx.viewbinding.ViewBinding
 import java.util.*
 
 
-class RecyclerBaseAdapter<T : Any> : ListAdapter<T, RecyclerBaseAdapter.BaseViewHolder<T>>(ItemDiffCallback<T>()) {
+class RecyclerBaseAdapter<T : Any> : ListAdapter<T, BaseViewHolder<T>>(ItemDiffCallback<T>()),Filterable {
 
+    private var originalList: MutableList<T> = mutableListOf()
+    private var filteredList: MutableList<T> = mutableListOf()
     private var comparator: Comparator<T>? = null
 
     var expressionViewHolderBinding: ((T, ViewBinding) -> Unit)? = null
@@ -35,15 +37,12 @@ class RecyclerBaseAdapter<T : Any> : ListAdapter<T, RecyclerBaseAdapter.BaseView
         holder.bind(item)
     }
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
+    override fun getItemCount(): Int {
+        return currentList.size
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun setData(data: List<T>?) {
-        submitList(data?.toMutableList())
-        applySort()
-        notifyDataSetChanged()
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -63,7 +62,6 @@ class RecyclerBaseAdapter<T : Any> : ListAdapter<T, RecyclerBaseAdapter.BaseView
         applySort()
         notifyDataSetChanged()
     }
-
     private fun applySort() {
         comparator?.let { cmp ->
             val sortedList = currentList.sortedWith(cmp)
@@ -71,14 +69,43 @@ class RecyclerBaseAdapter<T : Any> : ListAdapter<T, RecyclerBaseAdapter.BaseView
         }
     }
 
-    class BaseViewHolder<T> internal constructor(
-        private val binding: ViewBinding,
-        private val expression: (T, ViewBinding) -> Unit
-    ) : RecyclerView.ViewHolder(binding.root) {
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val query = constraint?.toString()?.trim()?.lowercase(Locale.getDefault()) ?: ""
+                filteredList = if (query.isEmpty()) {
+                    originalList.toMutableList()
+                } else {
+                    originalList.filter { item ->
+                        item.toString().lowercase(Locale.getDefault()).contains(query)
+                    }.toMutableList()
+                }
+                val results = FilterResults()
+                results.values = filteredList
+                return results
+            }
 
-        fun bind(item: T) {
-            expression(item, binding)
+            @SuppressLint("NotifyDataSetChanged")
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                @Suppress("UNCHECKED_CAST")
+                filteredList = results?.values as MutableList<T>
+                submitList(filteredList.toMutableList())
+                notifyDataSetChanged()
+            }
         }
+    }
+
+}
+
+
+
+class BaseViewHolder<T> internal constructor(
+    private val binding: ViewBinding,
+    private val expression: (T, ViewBinding) -> Unit
+) : RecyclerView.ViewHolder(binding.root) {
+
+    fun bind(item: T) {
+        expression(item, binding)
     }
 }
 

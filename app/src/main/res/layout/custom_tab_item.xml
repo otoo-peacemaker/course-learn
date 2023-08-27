@@ -3,10 +3,12 @@
     android:id="@android:id/text1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="@string/app_name"
     android:background="@drawable/selected_tab_background"
-    android:padding="@dimen/_5sdp"
     android:gravity="center"
+    android:padding="@dimen/_5sdp"
+    android:fontFamily="@font/poppins_regular"
+    android:text="@string/notification"
     android:textAppearance="?attr/tabSelectedTextColor"
     android:textColor="@color/white"
-    android:textSize="@dimen/_16ssp" />
+    android:textSize="@dimen/_14ssp" />
+
