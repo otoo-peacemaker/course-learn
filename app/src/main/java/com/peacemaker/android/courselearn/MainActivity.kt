@@ -1,5 +1,7 @@
 package com.peacemaker.android.courselearn
 
+import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
 import android.content.res.ColorStateList
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -24,6 +26,7 @@ import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.FirebaseApp
 import com.peacemaker.android.courselearn.databinding.ActivityMainBinding
+import com.peacemaker.android.courselearn.ui.courses.ClassroomFragment
 import com.peacemaker.android.courselearn.ui.message.MessageDetailsFragment
 
 
@@ -58,6 +61,7 @@ class MainActivity : AppCompatActivity() {
         setOnclickListeners()
         //notificationFragment()
         observeBadgeCount()
+        //setScreenOrientation()
     }
 
     private fun setOnclickListeners(){
@@ -149,7 +153,6 @@ class MainActivity : AppCompatActivity() {
     fun updateBadgeCount(count: Int) {
         viewModel.updateUnreadNotificationsCount(count)
     }
-
     private fun observeBadgeCount() {
         viewModel.unreadNotificationsCount.observe(this) { unreadCount ->
             val bottomNavigationView = binding.navView
@@ -164,6 +167,19 @@ class MainActivity : AppCompatActivity() {
             } else {
                 menuItem.icon = null // Remove the badge
             }
+        }
+    }
+
+    @SuppressLint("SourceLockedOrientationActivity")
+    private fun setScreenOrientation(){
+
+        // Check the active fragment and adjust orientation if needed
+        val activeFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main)
+        requestedOrientation = if (activeFragment is ClassroomFragment) {
+            ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+        }else{
+            // Lock the activity orientation to portrait mode
+            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
     }
 }

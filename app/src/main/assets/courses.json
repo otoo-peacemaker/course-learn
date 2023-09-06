@@ -1,8 +1,407 @@
 [
+
+  {
+    "courseName": "Introduction to Algebra",
+    "authorName": "John Doe",
+    "courseBgImg": "https://ibb.co/QHDhJ5X",
+    "price": "$99.99",
+    "duration": {
+      "hours": 10,
+      "minutes": 30
+    },
+    "courseAbout": "Learn the basics Algebra.",
+    "lessons": [
+      {
+        "id": 1,
+        "title": "Simplifying Algebraic expressions involving variables and constants",
+        "duration": {
+          "hours": 1,
+          "minutes": 0
+        },
+        "content": "https://www.youtube.com/watch?v=MHeirBPOI6w"
+      },
+      {
+        "id": 2,
+        "title": "Solving linear equations",
+        "duration": {
+          "hours": 2,
+          "minutes": 15
+        },
+        "content": "https://www.youtube.com/watch?v=Z-ZkmpQBIFo"
+      },
+      {
+        "id": 3,
+        "title": "Solving quadratic and polynomial expressions",
+        "duration": {
+          "hours": 1,
+          "minutes": 30
+        },
+        "content": "https://youtube.com/shorts/JsAcQsidyIA?si=JV54Qj_10VzJraie"
+      },
+      {
+        "id": 4,
+        "title": "Solving inequalities",
+        "duration": {
+          "hours": 2,
+          "minutes": 45
+        },
+        "content": "https://www.youtube.com/watch?v=9FRtWFmhvAA"
+      },
+      {
+        "id": 5,
+        "title": "Learn algebraic functions",
+        "duration": {
+          "hours": 2,
+          "minutes": 45
+        },
+        "content": "https://www.youtube.com/watch?v=V3DJAHkSbNU"
+      }
+    ]
+  },
+  {
+    "courseName": "Data structures",
+    "authorName": "John Doe",
+    "courseBgImg": "https://ibb.co/9vd3Z5p",
+    "price": "$99.99",
+    "duration": {
+      "hours": 10,
+      "minutes": 30
+    },
+    "courseAbout": "Learn the basics of Data structures.",
+    "lessons": [
+      {
+        "id": 1,
+        "title": "Introduction to data structures",
+        "duration": {
+          "hours": 1,
+          "minutes": 0
+        },
+        "content": "https://www.youtube.com/watch?v=MHeirBPOI6w"
+      }
+    ]
+  },
+  {
+    "courseName": "Software Engineering Basics",
+    "authorName": "SECourses",
+    "courseBgImg": "https://ibb.co/mJR67cw",
+    "price": "$0.00",
+    "duration": {
+      "hours": 7,
+      "minutes": 30,
+      "seconds": 44
+    },
+    "courseAbout": "Learn the basics of Software Engineering.",
+    "lessons": [
+      {
+        "id": 1,
+        "title": "Introduction to Software Engineering,Software Products,Process Activities and Ethics",
+        "duration": {
+          "hours": 0,
+          "minutes": 53,
+          "seconds": 18
+        },
+        "content": "https://www.youtube.com/watch?v=8jH07r6135o&list=PL_pbwdIyffslgxMVyXhnHiSn_EWTvx1G-"
+      },
+      {
+        "id": 2,
+        "title": "Software Processes, Activities and The Rational Unified Process",
+        "duration": {
+          "hours": 1,
+          "minutes": 3,
+          "seconds": 48
+        },
+        "content": "https://www.youtube.com/watch?v=BBMEOagnBCU&list=PL_pbwdIyffslgxMVyXhnHiSn_EWTvx1G-&index=2"
+      },
+      {
+        "id": 3,
+        "title": "Agile Software Development and Extreme Programming",
+        "duration": {
+          "hours": 1,
+          "minutes": 10,
+          "seconds": 55
+        },
+        "content": "https://www.youtube.com/watch?v=KogKKAgN5Ps&list=PL_pbwdIyffslgxMVyXhnHiSn_EWTvx1G-&index=3&pp=iAQB"
+      },
+      {
+        "id": 4,
+        "title": "Requirements Engineering",
+        "duration": {
+          "hours": 1,
+          "minutes": 38,
+          "seconds": 9
+        },
+        "content": "https://www.youtube.com/watch?v=5cAxXUfb-KY&list=PL_pbwdIyffslgxMVyXhnHiSn_EWTvx1G-&index=4&pp=iAQB"
+      },
+      {
+        "id": 5,
+        "title": "System Modeling",
+        "duration": {
+          "hours": 1,
+          "minutes": 33,
+          "seconds": 3
+        },
+        "content": "https://www.youtube.com/watch?v=ULJP2sA-dV4&list=PL_pbwdIyffslgxMVyXhnHiSn_EWTvx1G-&index=5&pp=iAQB"
+      },
+      {
+        "id": 6,
+        "title": "Design and Implementation",
+        "duration": {
+          "hours": 1,
+          "minutes": 25,
+          "seconds": 31
+        },
+        "content": "https://www.youtube.com/watch?v=KANuMlt03ug&list=PL_pbwdIyffslgxMVyXhnHiSn_EWTvx1G-&index=7&pp=iAQB"
+      }
+    ]
+  },
+  {
+    "courseName": "E-commerece and Online Selling",
+    "authorName": "SECourses",
+    "courseBgImg": "https://ibb.co/LNgdf4r",
+    "price": "$0.00",
+    "duration": {
+      "hours": 1,
+      "minutes": 30
+    },
+    "courseAbout": "Learn the E-commerce and Online Selling.",
+    "lessons": [
+      {
+        "id": 1,
+        "title": "Introduction to E-commerce",
+        "duration": {
+          "hours": 0,
+          "minutes": 8,
+          "seconds": 45
+        },
+        "content": "https://www.youtube.com/watch?v=mZ7Vefzh2hU&pp=ygUaaW50cm9kdWN0aW9uIHRvIGUtY29tbWVyY2U%3D"
+      },
+      {
+        "id": 2,
+        "title": "Introduction to Online Selling",
+        "duration": {
+          "hours": 0,
+          "minutes": 37,
+          "seconds": 44
+        },
+        "content": "https://www.youtube.com/watch?v=fbBwPFoBTs4&pp=ygUeaW50cm9kdWN0aW9uIHRvIG9ubGluZSBzZWxsaW5n"
+      },
+      {
+        "id": 3,
+        "title": "E-commerce Vs E-business",
+        "duration": {
+          "hours": 0,
+          "minutes": 5,
+          "seconds": 3
+        },
+        "content": "https://www.youtube.com/watch?v=FhpWKUWjOuc"
+      },
+      {
+        "id": 4,
+        "title": "Sales Vs Marketing",
+        "duration": {
+          "hours": 0,
+          "minutes": 7,
+          "seconds": 4
+        },
+        "content": "https://www.youtube.com/watch?v=Oj3LCqiOnHw"
+      }
+    ]
+  },
+  {
+    "courseName": "Financial Management",
+    "authorName": "John Doe",
+    "courseBgImg": "https://ibb.co/P1MfLy6",
+    "price": "$99.99",
+    "duration": {
+      "hours": 10,
+      "minutes": 30
+    },
+    "courseAbout": " This course is about strategic planning, organising, directing, and controlling of financial undertakings in an organisation or an institute.",
+    "lessons": [
+      {
+        "id": 1,
+        "title": "Introduction to Financial Management",
+        "duration": {
+          "hours": 1,
+          "minutes": 0
+        },
+        "content": "https://youtu.be/MKLd1iw1lFw?si=bRkw67mW9c-FT3od"
+      },
+      {
+        "id": 2,
+        "title": "Legal forms of Business Organization",
+        "duration": {
+          "hours": 2,
+          "minutes": 15
+        },
+        "content": "https://youtu.be/IrDI-2RxL9Q?si=LUQBpq4gXsZyn2uP"
+      },
+      {
+        "id": 3,
+        "title": "Key Financial Statement",
+        "duration": {
+          "hours": 1,
+          "minutes": 30
+        },
+        "content1": "https://youtu.be/I1rzDulJTJE?si=N0OXsTFSXK9SzTuJ"
+      }
+    ]
+  },
+  {
+    "courseName": "Web Development Fundamentals",
+    "authorName": "John Doe",
+    "courseBgImg": "https://example.com/course_image.jpg",
+    "price": "$99.99",
+    "duration": {
+      "hours": 10,
+      "minutes": 30
+    },
+    "courseAbout": "Introduction to fundamental technologies and principles of the web.",
+    "lessons": [
+      {
+        "id": 1,
+        "title": "What is Internet",
+        "duration": {
+          "hours": 1,
+          "minutes": 0
+        },
+        "content": "https://youtu.be/XEq5gEhqPNE?si=3h6PZEMaFKZmleYl"
+      },
+      {
+        "id": 2,
+        "title": "What is Server",
+        "duration": {
+          "hours": 2,
+          "minutes": 15
+        },
+        "content": "https://youtu.be/uoRewMCELTk?si=9WX2dponht34j1Zj"
+      },
+      {
+        "id": 3,
+        "title": "Peer to Peer Networks",
+        "duration": {
+          "hours": 1,
+          "minutes": 30
+        },
+        "content1": "https://youtu.be/44Uhe8aj34U?si=80MRaF8Y-DuklYKg"
+      }
+    ]
+  },
+  {
+    "courseName": "Database Fundamentals",
+    "authorName": "John Doe",
+    "courseBgImg": "https://ibb.co/4pnZ7W4",
+    "price": "$99.99",
+    "duration": {
+      "hours": 10,
+      "minutes": 30
+    },
+    "courseAbout": "Database Fundamentals introduces database concepts, including relational databases, tables and data types, data selection and manipulation, views, stored procedures, functions, normalization, constraints, indexes, security, and backup and restore.",
+    "lessons": [
+      {
+        "id": 1,
+        "title": "Introduction to Database Management Systems",
+        "duration": {
+          "hours": 0,
+          "minutes": 15
+        },
+        "content": "https://youtu.be/6Iu45VZGQDk?si=C_tWqNMNcQjOYZXc"
+      },
+      {
+        "id": 2,
+        "title": "DBMS Characteristics",
+        "duration": {
+          "hours": 0,
+          "minutes": 15
+        },
+        "content": "https://youtu.be/wClEbCyWryI?si=fe2HbhretaDMdfBp"
+      },
+      {
+        "courseName": "Calculus 1",
+        "authorName": "Professor Leonard",
+        "courseBgImg": "https://example.com/course_image.jpg",
+        "price": "$99.99",
+        "duration": {
+          "hours": 10,
+          "minutes": 30
+        },
+        "courseAbout": "Learn the basics Calculus.",
+        "lessons": [
+          {
+            "id": 1,
+            "title": " Lecture 0.1: Lines, Angle of Inclination, and the Distance Formula",
+            "duration": {
+              "hours": 0,
+              "minutes": 49
+            },
+            "content": "https://youtu.be/fYyARMqiaag?si=g8RtqxdEMRqTgaUl"
+          },
+          {
+            "id": 2,
+            "title": "Lecture 0.2: Introduction to Functions.",
+            "duration": {
+              "hours": 1,
+              "minutes": 37
+            },
+            "content": "https://youtu.be/1EGFSefe5II?si=mbQN1xzVDuT_lSci"
+          },
+          {
+            "id": 3,
+            "title": "Lecture 0.3: Review of Trigonometry and Graphing Trigonometric Functions",
+            "duration": {
+              "hours": 1,
+              "minutes": 20
+            },
+            "content1": "https://youtu.be/SzLF-wLZF_I?si=pErRsj00VHHhgXoZ"
+          }
+        ]
+      },
+      {
+        "courseName": "Introduction to Statistics and Probability",
+        "authorName": "John Doe",
+        "courseBgImg": "https://example.com/course_image.jpg",
+        "price": "$99.99",
+        "duration": {
+          "hours": 10,
+          "minutes": 30
+        },
+        "courseAbout": "Learn about Statistics and Probability.",
+        "lessons": [
+          {
+            "id": 1,
+            "title": " Introduction to Statistics",
+            "duration": {
+              "hours": 0,
+              "minutes": 57
+            },
+            "content": "https://youtu.be/XZo4xyJXCak?si=McdxOOJxcdxYfchH"
+          },
+          {
+            "id": 2,
+            "title": "Descriptive Statistics vs Inferential Statistics",
+            "duration": {
+              "hours": 0,
+              "minutes": 7
+            },
+            "content": "https://youtu.be/VHYOuWu9jQI?si=l65E1VhwPojFx0b-"
+          },
+          {
+            "id": 3,
+            "title": " Qualitative and Quantitative.",
+            "duration": {
+              "hours": 0,
+              "minutes": 7
+            },
+            "content1": "https://youtu.be/5rUVYWfZOb8?si=V5gBUhCqcqkZcytT"
+          }
+        ]
+      }
+    ]
+  },
   {
     "courseName": "Mobile App Development",
     "authorName": "Alex Williams",
-    "courseBgImg": "https://example.com/mobile_app_dev.jpg",
+    "courseBgImg": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.zwbKckzUnUKoyaPlLD5G8AHaE8%26pid%3DApi&f=1&ipt=3b0d308fbe1633713ee99157a1c5d81fa8bb1d187fb27edae4c0564a932e8f52&ipo=images",
     "price": "$79.99",
     "duration": {
       "hours": 15,
@@ -33,7 +432,7 @@
   {
     "courseName": "Introduction to Android Development",
     "authorName": "John Doe",
-    "courseBgImg": "https://example.com/course_image.jpg",
+    "courseBgImg": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.vp3akHsN1RigMlpwtoumnAHaD8%26pid%3DApi&f=1&ipt=be789d205396bc9eae42c0443f4db0cce40557bad158441ab208a54bbb3a7c27&ipo=images",
     "price": "$99.99",
     "duration": {
       "hours": 10,
@@ -48,7 +447,7 @@
           "hours": 1,
           "minutes": 0
         },
-        "content": "https://example.com/lesson1_video.mp4"
+        "content": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
       },
       {
         "id": 2,
@@ -57,7 +456,7 @@
           "hours": 2,
           "minutes": 15
         },
-        "content": "https://example.com/lesson2_video.mp4"
+        "content": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
       },
       {
         "id": 3,
@@ -66,7 +465,7 @@
           "hours": 1,
           "minutes": 30
         },
-        "content": "https://example.com/lesson3_video.mp4"
+        "content": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
       },
       {
         "id": 4,
@@ -75,11 +474,10 @@
           "hours": 2,
           "minutes": 45
         },
-        "content": "https://example.com/lesson4_video.mp4"
+        "content": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
       }
     ]
   },
-
   {
     "courseName": "Data Science Essentials",
     "authorName": "Sophia Miller",
@@ -245,7 +643,6 @@
       }
     ]
   },
-
   {
     "courseName": "Introduction to Programming",
     "authorName": "John Smith",
@@ -276,37 +673,5 @@
         "content": "https://example.com/intro_to_prog_lesson_2.mp4"
       }
     ]
-  },
-  {
-    "courseName": "Web Development Fundamentals",
-    "authorName": "Emily Johnson",
-    "courseBgImg": "https://example.com/web_dev_fundamentals.jpg",
-    "price": "$59.99",
-    "duration": {
-      "hours": 12,
-      "minutes": 0
-    },
-    "courseAbout": "Learn the basics of web development.",
-    "lessons": [
-      {
-        "id": 1,
-        "title": "HTML Basics",
-        "duration": {
-          "hours": 1,
-          "minutes": 45
-        },
-        "content": "https://example.com/web_dev_lesson_1.mp4"
-      },
-      {
-        "id": 2,
-        "title": "CSS Styling",
-        "duration": {
-          "hours": 2,
-          "minutes": 30
-        },
-        "content": "https://example.com/web_dev_lesson_2.mp4"
-      }
-    ]
   }
-
 ]

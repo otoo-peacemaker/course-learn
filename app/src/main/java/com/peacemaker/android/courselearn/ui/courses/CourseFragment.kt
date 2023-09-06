@@ -22,7 +22,7 @@ import com.peacemaker.android.courselearn.model.CoursesItem
 import com.peacemaker.android.courselearn.ui.adapters.PagerAdapter
 import com.peacemaker.android.courselearn.ui.adapters.PagerItemsListFragment
 import com.peacemaker.android.courselearn.ui.adapters.RecyclerBaseAdapter
-import com.peacemaker.android.courselearn.ui.home.CourseCard
+import com.peacemaker.android.courselearn.model.CourseCard
 import com.peacemaker.android.courselearn.ui.home.CourseCardAdapter
 import com.peacemaker.android.courselearn.ui.search.SearchFragment
 import com.peacemaker.android.courselearn.ui.util.BaseFragment
@@ -140,7 +140,7 @@ class CourseFragment : BaseFragment() {
         val firestore = FirebaseFirestore.getInstance()
         val collectionName = "courses"
         FirebaseHelper.DocumentCollection()
-            .getDocumentsByType(firestore, collectionName, CoursesItem::class.java) {message, result->
+            .getDocumentsByType(firestore, collectionName, CoursesItem::class.java) { _, result->
                 printLogs("$SearchFragment", "$result")
                 mAdapter.submitList(result)
                 mAdapter.expressionOnCreateViewHolder = { inflater, viewGroup ->

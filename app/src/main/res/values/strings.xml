@@ -43,4 +43,7 @@
     <string name="about_this_course">About this course</string>
     <string name="product_design">Product Design</string>
     <string name="lesson_plan">Lesson Plan</string>
+    <string name="search_course">Search course</string>
+    <string name="bestseller">BESTSELLER</string>
+    <string name="lesson">lesson</string>
 </resources>

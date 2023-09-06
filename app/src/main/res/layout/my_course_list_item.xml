@@ -3,11 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/_140sdp"
+    android:layout_marginTop="@dimen/_5sdp"
+    android:layout_width="wrap_content"
+    android:layout_marginStart="@dimen/_4sdp"
     app:cardCornerRadius="@dimen/_5sdp"
-    android:layout_marginStart="@dimen/_10sdp"
-    android:layout_marginBottom="@dimen/_5sdp"
-    android:layout_height="@dimen/_130sdp">
+    android:layout_height="wrap_content">
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
@@ -18,12 +18,12 @@
         android:id="@+id/courseName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:maxLines="2"
+        android:padding="@dimen/_5sdp"
         android:fontFamily="@font/poppins_bold"
-        android:textSize="@dimen/_14ssp"
-        android:layout_marginStart="@dimen/_10sdp"
+        android:maxLines="2"
         android:text="Product Design v1.0"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,11 +32,9 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_5sdp"
-        app:layout_constraintTop_toBottomOf="@+id/courseName"
-        tools:layout_editor_absoluteX="5dp" />
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/courseName" />
 
     <TextView
         android:id="@+id/playBtn"
@@ -44,9 +42,9 @@
         android:layout_height="wrap_content"
         android:background="@drawable/ico_play"
         android:layout_marginEnd="@dimen/_5sdp"
-        app:layout_constraintBottom_toBottomOf="@+id/viewed"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/completed" />
+        android:layout_marginBottom="@dimen/_5sdp" />
 
     <TextView
         android:id="@+id/completed"
@@ -60,13 +58,11 @@
         android:id="@+id/viewed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_bold"
+        android:fontFamily="@font/poppins_regular"
         android:text="14/24"
-        android:textSize="@dimen/_18ssp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="@dimen/_13ssp"
         app:layout_constraintStart_toStartOf="@id/completed"
-        app:layout_constraintTop_toBottomOf="@id/completed"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintTop_toBottomOf="@id/completed" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

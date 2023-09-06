@@ -24,7 +24,6 @@ import com.peacemaker.android.courselearn.ui.util.VerificationStatus
 class AuthViewModel : ViewModel() {
 
     private var auth = FirebaseAuth.getInstance()
-
     private val _createUserLiveData = MutableLiveData<Resource<FirebaseUser>>()
     val createUserLiveData: LiveData<Resource<FirebaseUser>> = _createUserLiveData
 
@@ -155,7 +154,6 @@ class AuthViewModel : ViewModel() {
                 }
             })
             .build()
-
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
     fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
@@ -193,7 +191,6 @@ class AuthViewModel : ViewModel() {
                 }
             }
     }
-
     fun signOut(route :()->Unit) {
         if (auth.currentUser !=null ){
             auth.signOut()

@@ -8,5 +8,6 @@ object Constants {
      const val CHANNEL_NAME = "course_added"
      const val CHANNEL_DESCRIPTION = "course_notification_channel"
      const val NOTIFICATION_ID = 111
+     const val USER_PREFERENCES_NAME = "user_preferences"
 
 }

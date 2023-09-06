@@ -16,8 +16,6 @@ import com.peacemaker.android.courselearn.ui.util.Constants.CHANNEL_NAME
 import com.peacemaker.android.courselearn.ui.util.Constants.NOTIFICATION_ID
 
 class AppFirebaseMessagingService : FirebaseMessagingService() {
-
-
     override fun onNewToken(token: String) {
         super.onNewToken(token)
 
@@ -57,18 +55,15 @@ class AppFirebaseMessagingService : FirebaseMessagingService() {
             .addAction(
                 R.drawable.google,
                 "View content",
-                intentGraph
-            )
+                intentGraph)
 
-        val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         // Check for Android Oreo and higher for notification channels
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel =
                 NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
             notificationManager.createNotificationChannel(channel)
         }
-
         // Show the notification
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build())
     }

@@ -1,47 +1,50 @@
 package com.peacemaker.android.courselearn.data
 
 import android.content.ContentValues.TAG
-import android.provider.Settings.Global.getString
+import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
+import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.*
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
-import com.peacemaker.android.courselearn.R
 import com.peacemaker.android.courselearn.model.AppUser
-import com.peacemaker.android.courselearn.model.CoursesItem
 import kotlinx.coroutines.tasks.await
 import java.net.UnknownHostException
 
-
 object FirebaseHelper {
     class UserDataCollection {
-        private val firestore = FirebaseFirestore.getInstance()
-        private val auth = FirebaseAuth.getInstance()
+        private val fireStore = FirebaseFirestore.getInstance()
+        private var db = FirebaseDatabase.getInstance()
+        private var usersListRef: DatabaseReference = db.getReference("users")
+        var onlineStatus: DatabaseReference? = null
+        private var connectedRef: DatabaseReference? = null
+        private var userListValueEventListener: ValueEventListener? = null
+        var userListItems = mutableListOf <String>()
+        var adapter: ArrayAdapter<String>? = null
 
         fun getCurrentUser(): FirebaseUser? {
             return FirebaseAuth.getInstance().currentUser
         }
-
         fun findUserById(users: List<AppUser>, id: String): AppUser? {
             return users.find { it.id == id }
         }
-
         fun findUserByName(users: List<AppUser>, name: String): AppUser? {
             return users.find { it.name.equals(name, ignoreCase = true) }
         }
-
-        fun getUserByUID(uid: String, onResult: (AppUser?) -> Unit) {
+        fun getUserByUID(uid: String?, onResult: (AppUser?) -> Unit) {
             val db = Firebase.firestore
-            db.collection("users").document(uid).get()
+            db.collection("users").document(uid!!).get()
                 .addOnSuccessListener { document ->
                     if (document != null && document.exists()) {
                         val user = document.toObject(AppUser::class.java)
@@ -55,11 +58,9 @@ object FirebaseHelper {
                     onResult(null)
                 }
         }
-
         fun getUsersCollection(): CollectionReference {
             return Firebase.firestore.collection("users")
         }
-
         //Save user data when user sign in with google
         fun saveUserProfileWithGoogle(user: AppUser): Task<Void> {
             val db = FirebaseFirestore.getInstance()
@@ -69,9 +70,8 @@ object FirebaseHelper {
                 .document(uid)
                 .set(user, SetOptions.merge())
         }
-
         fun getAccountBalanceByUID(uid: String, callback: (Double?) -> Unit) {
-            val docRef = firestore.collection("users").document(uid)
+            val docRef = fireStore.collection("users").document(uid)
             docRef.get().addOnSuccessListener { document ->
                 if (document != null) {
                     val user = document.toObject(AppUser::class.java)
@@ -88,7 +88,6 @@ object FirebaseHelper {
                 Log.d(TAG, "Error getting user account balance: ", exception)
             }
         }
-
         /***
          * A function to store user-specific data under a particular user
          * @param userData Data object type
@@ -104,9 +103,9 @@ object FirebaseHelper {
             callback: (Boolean, String) -> Unit) {
 
             try {
-                val currentUser = auth.currentUser
+                val currentUser = getCurrentUser()
                 currentUser?.let {
-                    val userSubCollectionRef = firestore.collection(collectionName)
+                    val userSubCollectionRef = fireStore.collection(collectionName)
                         .document(currentUser.uid)
                         .collection(subCollectionName)
                     // Generate a unique document ID for the data entry
@@ -128,6 +127,74 @@ object FirebaseHelper {
                 e.cause?.let { it.localizedMessage?.let { it1 -> callback.invoke(false, it1) } }
             }
 
+        }
+        fun addOnlineUsers(currentUser: FirebaseUser?) {
+            usersListRef.child(currentUser!!.uid).setValue(AppUser(name= currentUser.displayName, status = "Online"))
+            onlineStatus = db.getReference("users/" + currentUser.uid + "/onlineStatus")
+            connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected")
+            connectedRef!!.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val connected = snapshot.getValue(Boolean::class.java)!!
+                    if (connected) {
+                        onlineStatus!!.onDisconnect().setValue("offline")
+                        onlineStatus!!.setValue("Online")
+                    } else {
+                        onlineStatus!!.setValue("offline")
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {}
+            })
+        }
+        fun showOnlineUsers(onlineUsers :(MutableList<String>?)->Unit) {
+            userListValueEventListener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    userListItems.clear()
+                    //first check datasnap shot exist
+                    //then add all users except current/self user
+                    if (dataSnapshot.exists()) {
+                        for (ds in dataSnapshot.children) {
+                            if (ds.exists() && ds.key != getCurrentUser()!!.uid) {
+                                val name = ds.child("name").getValue(String::class.java)!!
+                                val onlineStatus = ds.child("onlineStatus").getValue(String::class.java)!!
+                                userListItems.add("$name status : $onlineStatus")
+                            }
+                        }
+                    }
+                    onlineUsers.invoke(userListItems)
+                }
+                override fun onCancelled(databaseError: DatabaseError) {}
+            }
+            usersListRef.addValueEventListener(userListValueEventListener!!)
+        }
+        fun removeUserEventListener(){
+            usersListRef.removeEventListener(userListValueEventListener!!)
+        }
+        fun checkUserOnlineStatus(callback: (Boolean, String?) -> Unit) {
+            val userId = getCurrentUser()?.uid
+            if (userId != null) {
+                val onlineStatusRef = db.getReference("online_status")
+                val userStatusRef = onlineStatusRef.child(userId)
+                val userDocumentRef = fireStore.collection("users").document(userId)
+                userStatusRef.addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val isOnline = snapshot.getValue(Boolean::class.java) ?: false
+                        // Retrieve the user's name from Fire store
+                        userDocumentRef.get().addOnSuccessListener { documentSnapshot ->
+                            val userName = documentSnapshot.getString("name")
+                            callback(isOnline, userName)
+                        }.addOnFailureListener {
+                            callback(isOnline, null) // Handle the error here
+                        }
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                        // Handle the error if necessary
+                        callback(false, null) // Set the default value to false and null username in case of an error
+                    }
+                })
+            } else {
+                // User is not authenticated or user ID is null
+                callback(false, null)
+            }
         }
     }
     class DocumentCollection {
@@ -195,7 +262,6 @@ object FirebaseHelper {
                 }
         }
     }
-
     object CloudMessagingServices{
         fun getFCMToken(callback: (Boolean, String) -> Unit){
             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
@@ -210,5 +276,6 @@ object FirebaseHelper {
         }
 
     }
+
 }
 

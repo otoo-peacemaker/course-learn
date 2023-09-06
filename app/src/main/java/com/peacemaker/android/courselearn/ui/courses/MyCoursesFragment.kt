@@ -11,7 +11,9 @@ import com.peacemaker.android.courselearn.databinding.FragmentMyCoursesBinding
 import com.peacemaker.android.courselearn.databinding.MyCourseListItemBinding
 import com.peacemaker.android.courselearn.model.CoursesItem
 import com.peacemaker.android.courselearn.ui.account.AccountViewModel
+import com.peacemaker.android.courselearn.ui.adapters.GridSpacingItemDecoration
 import com.peacemaker.android.courselearn.ui.adapters.RecyclerBaseAdapter
+import com.peacemaker.android.courselearn.ui.adapters.RecyclerViewItemDecoration
 import com.peacemaker.android.courselearn.ui.util.BaseFragment
 
 class MyCoursesFragment : BaseFragment() {
@@ -63,8 +65,12 @@ class MyCoursesFragment : BaseFragment() {
                 }
             }
         }
+        val spanCount = 2
+        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing) // Define your desired spacing in pixels
         val recyclerView = binding.recyclerView
-        recyclerView.layoutManager = StaggeredGridLayoutManager(2, 1)
+        recyclerView.layoutManager = StaggeredGridLayoutManager(spanCount, 1)
+        val itemDecoration = RecyclerViewItemDecoration(spanCount, spacingInPixels)
+        recyclerView.addItemDecoration(itemDecoration)
         recyclerView.adapter = mAdapter
 
     }

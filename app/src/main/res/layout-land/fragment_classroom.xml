@@ -1,89 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.courses.CourseDetailsFragment">
-
-    <FrameLayout
+    tools:context=".ui.courses.ClassroomFragment"
+    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
+
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/courseImg"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_200sdp"
-            android:layout_gravity="top">
+            android:layout_height="@dimen/_220sdp"
+            android:layout_gravity="top"
+            app:layout_constraintTop_toTopOf="parent">
+
             <androidx.media3.ui.PlayerView
                 android:id="@+id/player_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:resize_mode="fit"
+                app:auto_show="true"
+                app:layout_constraintTop_toTopOf="parent"
+                app:played_color="@color/primary"
+                app:resize_mode="fixed_height"
                 app:use_controller="true" />
+
             <ImageView
-                android:id="@+id/courseImg"
+                android:id="@+id/exo_controller_placeholder"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/course_bg_img"
-                android:contentDescription="@null" />
+                android:contentDescription="@null"
+                android:visibility="visible" />
+
             <ImageView
                 android:id="@+id/exo_controller_loader"
                 android:layout_width="match_parent"
-                android:visibility="gone"
-                android:src="@drawable/loading_animation"
                 android:layout_height="match_parent"
-                android:contentDescription="@null" />
-            <TextView
-                android:id="@+id/bestSeller"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_30sdp"
-                android:background="@drawable/bestseller_tag"
-                android:fontFamily="@font/poppins_medium"
-                android:gravity="center"
-                android:text="@string/bestseller"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-            <TextView
-                android:id="@+id/courseName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_30sdp"
-                android:fontFamily="@font/poppins_bold"
-                android:text="Product Design"
-                android:textColor="@color/normalTextColor"
-                android:textSize="@dimen/_20ssp"
-                android:layout_marginBottom="@dimen/_5sdp"
-                app:layout_constraintStart_toStartOf="@+id/bestSeller"
-                app:layout_constraintTop_toBottomOf="@+id/bestSeller" />
-
+                android:contentDescription="@null"
+                android:src="@drawable/loading_animation"
+                android:visibility="gone" />
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.cardview.widget.CardView
+            app:layout_constraintTop_toBottomOf="@id/courseImg"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_390sdp"
+            android:layout_height="@dimen/_160sdp"
             android:layout_gravity="bottom"
             app:cardCornerRadius="@dimen/_20sdp">
-
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/titleBackground">
+
                 <TextView
                     android:id="@+id/courseName2"
-                    android:layout_width="@dimen/_200sdp"
+                    android:layout_width="@dimen/_300sdp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="@string/product_design"
-                    android:maxLines="2"
                     android:maxLength="100"
+                    android:maxLines="2"
+                    android:text="@string/product_design"
                     android:textColor="@color/normalTextColor"
                     android:textSize="@dimen/_20ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
                     android:id="@+id/coursePrice"
                     android:layout_width="wrap_content"
@@ -95,14 +80,16 @@
                     android:textSize="@dimen/_18ssp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/courseName2" />
+
                 <TextView
                     android:id="@+id/minute"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_regular"
                     android:text="min"
-                    app:layout_constraintStart_toStartOf="@+id/courseName2"
-                    app:layout_constraintTop_toBottomOf="@+id/courseName2" />
+                    app:layout_constraintBottom_toBottomOf="@+id/courseName2"
+                    app:layout_constraintStart_toEndOf="@id/courseName2"
+                    app:layout_constraintTop_toTopOf="@+id/courseName2" />
 
                 <TextView
                     android:id="@+id/lesson"
@@ -110,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:fontFamily="@font/poppins_regular"
-                    android:text="@string/lesson"
+                    android:text="lesson"
                     app:layout_constraintStart_toEndOf="@+id/minute"
                     app:layout_constraintTop_toTopOf="@+id/minute" />
 
@@ -118,13 +105,12 @@
                     android:id="@+id/textView11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_20sdp"
                     android:fontFamily="@font/poppins_bold"
                     android:text="@string/about_this_course"
                     android:textColor="@color/normalTextColor"
                     android:textSize="@dimen/_14ssp"
-                    app:layout_constraintStart_toStartOf="@+id/minute"
-                    app:layout_constraintTop_toBottomOf="@+id/minute" />
+                    app:layout_constraintStart_toStartOf="@+id/courseName2"
+                    app:layout_constraintTop_toBottomOf="@+id/courseName2" />
 
                 <TextView
                     android:id="@+id/desc"
@@ -133,26 +119,31 @@
                     android:text="@string/details"
                     app:layout_constraintStart_toStartOf="@+id/textView11"
                     app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
-                    android:layout_width="match_parent"
+                    android:layout_width="@dimen/_400sdp"
                     android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    tools:itemCount="6"
-                    app:layout_constraintTop_toBottomOf="@+id/desc"
+                    android:layout_marginTop="@dimen/_5sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginBottom="?actionBarSize"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/desc"
+                    tools:itemCount="2"
                     tools:listitem="@layout/course_content_list_item" />
 
                 <include
                     android:id="@+id/buy"
                     layout="@layout/app_button"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.995"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/recyclerView" />
+
                 <include
                     android:id="@+id/loader"
                     layout="@layout/progress_bar_layout"
@@ -161,6 +152,5 @@
                     android:visibility="gone" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
-    </FrameLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

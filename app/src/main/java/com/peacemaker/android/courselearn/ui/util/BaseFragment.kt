@@ -1,7 +1,6 @@
 package com.peacemaker.android.courselearn.ui.util
 
 import android.app.AlertDialog
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
@@ -21,13 +20,10 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
-import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
@@ -40,11 +36,12 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.peacemaker.android.courselearn.MainActivity
 import com.peacemaker.android.courselearn.R
+import com.peacemaker.android.courselearn.data.FirebaseHelper
 import com.peacemaker.android.courselearn.databinding.AppButtonBinding
 import com.peacemaker.android.courselearn.databinding.OutlineTextButtonBinding
 import com.peacemaker.android.courselearn.databinding.ProgressBarLayoutBinding
-import com.peacemaker.android.courselearn.ui.util.Constants.CHANNEL_ID
-import com.peacemaker.android.courselearn.ui.util.Constants.NOTIFICATION_ID
+import com.peacemaker.android.courselearn.model.AppMessages
+import com.peacemaker.android.courselearn.model.MessageBody
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -56,15 +53,11 @@ import java.util.*
 import java.util.regex.Pattern
 
 open class BaseFragment : Fragment() {
-
-    private lateinit var navController: NavController
     private lateinit var backPressedCallback: OnBackPressedCallback
 
     fun setTextViewPartialColor(
-        textView: TextView,
-        fullText: String,
-        partialText: String,
-        color: Int) {
+        textView: TextView, fullText: String,
+        partialText: String, color: Int) {
         val spannableString = SpannableString(fullText)
         val startIndex = fullText.indexOf(partialText)
         if (startIndex >= 0) {
@@ -103,12 +96,14 @@ open class BaseFragment : Fragment() {
         // If both email and password are valid, return true
         return true
     }
+
     fun validateString(string: String): Boolean {
         return with(string) {
             this.isNotEmpty()
             this.length > 3
         }
     }
+
     private fun isValidPasswordFormat(password: String): Boolean {
         val passwordREGEX = Pattern.compile("^" +
                 "(?=.*[0-9])" +         //at least 1 digit
@@ -165,9 +160,7 @@ open class BaseFragment : Fragment() {
 
     fun setupAutoCompleteTextView(
         autoCompleteTextView: AutoCompleteTextView,
-        suggestions: List<String>,
-        onItemClick: ((String) -> Unit)? = null) {
-
+        suggestions: List<String>, onItemClick: ((String) -> Unit)? = null) {
         val adapter = ArrayAdapter(
             autoCompleteTextView.context,
             android.R.layout.simple_dropdown_item_1line, suggestions)
@@ -195,11 +188,8 @@ open class BaseFragment : Fragment() {
      * @param selectedDropItem callback to get selected item from the drop down list
      * */
     fun autoCompleteDropDownMenu(
-        hintTextResId: Int?,
-        autoCompleteTextView: AutoCompleteTextView?,
-        dropDownImgId: ImageView?,
-        listItem: List<String>?,
-        markRequired: Boolean? = false,
+        hintTextResId: Int?, autoCompleteTextView: AutoCompleteTextView?,
+        dropDownImgId: ImageView?, listItem: List<String>?, markRequired: Boolean? = false,
         selectedDropItem: ((data: String) -> Unit)? = null) {
         var part = ""
         if (markRequired == true) part = "*"
@@ -231,8 +221,7 @@ open class BaseFragment : Fragment() {
 
     inline fun <reified T : ViewBinding> Fragment.inflateViewBindingDialog(
         crossinline bindingInflater: (LayoutInflater) -> T,
-        width: Int? = null,
-        height: Int? = null,
+        width: Int? = null, height: Int? = null,
         crossinline block: (AlertDialog.Builder).(T) -> Unit = {}): AlertDialog {
         val binding = bindingInflater(LayoutInflater.from(requireContext()))
         val dialog = AlertDialog.Builder(requireContext())
@@ -277,7 +266,6 @@ open class BaseFragment : Fragment() {
         }
         return list
     }
-
 
     inline fun <reified T> parseJsonFileToListOfDataClass(context: Context, fileName: String): List<T>? {
         val gson = Gson()
@@ -397,8 +385,7 @@ open class BaseFragment : Fragment() {
 
     fun setAppButton(
         btnLayoutBinding: AppButtonBinding? = AppButtonBinding.inflate(layoutInflater),
-        string: String,
-        callback: (() -> Any)? = null) {
+        string: String, callback: (() -> Any)? = null) {
         btnLayoutBinding?.containedButton?.apply {
             text = string
             setOnClickListener {
@@ -413,8 +400,7 @@ open class BaseFragment : Fragment() {
 
     fun setTextButton(
         btnLayoutBinding: OutlineTextButtonBinding? = OutlineTextButtonBinding.inflate(layoutInflater),
-        string: String,
-        callback: (() -> Any)? = null) {
+        string: String, callback: (() -> Any)? = null) {
         btnLayoutBinding?.outlinedButton?.apply {
             text = string
             //backgroundTintList = ColorStateList.valueOf(resources.getColor(android.R.color.transparent, null))
@@ -424,7 +410,6 @@ open class BaseFragment : Fragment() {
                 } catch (e: Exception) {
                     printLogs("FloatingButtonLayoutBinding", e.toString())
                 }
-
             }
         }
     }
@@ -448,8 +433,8 @@ open class BaseFragment : Fragment() {
         }catch (e:Exception){
             showRetrySnackBar(requireView(),e.message.toString()){}
         }
-
     }
+
     fun navigateTo(@IdRes navigationIdRes: Int?, bundle: Bundle){
         try {
             if (navigationIdRes != null) {
@@ -469,11 +454,9 @@ open class BaseFragment : Fragment() {
     }
 
     fun <T> observeLiveDataResource(
-        liveData: LiveData<Resource<T>>,
-        onSuccess: (T) -> Unit,
+        liveData: LiveData<Resource<T>>, onSuccess: (T) -> Unit,
         loader: ProgressBarLayoutBinding ? = ProgressBarLayoutBinding.inflate(layoutInflater),
         onError: ((String) -> Unit?)? =null,
-        extras: ((String) -> Unit?)? =null,
         onLoading: (() -> Unit?)? =null) {
         liveData.observe(viewLifecycleOwner) { resource ->
             when (resource.status) {
@@ -488,10 +471,10 @@ open class BaseFragment : Fragment() {
                     resource.message?.let { message ->
                         if (onError != null) {
                             onError(message)
-                            if (message.contains("user with is not verified",ignoreCase = true)) extras?.invoke(message)
-                            else showSnackBar(requireView(),message)
+                          //  showSnackBar(requireView(),message)
+                        }else{
+                            showSnackBar(requireView(),message)
                         }
-                        showSnackBar(requireView(),message)
                     }
                 }
                 Status.LOADING -> {
@@ -552,13 +535,8 @@ open class BaseFragment : Fragment() {
      * diskCacheStrategy: A strategy for caching the image on disk.
      * transition: A transition animation to be applied when displaying the image.
      * */
-    fun loadImageToImageView(
-        context: Context,
-        imageUrl: String?,
-        imageView: ImageView,
-        placeholderResId: Int? = null,
-        errorResId: Int? = null,
-        diskCacheStrategy: DiskCacheStrategy = DiskCacheStrategy.ALL,
+    fun loadImageToImageView(context: Context, imageUrl: String?, imageView: ImageView,
+        placeholderResId: Int? = null, errorResId: Int? = null, diskCacheStrategy: DiskCacheStrategy = DiskCacheStrategy.ALL,
         transition: DrawableTransitionOptions = DrawableTransitionOptions.withCrossFade()) {
         val glideRequest = Glide.with(context)
             .load(imageUrl)
@@ -566,19 +544,13 @@ open class BaseFragment : Fragment() {
             .transition(transition)
         placeholderResId?.let { glideRequest.placeholder(it) }
         errorResId?.let { glideRequest.error(it) }
-
         glideRequest.into(imageView)
     }
 
-    fun setConstraintLayoutBackground(
-        context: Context,
-        layout: ConstraintLayout,
-        imageUrl: String,
-        placeholderResId: Int? = null,
-        errorResId: Int? = null,
+    fun setConstraintLayoutBackground(context: Context, layout: ConstraintLayout,
+        imageUrl: String, placeholderResId: Int? = null, errorResId: Int? = null,
         diskCacheStrategy: DiskCacheStrategy = DiskCacheStrategy.ALL,
-        transition: DrawableTransitionOptions = DrawableTransitionOptions.withCrossFade()
-    ) {
+        transition: DrawableTransitionOptions = DrawableTransitionOptions.withCrossFade()) {
         val imageView = ImageView(context)
 
         val glideRequest = Glide.with(context)
@@ -591,7 +563,6 @@ open class BaseFragment : Fragment() {
         glideRequest.into(imageView)
         layout.background = imageView.drawable
     }
-
     fun changeBottomProfileIcon(uri: Uri){
         val mainBinding = (activity as MainActivity).binding
         // Use Glide or your preferred image loading library to load the image
@@ -636,9 +607,14 @@ open class BaseFragment : Fragment() {
         }
     }
 
-    fun getCurrentTime(): String {
+    fun getCurrentDateTime(): String {
         val currentTime = System.currentTimeMillis()
         val dateFormat = SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.getDefault())
+        return dateFormat.format(Date(currentTime))
+    }
+    fun getCurrentTime(): String {
+        val currentTime = System.currentTimeMillis()
+        val dateFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
         return dateFormat.format(Date(currentTime))
     }
     fun getTimeAgoString(targetTime: Long): String {
@@ -664,13 +640,20 @@ open class BaseFragment : Fragment() {
             }
         }
     }
-
-
-    fun main() {
-        val targetTime = System.currentTimeMillis()
-        val timeAgoString = getTimeAgoString(targetTime)
-        println(timeAgoString)
+     fun addMessage(userName: String?, status: String?, message: String, time:Long, profileImg: String?){
+        val appMessages = AppMessages(
+            name = userName,
+            time = time,
+            status = status,
+            content = MessageBody(
+                desc = message,
+                profileImg = profileImg
+            )
+        )
+        FirebaseHelper.DocumentCollection()
+            .addDocumentsToCollection("messages", listOf(appMessages)){ _, _->
+//                if (success) showSnackBar(requireView(),message) else showSnackBar(requireView(),message)
+            }
     }
-
 
 }

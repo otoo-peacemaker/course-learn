@@ -5,14 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.peacemaker.android.courselearn.R
+import com.peacemaker.android.courselearn.data.FirebaseHelper
 import com.peacemaker.android.courselearn.databinding.FragmentSignUpBinding
+import com.peacemaker.android.courselearn.model.AppUser
 import com.peacemaker.android.courselearn.ui.util.BaseFragment
 
 class SignUpFragment : BaseFragment() {
     private var _binding: FragmentSignUpBinding? = null
     private val binding get() = _binding!!
+    var message = "You have successfully created account, please check email for account confirmation"
+    val time = System.currentTimeMillis()
+    private val currentUser = FirebaseHelper.UserDataCollection().getCurrentUser()
+    private val firebaseHelper = FirebaseHelper.UserDataCollection()
 
     companion object {
         fun newInstance() = SignUpFragment()
@@ -32,22 +37,31 @@ class SignUpFragment : BaseFragment() {
 
         setTextViewPartialColor(binding.loginBtn, getString(R.string.already_have_an_account_login),
             "Login", resources.getColor(R.color.primary, null))
+        binding.loginBtn.setOnClickListener {
+            navigateTo(R.id.action_signUpFragment_to_loginFragment)
+        }
+
+        signUpDataObserver()
+    }
+
+    private fun signUpDataObserver(){
+        var userDetails: AppUser?=null
+        firebaseHelper.getUserByUID(currentUser?.uid){
+            userDetails = it
+        }
         setAppButton(binding.createAcc, "Create account") {
-            if (binding.terms.isChecked) signUp() else showSnackBar(requireView(),"Please accept our terms and conditions")
+            if (binding.terms.isChecked) createAccount() else showSnackBar(requireView(),"Please accept our terms and conditions")
             observeLiveDataResource(viewModel.createUserLiveData, {
                 val email = binding.emailId.text.toString()
                 printLogs("$SignUpFragment::::::::::", email)
                 val action = SignUpFragmentDirections.actionSignUpFragmentToVerifyEmailFragment(email)
+              //  addMessage(userName = userDetails?.name, status = userDetails?.status, message = message,time,userDetails?.profileImage)
                 navigateTo(action)
             }, binding.loader)
         }
-
-        binding.loginBtn.setOnClickListener {
-            navigateTo(R.id.action_signUpFragment_to_loginFragment)
-        }
     }
 
-    private fun signUp() {
+    private fun createAccount() {
         with(binding) {
             val firstname = firstNameId.text.toString()
             val lastName = lastNameId.text.toString()

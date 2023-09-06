@@ -1,4 +1,4 @@
-package com.peacemaker.android.courselearn.ui.home
+package com.peacemaker.android.courselearn.model
 
 import android.graphics.drawable.Drawable
 

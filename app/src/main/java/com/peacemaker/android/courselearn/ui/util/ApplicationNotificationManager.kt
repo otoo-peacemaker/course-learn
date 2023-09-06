@@ -88,7 +88,6 @@ object ApplicationNotificationManager {
         val alertDialog = dialogBuilder.create()
         alertDialog.show()
     }
-
     // Open the app's notification settings
     private fun openNotificationSettings(context: Context) {
         val intent = Intent().apply {

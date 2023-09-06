@@ -18,17 +18,16 @@ class AccountFragment : Fragment() {
     private var _binding: FragmentAccountBinding? = null
     private val binding get() = _binding!!
 
+    private val viewModel: AccountViewModel by viewModels()
+    private val authViewModel: AuthViewModel by viewModels()
+
     companion object {
         fun newInstance() = AccountFragment()
     }
 
-    private val viewModel: AccountViewModel by viewModels()
-    private val authViewModel: AuthViewModel by viewModels()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+        savedInstanceState: Bundle?): View {
         _binding = FragmentAccountBinding.inflate(layoutInflater)
         setupUIElement()
         observeProfileImgAndNameData()
@@ -89,7 +88,6 @@ class AccountFragment : Fragment() {
             }
         }
     }
-
     private fun observeProfileImgAndNameData(){
         // Observe the LiveData objects
         viewModel.profilePictureUri.observe(viewLifecycleOwner) { uri ->

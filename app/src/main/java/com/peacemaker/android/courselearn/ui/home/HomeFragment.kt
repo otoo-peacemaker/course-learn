@@ -16,6 +16,7 @@ import com.peacemaker.android.courselearn.R
 import com.peacemaker.android.courselearn.databinding.CourseCardLayoutBinding
 import com.peacemaker.android.courselearn.databinding.FragmentHomeBinding
 import com.peacemaker.android.courselearn.databinding.LessonPlanItemsBinding
+import com.peacemaker.android.courselearn.model.CourseCard
 import com.peacemaker.android.courselearn.model.CoursesItem
 import com.peacemaker.android.courselearn.ui.account.AccountViewModel
 import com.peacemaker.android.courselearn.ui.adapters.RecyclerBaseAdapter
@@ -85,11 +86,13 @@ class HomeFragment : BaseFragment() {
         binding.apply {
             val cardItem =  arrayListOf<CourseCard>()
             coursesItem.forEach { coursesItem ->
-                cardItem.add(CourseCard(
+                cardItem.add(
+                    CourseCard(
                     bgColor = changeResColor(R.color.default_card_bg_color),
                     img = changeResDrawable(R.drawable.avatar_person),
                     courseName = coursesItem.courseName
-                ))
+                )
+                )
             }
 
             printLogs("Items","$cardItem")
@@ -126,7 +129,6 @@ class HomeFragment : BaseFragment() {
             dotsIndicator.attachTo(viewPager)
         }
     }
-
     private fun setupProfileData() {
         val mainBinding = (activity as MainActivity).binding
         // Observe the LiveData objects
@@ -160,7 +162,6 @@ class HomeFragment : BaseFragment() {
             findNavController().navigate(R.id.action_navigation_home_to_navigation_account)
         }
     }
-
     private fun setupLessonPlan() {
         mAdapter.expressionOnCreateViewHolder = { inflater, viewGroup ->
             LessonPlanItemsBinding.inflate(inflater, viewGroup, false)
@@ -190,8 +191,6 @@ class HomeFragment : BaseFragment() {
         recyclerView.adapter = mAdapter
 
     }
-
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

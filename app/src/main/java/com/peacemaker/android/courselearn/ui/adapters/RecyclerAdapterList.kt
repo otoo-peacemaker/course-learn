@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import java.util.*
 
-
 class RecyclerBaseAdapter<T : Any> : ListAdapter<T, BaseViewHolder<T>>(ItemDiffCallback<T>()),Filterable {
 
     private var originalList: MutableList<T> = mutableListOf()
@@ -24,19 +23,16 @@ class RecyclerBaseAdapter<T : Any> : ListAdapter<T, BaseViewHolder<T>>(ItemDiffC
     init {
         setHasStableIds(true)
     }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<T> {
         val inflater = LayoutInflater.from(parent.context)
         val binding = expressionOnCreateViewHolder?.invoke(inflater, parent)
             ?: throw IllegalStateException("expressionOnCreateViewHolder must be provided.")
         return BaseViewHolder(binding, expressionViewHolderBinding ?: { _, _ -> })
     }
-
     override fun onBindViewHolder(holder: BaseViewHolder<T>, position: Int) {
         val item = getItem(position)
         holder.bind(item)
     }
-
     override fun getItemCount(): Int {
         return currentList.size
     }
@@ -94,15 +90,15 @@ class RecyclerBaseAdapter<T : Any> : ListAdapter<T, BaseViewHolder<T>>(ItemDiffC
             }
         }
     }
+    interface OnPlayPauseClickListener {
+        fun onPlayPauseClick(position: Int)
+    }
 
 }
 
-
-
 class BaseViewHolder<T> internal constructor(
     private val binding: ViewBinding,
-    private val expression: (T, ViewBinding) -> Unit
-) : RecyclerView.ViewHolder(binding.root) {
+    private val expression: (T, ViewBinding) -> Unit) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: T) {
         expression(item, binding)
@@ -119,5 +115,3 @@ class ItemDiffCallback<T : Any> : DiffUtil.ItemCallback<T>() {
         return oldItem == newItem
     }
 }
-
-
