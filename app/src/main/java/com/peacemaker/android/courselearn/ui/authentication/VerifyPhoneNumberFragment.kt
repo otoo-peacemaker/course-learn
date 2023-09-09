@@ -50,20 +50,22 @@ class VerifyPhoneNumberFragment : BaseFragment() {
                     // Once the OTP is entered, call signInWithPhoneAuthCredential function with the credential.
                     val verificationId = status.verificationId
                     val token = status.token
-                    printLogs("verificationId:::",verificationId)
+                    if (verificationId != null) {
+                        printLogs("verificationId:::",verificationId)
+                    }
                     printLogs("token:::::::::::","$token")
                 }
                 is VerificationStatus.Success -> {
                     //TODO: Success
                     // User is signed in successfully.
                     // Proceed with your app's logic after successful phone number verification.
-                    val user = status.user
+                  //  val user = status.user
                     navigateTo(R.id.action_verifyAccountFragment_to_successFragment)
                 }
 
                 is VerificationStatus.Error -> {
                     val exception = status.exception
-                    exception.localizedMessage?.let { showSnackBar(requireView(), it) }
+                    exception?.localizedMessage?.let { showSnackBar(requireView(), it) }
                 }
             }
         }

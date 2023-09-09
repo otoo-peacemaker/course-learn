@@ -16,6 +16,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -26,13 +28,17 @@ import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.FirebaseApp
 import com.peacemaker.android.courselearn.databinding.ActivityMainBinding
+import com.peacemaker.android.courselearn.ui.StatusFragment
 import com.peacemaker.android.courselearn.ui.courses.ClassroomFragment
 import com.peacemaker.android.courselearn.ui.message.MessageDetailsFragment
+import com.peacemaker.android.courselearn.ui.util.NetworkConnectivity
+import com.peacemaker.android.courselearn.ui.util.Utils
+import com.peacemaker.android.courselearn.ui.util.Utils.startFragmentFromAnywhere
 
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: BaseViewModel by viewModels()
-
+    private lateinit var networkConnectivity: NetworkConnectivity
      lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private val appBarConfiguration = setOf(
@@ -42,6 +48,10 @@ class MainActivity : AppCompatActivity() {
         R.id.navigation_account
     )//hide nav back arrows
 
+    override fun onStart() {
+        super.onStart()
+        networkConnectivity.startListening()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -62,7 +72,12 @@ class MainActivity : AppCompatActivity() {
         //notificationFragment()
         observeBadgeCount()
         //setScreenOrientation()
-    }
+        networkConnectivity = NetworkConnectivity(this)
+        if (!networkConnectivity.isConnected()) {
+//            val navCont = NavHostFragment.findNavController(StatusFragment())
+          //  startFragmentFromAnywhere(R.id.statusFragment, navController)
+        }
+        }
 
     private fun setOnclickListeners(){
         binding.apply {
@@ -181,5 +196,10 @@ class MainActivity : AppCompatActivity() {
             // Lock the activity orientation to portrait mode
             ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        networkConnectivity.stopListening()
     }
 }

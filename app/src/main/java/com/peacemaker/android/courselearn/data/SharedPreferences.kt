@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
-import com.peacemaker.android.courselearn.ui.util.Constants.USER_PREFERENCES_NAME
+import com.peacemaker.android.courselearn.ui.util.Utils.Constants.USER_PREFERENCES_NAME
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

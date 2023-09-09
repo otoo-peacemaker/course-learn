@@ -11,9 +11,9 @@ import androidx.navigation.NavDeepLinkBuilder
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.peacemaker.android.courselearn.R
-import com.peacemaker.android.courselearn.ui.util.Constants.CHANNEL_ID
-import com.peacemaker.android.courselearn.ui.util.Constants.CHANNEL_NAME
-import com.peacemaker.android.courselearn.ui.util.Constants.NOTIFICATION_ID
+import com.peacemaker.android.courselearn.ui.util.Utils.Constants.CHANNEL_ID
+import com.peacemaker.android.courselearn.ui.util.Utils.Constants.CHANNEL_NAME
+import com.peacemaker.android.courselearn.ui.util.Utils.Constants.NOTIFICATION_ID
 
 class AppFirebaseMessagingService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {

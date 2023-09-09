@@ -24,7 +24,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
+import androidx.navigation.NavController
 import androidx.navigation.NavDirections
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
@@ -457,6 +459,7 @@ open class BaseFragment : Fragment() {
         liveData: LiveData<Resource<T>>, onSuccess: (T) -> Unit,
         loader: ProgressBarLayoutBinding ? = ProgressBarLayoutBinding.inflate(layoutInflater),
         onError: ((String) -> Unit?)? =null,
+        onException: ((String) -> Unit?)? =null,
         onLoading: (() -> Unit?)? =null) {
         liveData.observe(viewLifecycleOwner) { resource ->
             when (resource.status) {
@@ -480,6 +483,14 @@ open class BaseFragment : Fragment() {
                 Status.LOADING -> {
                     onLoading?.invoke()
                     showLoadingScreen(loader = loader,visibility = true)
+                }
+
+                Status.EXCEPTION->{
+                    showLoadingScreen(loader = loader,visibility = false)
+                    resource.message?.let {
+                        onException?.invoke(it)
+                        showSnackBar(requireView(),it)
+                    }
                 }
             }
         }
@@ -654,6 +665,25 @@ open class BaseFragment : Fragment() {
             .addDocumentsToCollection("messages", listOf(appMessages)){ _, _->
 //                if (success) showSnackBar(requireView(),message) else showSnackBar(requireView(),message)
             }
+    }
+
+
+    /**
+     * A function to navigate to a fragment from anywhere in the navigation graph.
+     * This function can be called from any Fragment.
+     *
+     * @param destinationId The ID of the destination fragment.
+     * @param navController The NavController.
+     * @param args Optional arguments to pass to the destination fragment.
+     * @param navOptions Optional NavOptions for the navigation action.
+     */
+    fun startFragmentFromAnywhere(
+        destinationId: Int,
+        navController: NavController,
+        args: Bundle? = null,
+        navOptions: NavOptions? = null
+    ) {
+        navController.navigate(destinationId, args, navOptions)
     }
 
 }

@@ -129,21 +129,25 @@ object FirebaseHelper {
 
         }
         fun addOnlineUsers(currentUser: FirebaseUser?) {
-            usersListRef.child(currentUser!!.uid).setValue(AppUser(name= currentUser.displayName, status = "Online"))
-            onlineStatus = db.getReference("users/" + currentUser.uid + "/onlineStatus")
-            connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected")
-            connectedRef!!.addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val connected = snapshot.getValue(Boolean::class.java)!!
-                    if (connected) {
-                        onlineStatus!!.onDisconnect().setValue("offline")
-                        onlineStatus!!.setValue("Online")
-                    } else {
-                        onlineStatus!!.setValue("offline")
+            if (currentUser != null) {
+                usersListRef.child(currentUser.uid).setValue(AppUser(name= currentUser.displayName, status = "Online"))
+                onlineStatus = db.getReference("users/" + currentUser.uid + "/onlineStatus")
+                connectedRef = FirebaseDatabase.getInstance().getReference(".info/connected")
+                connectedRef?.addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val connected = snapshot.getValue(Boolean::class.java)!!
+                        if (connected) {
+                            onlineStatus?.onDisconnect()?.setValue("offline")
+                            onlineStatus?.setValue("Online")
+                        } else {
+                            onlineStatus?.setValue("offline")
+                        }
                     }
-                }
-                override fun onCancelled(error: DatabaseError) {}
-            })
+                    override fun onCancelled(error: DatabaseError) {}
+                })
+            }
+
+
         }
         fun showOnlineUsers(onlineUsers :(MutableList<String>?)->Unit) {
             userListValueEventListener = object : ValueEventListener {

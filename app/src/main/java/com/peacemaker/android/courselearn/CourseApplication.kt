@@ -4,12 +4,11 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
-import com.peacemaker.android.courselearn.ui.util.Constants
-import com.peacemaker.android.courselearn.ui.util.Constants.CHANNEL_DESCRIPTION
-import com.peacemaker.android.courselearn.ui.util.Constants.CHANNEL_ID
-import com.peacemaker.android.courselearn.ui.util.Constants.CHANNEL_NAME
+import com.peacemaker.android.courselearn.ui.util.Utils.Constants.CHANNEL_DESCRIPTION
+import com.peacemaker.android.courselearn.ui.util.Utils.Constants.CHANNEL_ID
+import com.peacemaker.android.courselearn.ui.util.Utils.Constants.CHANNEL_NAME
 
-class CourseApplication: Application() {
+class CourseApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()

@@ -17,8 +17,8 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.peacemaker.android.courselearn.MainActivity
 import com.peacemaker.android.courselearn.model.AppUser
-import com.peacemaker.android.courselearn.ui.util.Constants.RC_SIGN_IN
 import com.peacemaker.android.courselearn.ui.util.Resource
+import com.peacemaker.android.courselearn.ui.util.Utils.Constants.RC_SIGN_IN
 import com.peacemaker.android.courselearn.ui.util.VerificationStatus
 
 class AuthViewModel : ViewModel() {
@@ -30,8 +30,8 @@ class AuthViewModel : ViewModel() {
     private val _signInLiveData = MutableLiveData<Resource<FirebaseUser>>()
     val signInLiveData: LiveData<Resource<FirebaseUser>> = _signInLiveData
 
-    private val _verificationStatus = MutableLiveData<VerificationStatus>()
-    val verificationStatus: LiveData<VerificationStatus>
+    private val _verificationStatus = MutableLiveData<VerificationStatus<Any>>()
+    val verificationStatus: LiveData<VerificationStatus<Any>>
         get() = _verificationStatus
 
     private val _resetPasswordLiveData = MutableLiveData<Resource<String>>()
@@ -39,8 +39,7 @@ class AuthViewModel : ViewModel() {
 
 
     fun createUser(username: String, email: String,
-        phone: String, password: String,
-        context: Context) {
+        phone: String, password: String) {
         _createUserLiveData.value = Resource.loading(null)
         try {
             auth.createUserWithEmailAndPassword(email, password)

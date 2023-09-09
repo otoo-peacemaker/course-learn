@@ -24,6 +24,59 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_splashScreenFragment_to_statusFragment"
+            app:destination="@id/statusFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/statusFragment"
+        android:name="com.peacemaker.android.courselearn.ui.StatusFragment"
+        android:label="fragment_status"
+        tools:layout="@layout/fragment_status" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.peacemaker.android.courselearn.ui.search.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_courseDetailsFragment"
+            app:destination="@id/courseDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/courseDetailsFragment"
+        android:name="com.peacemaker.android.courselearn.ui.courses.CourseDetailsFragment"
+        android:label="Details"
+        tools:layout="@layout/fragment_course_details" >
+        <action
+            android:id="@+id/action_courseDetailsFragment_to_myCoursesFragment"
+            app:destination="@id/myCoursesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myCoursesFragment"
+        android:name="com.peacemaker.android.courselearn.ui.courses.MyCoursesFragment"
+        android:label="Courses"
+        tools:layout="@layout/fragment_my_courses" >
+        <action
+            android:id="@+id/action_myCoursesFragment_to_classroomFragment"
+            app:destination="@id/classroomFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/classroomFragment"
+        android:name="com.peacemaker.android.courselearn.ui.courses.ClassroomFragment"
+        android:label="Classroom"
+        tools:layout="@layout/fragment_classroom" >
+        <action
+            android:id="@+id/action_classroomFragment_to_myCoursesFragment"
+            app:destination="@id/myCoursesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/messageDetailsFragment"
+        android:name="com.peacemaker.android.courselearn.ui.message.MessageDetailsFragment"
+        android:label="@string/notification"
+        tools:layout="@layout/fragment_message_details" >
+        <deepLink
+            android:id="@+id/messageDetailsDeepLink"
+            app:uri="app://messageDetailsFragment" />
     </fragment>
     <navigation android:id="@+id/auth_graph"
         app:startDestination="@id/boardingScreenFragment">
@@ -238,50 +291,7 @@
             app:destination="@id/messageDetailsFragment" />
     </navigation>
     <navigation android:id="@+id/other_graph"/>
-    <fragment
-        android:id="@+id/searchFragment"
-        android:name="com.peacemaker.android.courselearn.ui.search.SearchFragment"
-        android:label="Search"
-        tools:layout="@layout/fragment_search" >
-        <action
-            android:id="@+id/action_searchFragment_to_courseDetailsFragment"
-            app:destination="@id/courseDetailsFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/courseDetailsFragment"
-        android:name="com.peacemaker.android.courselearn.ui.courses.CourseDetailsFragment"
-        android:label="Details"
-        tools:layout="@layout/fragment_course_details" >
-        <action
-            android:id="@+id/action_courseDetailsFragment_to_myCoursesFragment"
-            app:destination="@id/myCoursesFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/myCoursesFragment"
-        android:name="com.peacemaker.android.courselearn.ui.courses.MyCoursesFragment"
-        android:label="Courses"
-        tools:layout="@layout/fragment_my_courses" >
-        <action
-            android:id="@+id/action_myCoursesFragment_to_classroomFragment"
-            app:destination="@id/classroomFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/classroomFragment"
-        android:name="com.peacemaker.android.courselearn.ui.courses.ClassroomFragment"
-        android:label="Classroom"
-        tools:layout="@layout/fragment_classroom" >
-        <action
-            android:id="@+id/action_classroomFragment_to_myCoursesFragment"
-            app:destination="@id/myCoursesFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/messageDetailsFragment"
-        android:name="com.peacemaker.android.courselearn.ui.message.MessageDetailsFragment"
-        android:label="@string/notification"
-        tools:layout="@layout/fragment_message_details" >
-        <deepLink
-            android:id="@+id/messageDetailsDeepLink"
-            app:uri="app://messageDetailsFragment" />
-    </fragment>
+
+
 
 </navigation>

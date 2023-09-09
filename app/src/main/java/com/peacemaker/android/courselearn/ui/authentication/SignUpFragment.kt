@@ -46,9 +46,9 @@ class SignUpFragment : BaseFragment() {
 
     private fun signUpDataObserver(){
         var userDetails: AppUser?=null
-        firebaseHelper.getUserByUID(currentUser?.uid){
-            userDetails = it
-        }
+//        firebaseHelper.getUserByUID(currentUser?.uid){
+//            userDetails = it
+//        }
         setAppButton(binding.createAcc, "Create account") {
             if (binding.terms.isChecked) createAccount() else showSnackBar(requireView(),"Please accept our terms and conditions")
             observeLiveDataResource(viewModel.createUserLiveData, {
@@ -74,7 +74,7 @@ class SignUpFragment : BaseFragment() {
                         username = firstname.plus(" ").plus(lastName),
                         email = email,
                         phone = phone,
-                        password = password,requireContext()
+                        password = password,
                     )
                 } else {
                     showSnackBar(requireView(), "Field can not be empty or string too short")

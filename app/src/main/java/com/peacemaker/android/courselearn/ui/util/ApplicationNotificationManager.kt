@@ -16,8 +16,8 @@ import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.peacemaker.android.courselearn.MainActivity
 import com.peacemaker.android.courselearn.R
-import com.peacemaker.android.courselearn.ui.util.Constants.CHANNEL_ID
-import com.peacemaker.android.courselearn.ui.util.Constants.NOTIFICATION_ID
+import com.peacemaker.android.courselearn.ui.util.Utils.Constants.CHANNEL_ID
+import com.peacemaker.android.courselearn.ui.util.Utils.Constants.NOTIFICATION_ID
 
 object ApplicationNotificationManager {
     private var unreadNotificationsCount = 0
@@ -38,9 +38,7 @@ object ApplicationNotificationManager {
             ) // Replace with your fragment identifier
         }
         val pendingIntent = PendingIntent.getActivity(
-            context,
-            notificationId,
-            intent,
+            context, notificationId, intent,
             PendingIntent.FLAG_IMMUTABLE
         )
 
@@ -49,6 +47,7 @@ object ApplicationNotificationManager {
             .setGraph(R.navigation.mobile_navigation)
             .setDestination(R.id.navigation_message)
             .createPendingIntent()
+
 
         // Check if notifications are enabled
         if (NotificationManagerCompat.from(context.applicationContext).areNotificationsEnabled()) {
@@ -59,10 +58,7 @@ object ApplicationNotificationManager {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 // Set the intent that will fire when the user taps the notification
                 .setContentIntent(intentGraph)
-                .addAction(
-                    R.drawable.google,
-                    "View details",
-                    intentGraph)
+                .addAction(R.drawable.google, "View details", intentGraph)
                 .setAutoCancel(true)
                 .build()
 

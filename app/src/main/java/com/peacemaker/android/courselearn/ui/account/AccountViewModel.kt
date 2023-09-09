@@ -13,6 +13,7 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.gson.reflect.TypeToken
 import com.peacemaker.android.courselearn.model.AppUser
 import com.peacemaker.android.courselearn.model.CoursesItem
+import com.peacemaker.android.courselearn.ui.util.NetworkResult
 import com.peacemaker.android.courselearn.ui.util.Resource
 
 class AccountViewModel : ViewModel() {

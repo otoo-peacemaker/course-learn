@@ -1,26 +1,52 @@
 package com.peacemaker.android.courselearn.ui.util
 
+import android.Manifest
+import android.app.Activity
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.telephony.TelephonyManager
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.peacemaker.android.courselearn.ui.util.Utils.Constants.PERMISSION_REQUEST_CODE
 
-class NetworkConnectivity(context: Context) {
+class NetworkConnectivity(val context: Context) {
+    private val permission = Manifest.permission.READ_PHONE_STATE
+    private val granted = PackageManager.PERMISSION_GRANTED
 
     private var isConnected: Boolean = false
-    private val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    private var isStrongNetwork: Boolean = false
+    private val connectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
             super.onAvailable(network)
             isConnected = true
+            isStrongNetwork = isStrongNetwork() == true
+            Utils.showToast(context, "Network Available")
         }
+
         override fun onLost(network: Network) {
             super.onLost(network)
             isConnected = false
+            isStrongNetwork = false
+            Utils.showToast(context, "Network Lost")
         }
+
+        override fun onUnavailable() {
+            super.onUnavailable()
+            isConnected = false
+            isStrongNetwork = false
+            Utils.showToast(context, "Network onUnavailable")
+        }
+    }
+
+    init {
+        checkStrongConnectivity()
     }
 
     fun startListening() {
@@ -29,53 +55,48 @@ class NetworkConnectivity(context: Context) {
             .build()
         connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
     }
+
     fun stopListening() {
         connectivityManager.unregisterNetworkCallback(networkCallback)
     }
+
     fun isConnected(): Boolean {
         return isConnected
     }
 
-    /**
-     * Check if the connection is fast
-     * @param type
-     * @param subType
-     * @return
-     */
-    fun isConnectionFast(type: Int, subType: Int): Boolean {
-        return when (type) {
-            ConnectivityManager.TYPE_WIFI -> true
-            ConnectivityManager.TYPE_MOBILE -> when (subType) {
-                TelephonyManager.NETWORK_TYPE_1xRTT -> false // ~ 50-100 kbps
-                TelephonyManager.NETWORK_TYPE_CDMA -> false // ~ 14-64 kbps
-                TelephonyManager.NETWORK_TYPE_EDGE -> false // ~ 50-100 kbps
-                TelephonyManager.NETWORK_TYPE_EVDO_0 -> true // ~ 400-1000 kbps
-                TelephonyManager.NETWORK_TYPE_EVDO_A -> true // ~ 600-1400 kbps
-                TelephonyManager.NETWORK_TYPE_GPRS -> false // ~ 100 kbps
-                TelephonyManager.NETWORK_TYPE_HSDPA -> true // ~ 2-14 Mbps
-                TelephonyManager.NETWORK_TYPE_HSPA -> true // ~ 700-1700 kbps
-                TelephonyManager.NETWORK_TYPE_HSUPA -> true // ~ 1-23 Mbps
-                TelephonyManager.NETWORK_TYPE_UMTS -> true // ~ 400-7000 kbps
-                /*
-                 * Above API level 7, make sure to set android:targetSdkVersion
-                 * to appropriate level to use these
-                 */
-                // API level 11
-                TelephonyManager.NETWORK_TYPE_EHRPD -> true // ~ 1-2 Mbps
-                // API level 9
-                TelephonyManager.NETWORK_TYPE_EVDO_B -> true // ~ 5 Mbps
-                // API level 13
-                TelephonyManager.NETWORK_TYPE_HSPAP -> true // ~ 10-20 Mbps
-                // API level 8
-                TelephonyManager.NETWORK_TYPE_IDEN -> false // ~25 kbps
-                // API level 11
-                TelephonyManager.NETWORK_TYPE_LTE -> true // ~ 10+ Mbps
-                // Unknown
-                TelephonyManager.NETWORK_TYPE_UNKNOWN -> false
+    fun isStrongNetwork(): Boolean? {
+        if (ContextCompat.checkSelfPermission(context, permission) == granted) {
+            // Permission is granted, you can access network type
+            val telephonyManager =
+                context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+            // Check if the network type indicates a strong network for data transmission
+            return when (telephonyManager.dataNetworkType) {
+                TelephonyManager.NETWORK_TYPE_LTE, // 4G
+                TelephonyManager.NETWORK_TYPE_HSPAP, // 3G
+                TelephonyManager.NETWORK_TYPE_HSDPA, // 3G
+                TelephonyManager.NETWORK_TYPE_HSUPA, // 3G
+                TelephonyManager.NETWORK_TYPE_UMTS -> true // 3G
                 else -> false
             }
-            else -> false
+        } else {
+            // Permission is not granted, request it from the user
+            // You can use ActivityCompat.requestPermissions to request the permission
+            ActivityCompat.requestPermissions(
+                context as Activity,
+                arrayOf(permission), PERMISSION_REQUEST_CODE
+            )
+            return null
         }
     }
 
+    private fun isStrongNetworkConnected(): Boolean {
+        return isConnected && isStrongNetwork
+    }
+
+    private fun checkStrongConnectivity() {
+        if (isStrongNetworkConnected()) Utils.showToast(
+            context,
+            "Strong network"
+        ) else Utils.showToast(context, "Weak network")
+    }
 }
