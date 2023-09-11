@@ -49,6 +49,12 @@ class SearchFragment : BaseFragment() {
             .getDocumentsByType(store, collectionName, CoursesItem::class.java) {message, result->
                 printLogs("$SearchFragment", "$result")
                 mAdapter.submitList(result)
+                if (result ==null) startShimmerEffect(binding.coursesShimmer)
+                else {
+                    stopShimmerEffect(binding.coursesShimmer)
+                    binding.recyclerView.visibility = View.VISIBLE
+                    binding.coursesShimmer.visibility = View.GONE
+                }
                 mAdapter.expressionOnCreateViewHolder = { inflater, viewGroup ->
                     CourseListItemsBinding.inflate(inflater, viewGroup, false)
                 }

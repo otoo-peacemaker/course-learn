@@ -33,6 +33,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import com.facebook.shimmer.Shimmer
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -684,6 +686,31 @@ open class BaseFragment : Fragment() {
         navOptions: NavOptions? = null
     ) {
         navController.navigate(destinationId, args, navOptions)
+    }
+
+
+    fun startShimmerEffect(shimmerContainer: View, durationMillis: Long = 3000) {
+        if (shimmerContainer is ShimmerFrameLayout) {
+            val shimmer = Shimmer.AlphaHighlightBuilder()
+                .setDuration(durationMillis)
+                .setBaseAlpha(0.7f)
+                .setHighlightAlpha(1f)
+                .setDirection(Shimmer.Direction.LEFT_TO_RIGHT)
+                .setAutoStart(true)
+                .build()
+
+            shimmerContainer.setShimmer(shimmer)
+        } else {
+            throw IllegalArgumentException("The provided view is not a ShimmerFrameLayout")
+        }
+    }
+
+    fun stopShimmerEffect(shimmerContainer: View) {
+        if (shimmerContainer is ShimmerFrameLayout) {
+            shimmerContainer.stopShimmer()
+        } else {
+            throw IllegalArgumentException("The provided view is not a ShimmerFrameLayout")
+        }
     }
 
 }

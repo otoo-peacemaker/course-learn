@@ -19,4 +19,5 @@
     <color name="selectedTabTextColor">#FFFFFFFF</color>
     <color name="unselectedTabTextColor">#3D5CFF</color>
     <color name="normalTextColor">#FFFFFF</color>
+    <color name="shimmer_placeholder">#dddddd</color>
 </resources>
