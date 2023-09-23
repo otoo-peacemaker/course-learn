@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.firebase.firestore.FirebaseFirestore
 import com.peacemaker.android.courselearn.R
@@ -48,7 +47,8 @@ class PagerItemsListFragment : BaseFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?): View {
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentPagerItemsListBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -56,7 +56,7 @@ class PagerItemsListFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        coursesShimmer = binding.coursesShimmer
+        coursesShimmer = binding.coursesShimmer.coursesShimmer
         when (title) {
             "All" -> {
                 setAllCoursesRecyclerViewItems()
@@ -83,17 +83,18 @@ class PagerItemsListFragment : BaseFragment() {
             }
         }
     }
+
     private fun setAllCoursesRecyclerViewItems() {
         val collectionName = "courses"
         FirebaseHelper.DocumentCollection()
             .getDocumentsByType(firestore, collectionName, CoursesItem::class.java) { _, result ->
                 printLogs("$SearchFragment", "$result")
                 mAdapter.submitList(result)
-                if (result ==null) startShimmerEffect(coursesShimmer)
+                if (result == null) startShimmerEffect(coursesShimmer)
                 else {
                     stopShimmerEffect(coursesShimmer)
                     binding.recyclerView.visibility = View.VISIBLE
-                    binding.coursesShimmer.visibility = View.GONE
+                    binding.coursesShimmer.coursesShimmer.visibility = View.GONE
                 }
                 mAdapter.expressionOnCreateViewHolder = { inflater, viewGroup ->
                     CourseListItemsBinding.inflate(inflater, viewGroup, false)
@@ -103,7 +104,8 @@ class PagerItemsListFragment : BaseFragment() {
                     view.courseName.text = eachItem.courseName
                     view.coursePrice.text = eachItem.price
                     view.authorName.text = eachItem.authorName
-                    loadImageToImageView(requireContext(),eachItem.courseBgImg,view.courseImg,R.drawable.loading_animation,R.drawable.course_bg_img)
+                    loadImageToImageView(requireContext(), eachItem.courseBgImg,
+                        view.courseImg, R.drawable.loading_animation, R.drawable.course_bg_img)
                     view.courseDuration.text = eachItem.duration?.hours.toString().plus(":")
                         .plus(eachItem.duration?.minutes).plus("hs")
                     view.root.setOnClickListener {
@@ -120,6 +122,7 @@ class PagerItemsListFragment : BaseFragment() {
                 recyclerView.adapter = mAdapter
             }
     }
+
     private fun setNotificationRecyclerViewItems() {
         viewModel.loadUserRelatedData("notification", Notification::class.java)
         observeLiveDataResource(viewModel.userRelatedData, { items ->
@@ -130,7 +133,7 @@ class PagerItemsListFragment : BaseFragment() {
             else {
                 stopShimmerEffect(coursesShimmer)
                 binding.recyclerView.visibility = View.VISIBLE
-                binding.coursesShimmer.visibility = View.GONE
+                binding.coursesShimmer.coursesShimmer.visibility = View.GONE
             }
 
             notificationAdapter.expressionOnCreateViewHolder = { inflater, viewGroup ->
@@ -156,17 +159,18 @@ class PagerItemsListFragment : BaseFragment() {
         recyclerView.adapter = notificationAdapter
 
     }
+
     private fun setMessageRecyclerViewItems() {
         val collectionName = "messages"
         FirebaseHelper.DocumentCollection()
             .getDocumentsByType(firestore, collectionName, AppMessages::class.java) { _, result ->
                 printLogs("$SearchFragment", "$result")
                 messageAdapter.submitList(result)
-                if (result==null) startShimmerEffect(coursesShimmer)
+                if (result == null) startShimmerEffect(coursesShimmer)
                 else {
                     stopShimmerEffect(coursesShimmer)
                     binding.recyclerView.visibility = View.VISIBLE
-                    binding.coursesShimmer.visibility = View.GONE
+                    binding.coursesShimmer.coursesShimmer.visibility = View.GONE
                 }
                 messageAdapter.expressionOnCreateViewHolder = { inflater, viewGroup ->
                     MessageItemListBinding.inflate(inflater, viewGroup, false)
@@ -178,7 +182,11 @@ class PagerItemsListFragment : BaseFragment() {
                     view.desc.text = eachItem.content?.desc
                     view.status.text = eachItem.status
                     view.time.text = eachItem.time?.let { getTimeAgoString(it) }
-                    loadImageToImageView(requireContext(), eachItem.content?.profileImg, view.courseImg)
+                    loadImageToImageView(
+                        requireContext(),
+                        eachItem.content?.profileImg,
+                        view.courseImg
+                    )
                     view.root.setOnClickListener {
                         //navigateTo(R.id.action)
                         val bundle = Bundle().apply {
@@ -194,6 +202,7 @@ class PagerItemsListFragment : BaseFragment() {
             }
 
     }
+
     private fun sortListByTime() {
         val timeComparator = Comparator<Notification> { item1, item2 ->
             item2.time?.let { item1.time?.compareTo(it) } ?: 0

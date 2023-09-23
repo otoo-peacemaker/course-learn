@@ -48,6 +48,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/_10sdp"
@@ -56,8 +57,15 @@
         app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lesson"
-        tools:itemCount="3"
+        tools:itemCount="8"
         android:layout_marginBottom="?actionBarSize"
         tools:listitem="@layout/lesson_plan_items" />
+
+    <include
+        android:id="@+id/lessonShimmer"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@+id/lesson"
+        android:layout_height="@dimen/_500sdp"
+        layout="@layout/lesson_plan_shimmer_frame_layout"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

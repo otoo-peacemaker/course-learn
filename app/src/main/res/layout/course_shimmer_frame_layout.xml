@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.shimmer.ShimmerFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/courses_shimmer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/course_list_items_shimmer_layout" />
+
+        <include layout="@layout/course_list_items_shimmer_layout" />
+
+        <include layout="@layout/course_list_items_shimmer_layout" />
+
+        <include layout="@layout/course_list_items_shimmer_layout" />
+
+        <include layout="@layout/course_list_items_shimmer_layout" />
+
+        <include layout="@layout/course_list_items_shimmer_layout" />
+
+        <include layout="@layout/course_list_items_shimmer_layout" />
+
+        <include layout="@layout/course_list_items_shimmer_layout" />
+
+        <include layout="@layout/course_list_items_shimmer_layout" />
+    </LinearLayout>
+</com.facebook.shimmer.ShimmerFrameLayout>

@@ -9,8 +9,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.adapters.PagerItemsListFragment">
 
-
-    <com.facebook.shimmer.ShimmerFrameLayout
+    <include
+        android:id="@+id/courses_shimmer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/course_shimmer_frame_layout"/>
+   <!-- <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/courses_shimmer"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -33,7 +37,7 @@
             <include
                 layout="@layout/course_list_items_shimmer_layout"/>
         </LinearLayout>
-    </com.facebook.shimmer.ShimmerFrameLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -52,6 +56,7 @@
         android:layout_height="wrap_content"
         android:text=""
         android:fontFamily="@font/poppins_regular"
+        android:visibility="gone"
         android:gravity="center"
         android:textSize="@dimen/_30ssp"
         app:layout_constraintBottom_toBottomOf="@+id/recyclerView"

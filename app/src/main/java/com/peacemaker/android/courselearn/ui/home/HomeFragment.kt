@@ -46,6 +46,11 @@ class HomeFragment : BaseFragment() {
             printLogs("MyCoursesFragment", "$items")
             coursesItem= items as MutableList<CoursesItem>
             mAdapter.submitList(items)
+            if (items.isEmpty()) startShimmerEffect(binding.lessonShimmer.coursesShimmer) else {
+                stopShimmerEffect(binding.lessonShimmer.coursesShimmer)
+                binding.recyclerView.visibility = View.VISIBLE
+                binding.lessonShimmer.coursesShimmer.visibility = View.GONE
+            }
         })
 
           setupUIItems()
@@ -170,13 +175,9 @@ class HomeFragment : BaseFragment() {
             val view = viewBinding as LessonPlanItemsBinding
             view.apply {
                 courseName.text = eachItem.courseName
-                loadImageToImageView(
-                    requireContext(),
-                    eachItem.courseBgImg,
-                    courseImg,
-                    R.drawable.loading_animation,
-                    R.drawable.course_bg_img
-                )
+                loadImageToImageView(requireContext(), eachItem.courseBgImg,
+                    courseImg, R.drawable.loading_animation,
+                    R.drawable.course_bg_img)
                 val bundle = Bundle().apply {
                     putParcelable("course", eachItem)
                 }

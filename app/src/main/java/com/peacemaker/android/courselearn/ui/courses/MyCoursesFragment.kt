@@ -11,7 +11,6 @@ import com.peacemaker.android.courselearn.databinding.FragmentMyCoursesBinding
 import com.peacemaker.android.courselearn.databinding.MyCourseListItemBinding
 import com.peacemaker.android.courselearn.model.CoursesItem
 import com.peacemaker.android.courselearn.ui.account.AccountViewModel
-import com.peacemaker.android.courselearn.ui.adapters.GridSpacingItemDecoration
 import com.peacemaker.android.courselearn.ui.adapters.RecyclerBaseAdapter
 import com.peacemaker.android.courselearn.ui.adapters.RecyclerViewItemDecoration
 import com.peacemaker.android.courselearn.ui.util.BaseFragment
@@ -43,11 +42,17 @@ class MyCoursesFragment : BaseFragment() {
 
     @Suppress("UNCHECKED_CAST")
     private fun setUpRecyclerView() {
-        viewModel.loadUserRelatedData("my_courses",CoursesItem::class.java)
+        viewModel.loadUserRelatedData("my_courses", CoursesItem::class.java)
         observeLiveDataResource(viewModel.userRelatedData, { items ->
             printLogs("MyCoursesFragment", "$items")
-            coursesItem= items as MutableList<CoursesItem>
+            coursesItem = items as MutableList<CoursesItem>
             mAdapter.submitList(items)
+            if (items.isEmpty()) {
+                binding.recyclerView.visibility = View.GONE
+            } else {
+                binding.recyclerView.visibility = View.VISIBLE
+                binding.progressBar.visibility = View.GONE
+            }
         })
 
         mAdapter.expressionOnCreateViewHolder = { inflater, viewGroup ->
@@ -66,7 +71,8 @@ class MyCoursesFragment : BaseFragment() {
             }
         }
         val spanCount = 2
-        val spacingInPixels = resources.getDimensionPixelSize(R.dimen.spacing) // Define your desired spacing in pixels
+        val spacingInPixels =
+            resources.getDimensionPixelSize(R.dimen.spacing) // Define your desired spacing in pixels
         val recyclerView = binding.recyclerView
         recyclerView.layoutManager = StaggeredGridLayoutManager(spanCount, 1)
         val itemDecoration = RecyclerViewItemDecoration(spanCount, spacingInPixels)

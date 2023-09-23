@@ -248,18 +248,23 @@ object FirebaseHelper {
             return collection.toObjects(clazz)
         }
 
+        /**
+               *  @param collectionRef the collection path eg users
+                * @param documentId user id
+                * @param fieldName the name of the to update
+                * @param fieldValue generic value for update
+                * @param onComplete callback to determine successful trx
+                *
+                * */
         fun <T> updateDocument(
             collectionRef: CollectionReference,
-            documentId: String,
-            fieldName: String,
-            fieldValue: T,
-            onComplete: (Boolean, String) -> Unit) {
-            val documentRef = collectionRef.document(documentId)
-            documentRef.update(fieldName, fieldValue)
+            documentId: String?, fieldName: String?,
+            fieldValue: T, onComplete: (Boolean, String) -> Unit) {
+            val documentRef = collectionRef.document(documentId!!)
+            documentRef.update(fieldName!!, fieldValue)
                 .addOnSuccessListener {
                     onComplete(true, "Document $documentId updated successfully")
-                    Log.d(TAG, "::::::::::::::::Document $documentId updated successfully")
-                }
+                    Log.d(TAG, "::::::::::::::::Document $documentId updated successfully")}
                 .addOnFailureListener { e ->
                     Log.w(TAG, "Error updating document", e)
                     onComplete(false, e.localizedMessage!!)

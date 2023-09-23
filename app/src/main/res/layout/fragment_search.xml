@@ -31,7 +31,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_bar" />
 
-
+    <include
+        android:id="@+id/courses_shimmer"
+        app:layout_constraintTop_toBottomOf="@id/searchResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/course_shimmer_frame_layout"/>
+<!--
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/courses_shimmer"
         app:layout_constraintTop_toBottomOf="@id/searchResult"
@@ -60,7 +66,8 @@
             <include
                 layout="@layout/course_list_items_shimmer_layout"/>
         </LinearLayout>
-    </com.facebook.shimmer.ShimmerFrameLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>-->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

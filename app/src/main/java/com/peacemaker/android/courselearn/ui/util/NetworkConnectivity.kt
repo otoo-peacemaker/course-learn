@@ -27,7 +27,7 @@ class NetworkConnectivity(val context: Context) {
             super.onAvailable(network)
             isConnected = true
             isStrongNetwork = isStrongNetwork() == true
-            Utils.showToast(context, "Network Available")
+           // Utils.showToast(context, "Network Available")
         }
 
         override fun onLost(network: Network) {
@@ -46,7 +46,7 @@ class NetworkConnectivity(val context: Context) {
     }
 
     init {
-        checkStrongConnectivity()
+      //  checkStrongConnectivity()
     }
 
     fun startListening() {

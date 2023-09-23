@@ -12,6 +12,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
+import com.peacemaker.android.courselearn.ui.util.Utils.Constants.PERMISSION_CODE
 import com.peacemaker.android.courselearn.ui.util.Utils.Constants.PERMISSION_REQUEST_CODE
 
 object Utils {
@@ -49,40 +50,27 @@ object Utils {
         const val NOTIFICATION_ID = 111
         const val USER_PREFERENCES_NAME = "user_preferences"
         const val PERMISSION_REQUEST_CODE = 123 // You can choose any integer value
+        const val PERMISSION_CODE = 1001
+        const val IMAGE_PICK_CODE = 1000
+
 
 
     }
 
     object CheckPermissions{
-        private const val readPhonePermission = Manifest.permission.READ_PHONE_STATE
-        @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-        private const val readPostNotificationPermission = Manifest.permission.POST_NOTIFICATIONS
+        const val readPhonePermission = Manifest.permission.READ_PHONE_STATE
+        const val readExternalStorage = Manifest.permission.READ_EXTERNAL_STORAGE
         private const val granted = PackageManager.PERMISSION_GRANTED
 
-        fun readPhoneStatePermission(context: Context):Boolean?{
-            if (ContextCompat.checkSelfPermission(context, readPhonePermission) == granted) return true
-            else requestPhonePermission(context)
-            return null
-        }
 
-        @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-        fun readPostNotificationPermission(context: Context):Boolean?{
-            if (ActivityCompat.checkSelfPermission(context, readPostNotificationPermission)== granted) return true
-            else requestPostNotificationPermission(context)
-            return null
-        }
-
-         private fun requestPhonePermission(context: Context) {
-            ActivityCompat.requestPermissions(context as Activity,
-                arrayOf(readPhonePermission), PERMISSION_REQUEST_CODE
-            )
-        }
-
-        @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-        private fun requestPostNotificationPermission(context: Context) {
-            ActivityCompat.requestPermissions(context as Activity,
-                arrayOf(readPostNotificationPermission), PERMISSION_REQUEST_CODE
-            )
+        fun checkAndRequestPermission(activity: Activity, permission: String): Boolean {
+            // Check if permission is already granted
+            if (ContextCompat.checkSelfPermission(activity, permission) != granted) {
+                // Permission is not granted, request it
+                ActivityCompat.requestPermissions(activity, arrayOf(permission), PERMISSION_CODE)
+                return false
+            }
+            return true
         }
 
 }

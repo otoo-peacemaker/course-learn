@@ -26,28 +26,29 @@
             android:text="Peacemaker"
             android:textSize="@dimen/_11ssp"
             app:layout_constraintStart_toEndOf="@id/courseImgL"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/courseImgL" />
 
         <TextView
             android:id="@+id/status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_bold"
-            android:textSize="@dimen/_9ssp"
+            android:textSize="@dimen/_8ssp"
             android:text="Online"
             app:layout_constraintStart_toStartOf="@+id/name"
             app:layout_constraintTop_toBottomOf="@id/name" />
 
         <TextView
             android:id="@+id/desc"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_light"
             android:gravity="center"
+
             android:textSize="@dimen/_10ssp"
             android:text="Congratulations on completing the first lesson, keep up the good work!"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/courseImgL"
+            app:layout_constraintEnd_toStartOf="@id/time"
+            app:layout_constraintStart_toEndOf="@+id/courseImgL"
             app:layout_constraintTop_toBottomOf="@id/courseImgL" />
 
         <androidx.cardview.widget.CardView
@@ -56,7 +57,6 @@
             android:layout_height="@dimen/_40sdp"
             android:layout_marginTop="@dimen/_5sdp"
             app:cardCornerRadius="@dimen/_10sdp"
-            app:layout_constraintBottom_toBottomOf="@+id/status"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
